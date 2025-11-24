@@ -1,5 +1,3 @@
-Website for ranking and making lists of all your favourite anime and manga!
-
 # 🌸 Anirank — Anime Ratings & Review Platform  
 A modern full-stack anime rating, review, and discovery web app built with **Next.js**, **React**, and **AWS**.  
 This project was developed as a third-year Software Development capstone project.
