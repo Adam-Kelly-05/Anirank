@@ -16,7 +16,7 @@ export default function AnimesObject() {
   React.useEffect(() => {
     async function fetchAnime() {
       const response = await fetch(
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/genre/horror",
+        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime",
       );
       const data = await response.json();
       setAnime(data);
