@@ -45,6 +45,18 @@ export default function ReusableCarousel<T>({
     }
   }, [api, onSelect])
 
+  // Reinitialize embla when the slides (data) change so newly-loaded
+  // items are picked up. This fixes cases where data is loaded
+  // asynchronously after the carousel was initialized.
+  React.useEffect(() => {
+    if (!api) return
+    try {
+      api.reInit()
+    } catch (e) {
+      // ignore if reInit isn't available yet
+    }
+  }, [api, data.length])
+
   const scrollTo = (index: number) => {
     api?.scrollTo(index)
   }

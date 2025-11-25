@@ -3,8 +3,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { Anime } from "@/types/animes"
-import { AnimeCardProps } from "@/types/animeCardProps"
-
 
 export default function AnimeCard(item: Anime) {
   return (

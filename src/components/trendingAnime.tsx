@@ -10,14 +10,44 @@ export default function CallAnimeObject() {
 
     React.useEffect(() => {
     async function fetchAnimes() {
-        const response = await fetch(
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/1"
-        );
+      const url =
+        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/genre/horror";
+
+      if (process.env.NODE_ENV !== 'production') {
+        console.log("About to call API:", url);
+      }
+
+      try {
+        const response = await fetch(url);
+        if (process.env.NODE_ENV !== 'production') {
+          console.log("API called. Response status:", response.status, "ok:", response.ok);
+        }
+
+        // Log raw response text (clone used so we can still parse JSON)
+        try {
+          const rawText = await response.clone().text();
+          if (process.env.NODE_ENV !== 'production') {
+            console.log("RAW RESPONSE TEXT:", rawText);
+          }
+        } catch (e) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn("Unable to read raw response text:", e);
+          }
+        }
+
         const result = await response.json();
-        console.log("API RESPONSE:", result);
-        const raw = result.data;
+        if (process.env.NODE_ENV !== 'production') {
+          console.log("PARSED API RESPONSE:", result);
+        }
+
+        const raw = result?.data ?? result;
         const normalized = Array.isArray(raw) ? raw : [raw];
         setAnimes(normalized);
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error("Error fetching animes:", error);
+        }
+      }
     }
     fetchAnimes();
     }, []);

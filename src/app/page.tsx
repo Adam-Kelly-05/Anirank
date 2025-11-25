@@ -1,9 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import CarouselObject from "@/components/carousel";
 import anime from "@/extras/anime.json";
-import ReusableCarousel from "@/components/carousel";
 import AnimeCard from "@/components/animeCard";
 import { Anime } from "@/types/animes";
 import React from "react";
