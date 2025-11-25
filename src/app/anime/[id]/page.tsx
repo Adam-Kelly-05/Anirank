@@ -3,10 +3,6 @@ import { Anime } from "@/types/animes";
 import animeData from "@/extras/anime.json";
 import { notFound } from "next/navigation";
 
-interface Props {
-  params: { id: string };
-}
-
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -35,8 +31,13 @@ export async function generateStaticParams() {
   }
 }
 
-export default async function Page({ params }: Props) {
-  const idParam = params.id;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const idParam = id;
 
   let rawAnime: Anime | null = null;
 
