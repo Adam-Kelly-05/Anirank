@@ -39,9 +39,6 @@ export default function AnimeCard(item: Anime) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-primary/5 to-transparent" />
             <div className="absolute top-2 right-2">
-              <div className="px-2 py-1 rounded-full text-xs font-bold bg-primary text-primary-foreground">
-                #{item.animeId}
-              </div>
             </div>
           </div>
           <div className="p-4 space-y-2 flex-1 flex flex-col">
