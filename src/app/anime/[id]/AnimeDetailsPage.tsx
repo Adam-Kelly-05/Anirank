@@ -1,70 +1,87 @@
-// src/app/anime/[id]/AnimeDetailsPage.tsx
-import { AnimeDetails } from "@/types/Anime";
+import { Anime } from "@/types/animes";
 
 interface Props {
-  anime: AnimeDetails & {
-    cover: string;
-    japaneseTitle?: string;
-    airedDate?: string;
-    trailerURL?: string;
-  };
+  anime: Anime;
 }
 
 export default function AnimeDetailsPage({ anime }: Props) {
   return (
     <div className="max-w-6xl mx-auto p-4">
-      {/* Cover Image */}
-      <div className="w-full h-96 relative mb-6">
-        <img
-          src={anime.cover}
-          alt={anime.title}
-          className="w-full h-full object-cover rounded-lg shadow-lg"
-        />
-      </div>
+      <div className="flex flex-col gap-10 md:flex-row md:items-start">
+        <div className="w-full max-w-xs md:max-w-sm rounded-xl overflow-hidden shadow-2xl bg-black/40">
+          <img
+            src={anime.image}
+            alt={anime.title_english || anime.title_japanese}
+            className="w-full h-auto object-cover"
+          />
+        </div>
 
-      {/* Titles */}
-      <div className="mb-4">
-        <h1 className="text-4xl font-bold">{anime.title}</h1>
-        {anime.japaneseTitle && (
-          <h2 className="text-xl text-gray-500">{anime.japaneseTitle}</h2>
-        )}
-      </div>
-
-      {/* Aired Date & Trailer */}
-      <div className="flex items-center space-x-4 mb-6">
-        {anime.airedDate && (
-          <p className="text-gray-600">Aired: {anime.airedDate}</p>
-        )}
-        {anime.trailerURL && (
-          <a
-            href={anime.trailerURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            Watch Trailer
-          </a>
-        )}
-      </div>
-
-      {/* Description */}
-      <p className="mb-8 text-gray-700">{anime.description}</p>
-
-      {/* Characters */}
-      <h3 className="text-2xl font-semibold mb-4">Characters</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {anime.characters.map((char) => (
-          <div key={char.id} className="text-center">
-            <div className="border-2 border-blue-500 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-200">
-              <img
-                src={char.image}
-                alt={char.name}
-                className="w-full h-48 object-cover"
-              />
-            </div>
-            <p className="mt-2 font-medium">{char.name}</p>
+        <div className="flex-1 space-y-6">
+          <div>
+            <h1 className="text-4xl font-bold">{anime.title_english}</h1>
+            {anime.title_japanese && (
+              <h2 className="text-xl text-gray-400">{anime.title_japanese}</h2>
+            )}
           </div>
-        ))}
+
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-gray-900">
+            {anime.aired && (
+              <span className="rounded-full bg-blue-200 px-3 py-1 text-blue-900">
+                Aired: {anime.aired}
+              </span>
+            )}
+            {anime.episodes ? (
+              <span className="rounded-full bg-amber-200 px-3 py-1 text-amber-900">
+                Episodes: {anime.episodes}
+              </span>
+            ) : null}
+            {anime.type && (
+              <span className="rounded-full bg-emerald-200 px-3 py-1 text-emerald-900">
+                {anime.type}
+              </span>
+            )}
+            {anime.studio && (
+              <span className="rounded-full bg-purple-200 px-3 py-1 text-purple-900">
+                Studio: {anime.studio}
+              </span>
+            )}
+            {anime.source && (
+              <span className="rounded-full bg-slate-200 px-3 py-1 text-slate-900">
+                Source: {anime.source}
+              </span>
+            )}
+          </div>
+
+          {anime.genres?.length ? (
+            <div className="text-sm text-gray-200 flex flex-wrap gap-2">
+              <span className="font-semibold text-gray-100 mr-1">Genres:</span>
+              {anime.genres.map((genre) => (
+                <span
+                  key={genre}
+                  className="rounded-full border border-gray-600 px-3 py-1 text-xs text-gray-100"
+                >
+                  {genre}
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          <p className="text-gray-100 leading-relaxed">{anime.synopsis}</p>
+
+          {anime.trailer && (
+            <div>
+              <a
+                href={anime.trailer}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground shadow-lg hover:shadow-xl transition"
+              >
+                Watch Trailer
+                <span aria-hidden>▶</span>
+              </a>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

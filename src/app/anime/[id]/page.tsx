@@ -1,47 +1,64 @@
 import AnimeDetailsPage from "./AnimeDetailsPage";
-import { AnimeDetails } from "@/types/Anime";
+import { Anime } from "@/types/animes";
 import animeData from "@/extras/anime.json";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
 }
 
-export function generateStaticParams() {
-  return animeData.map((anime) => ({
-    id: anime.animeId.toString(),
-  }));
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const localIds = animeData.map((anime) => anime.animeId.toString());
+
+  try {
+    const res = await fetch(
+      "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime",
+      { cache: "force-cache" },
+    );
+    const payload = await res.json();
+    const list = Array.isArray(payload)
+      ? payload
+      : payload?.Items ?? payload?.data ?? [];
+
+    const apiIds = list
+      .map((item: { id?: number; animeId?: number }) =>
+        (item.id ?? item.animeId)?.toString(),
+      )
+      .filter(Boolean) as string[];
+
+    const ids = Array.from(new Set([...localIds, ...apiIds]));
+    return ids.map((id) => ({ id }));
+  } catch {
+    return localIds.map((id) => ({ id }));
+  }
 }
 
-export default function Page({ params }: Props) {
-  const id = Number(params.id);
+export default async function Page({ params }: Props) {
+  const idParam = params.id;
 
-  // Find anime by animeId
-  const rawAnime = animeData.find((a) => a.animeId === id);
+  let rawAnime: Anime | null = null;
 
-  if (!rawAnime) {
-    return <p>Anime not found</p>;
+  try {
+    const res = await fetch(
+      `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/${idParam}`,
+      { cache: "force-cache" },
+    );
+
+    if (res.ok) {
+      const payload = await res.json();
+      rawAnime = (Array.isArray(payload)
+        ? payload[0]
+        : (payload as any)?.Item ?? (payload as any)?.data ?? (payload as any)) as Anime | null;
+    }
+  } catch {
+    // ignore and fall back to local data
   }
 
-  // Map JSON to AnimeDetails type + extra fields for AnimeDetailsPage
-  const anime: AnimeDetails & {
-    cover: string;
-    japaneseTitle?: string;
-    airedDate?: string;
-    trailerURL?: string;
-  } = {
-    id: rawAnime.animeId,
-    title: rawAnime.englishTitle,
-    description: rawAnime.background,
-    characters: rawAnime.characters.map((c, index) => ({
-      id: Number(index), // generates a numeric ID for TypeScript
-      name: c.name,
-      image: c.image,
-    })),
-    cover: rawAnime.cover,
-    japaneseTitle: rawAnime.japaneseTitle,
-    airedDate: rawAnime.airedDate,
-    trailerURL: rawAnime.trailerURL,
-  };
+  if (!rawAnime) {
+    notFound();
+  }
 
-  return <AnimeDetailsPage anime={anime} />;
+  return <AnimeDetailsPage anime={rawAnime} />;
 }
