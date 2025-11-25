@@ -7,47 +7,28 @@ import ReusableCarousel from "./carousel";
 
 export default function CallAnimeObject() {
     const [anime, setAnimes] = React.useState<Anime[]>([]);
+    const [error, setError] = React.useState<string | null>(null);
+    const [loading, setLoading] = React.useState<boolean>(false);
 
     React.useEffect(() => {
     async function fetchAnimes() {
+      setLoading(true);
+      setError(null);
       const url =
         "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/genre/horror";
 
-      if (process.env.NODE_ENV !== 'production') {
-        console.log("About to call API:", url);
-      }
-
       try {
         const response = await fetch(url);
-        if (process.env.NODE_ENV !== 'production') {
-          console.log("API called. Response status:", response.status, "ok:", response.ok);
-        }
-
-        // Log raw response text (clone used so we can still parse JSON)
-        try {
-          const rawText = await response.clone().text();
-          if (process.env.NODE_ENV !== 'production') {
-            console.log("RAW RESPONSE TEXT:", rawText);
-          }
-        } catch (e) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.warn("Unable to read raw response text:", e);
-          }
-        }
-
         const result = await response.json();
-        if (process.env.NODE_ENV !== 'production') {
-          console.log("PARSED API RESPONSE:", result);
-        }
-
         const raw = result?.data ?? result;
         const normalized = Array.isArray(raw) ? raw : [raw];
         setAnimes(normalized);
+        setError(null);
       } catch (error) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.error("Error fetching animes:", error);
-        }
+        setAnimes([]);
+        setError("Unable to load trending anime right now.");
       }
+      setLoading(false);
     }
     fetchAnimes();
     }, []);
@@ -83,11 +64,20 @@ export default function CallAnimeObject() {
             <h2 className="text-3xl font-bold text-white">Trending Anime</h2>
           </div>
 
+          {loading && (
+            <p className="text-blue-100">Loading trending anime...</p>
+          )}
 
-          <ReusableCarousel 
-            data={anime}
-            render={(item) => <AnimeCard {...item} />}
-          />
+          {error && !loading && (
+            <p className="text-red-200">{error}</p>
+          )}
+
+          {!loading && !error && (
+            <ReusableCarousel 
+              data={anime}
+              render={(item) => <AnimeCard {...item} />}
+            />
+          )}
         </div>
       </section>
     </div>
