@@ -52,6 +52,7 @@ export default function ReusableCarousel<T>({
     if (!api) return
     try {
       api.reInit()
+      api.scrollTo(0)
     } catch (e) {
       // ignore if reInit isn't available yet
     }
@@ -62,15 +63,15 @@ export default function ReusableCarousel<T>({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-visible">
       <Carousel
         setApi={setApi}
-        className="w-full max-w-full"
+        className="w-full max-w-full overflow-visible"
         opts={{ align: "start", loop: true }}
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
+        <CarouselContent className="-ml-4 md:-ml-6 overflow-visible">
           {data.map((item, i) => (
-            <CarouselItem key={i} className="pl-2 md:pl-4 basis-auto">
+            <CarouselItem key={i} className="pl-4 md:pl-6 basis-auto">
               {render(item)}
             </CarouselItem>
           ))}
