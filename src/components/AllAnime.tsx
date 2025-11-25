@@ -4,7 +4,7 @@ import * as React from "react";
 import { Anime } from "@/types/animes";
 import AnimeCard from "./animeCard";
 
-export default function AnimesObject() {
+export default function AllAnimesObject() {
   const [animes, setAnime] = React.useState<Anime[]>([]);
 
   const pickRandomSubset = (list: Anime[], count: number) => {
