@@ -50,7 +50,7 @@ export default async function Page({ params }: Props) {
       const payload = await res.json();
       rawAnime = (Array.isArray(payload)
         ? payload[0]
-        : (payload as any)?.Item ?? (payload as any)?.data ?? (payload as any)) as Anime | null;
+        : (payload)?.Item ?? (payload)?.data ?? (payload)) as Anime | null;
     }
   } catch {
     // ignore and fall back to local data
