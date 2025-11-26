@@ -15,7 +15,7 @@ export default function CallAnimeObject() {
       setLoading(true);
       setError(null);
       const url =
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/genre/horror";
+        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime?limit=15";
 
       try {
         const response = await fetch(url);
@@ -41,9 +41,9 @@ export default function CallAnimeObject() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Logo */}
           <div className="mb-8">
-            <img 
-              src="https://placehold.co/150x150/3b82f6/ffffff?text=LOGO" 
-              alt="Anirank Logo" 
+            <img
+              src="https://placehold.co/150x150/3b82f6/ffffff?text=LOGO"
+              alt="Anirank Logo"
               className="mx-auto w-24 h-24 md:w-32 md:h-32"
             />
           </div>
@@ -73,7 +73,7 @@ export default function CallAnimeObject() {
           )}
 
           {!loading && !error && (
-            <ReusableCarousel 
+            <ReusableCarousel
               data={anime}
               render={(item) => <AnimeCard {...item} />}
             />
