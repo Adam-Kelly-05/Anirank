@@ -7,20 +7,11 @@ import AnimeCard from "./animeCard";
 export default function AllAnimesObject() {
   const [animes, setAnime] = React.useState<Anime[]>([]);
 
-  const pickRandomSubset = (list: Anime[], count: number) => {
-    const copy = [...list];
-    for (let i = copy.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy.slice(0, count);
-  };
-
   React.useEffect(() => {
     async function fetchAnime() {
       try {
         const response = await fetch(
-          "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime",
+          "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime?limit=40",
         );
         const result = await response.json();
 
@@ -28,8 +19,7 @@ export default function AllAnimesObject() {
           ? result
           : result?.Items ?? result?.data ?? [];
 
-        const randomSelection = pickRandomSubset(data as Anime[], 52);
-        setAnime(randomSelection);
+        setAnime(data);
       } catch (error) {
         setAnime([]);
       }
