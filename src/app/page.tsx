@@ -4,7 +4,7 @@ import React from "react";
 import CallAnimeObject from "@/components/trendingAnime";
 import AllAnimesObject from "@/components/AllAnime";
 
-const genres = ["Action", "Adventure", "Horror", "Romance"];
+["Action","Fantasy","Comedy","Romance","Drama","Adventure","Supernatural","Sci-Fi","Suspense","Mystery","Horror","Sports"]
 
 export default function Home() {
   return (
