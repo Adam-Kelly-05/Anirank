@@ -36,26 +36,6 @@ export default function CallAnimeObject() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="blue-gradient py-16 border-b-4 border-blue-400" style={{background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #1d4ed8 100%)'}}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Logo */}
-          <div className="mb-8">
-            <img
-              src="https://placehold.co/150x150/3b82f6/ffffff?text=LOGO"
-              alt="Anirank Logo"
-              className="mx-auto w-24 h-24 md:w-32 md:h-32"
-            />
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-            Welcome to Anirank
-          </h1>
-          <p className="text-lg md:text-xl text-blue-100 mb-8 font-medium">
-            Discover, rate, and review your favorite anime series
-          </p>
-        </div>
-      </section>
-
       {/* Trending Anime Section */}
       <section className="py-12 bg-blue-950" style={{backgroundColor: '#172554'}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
