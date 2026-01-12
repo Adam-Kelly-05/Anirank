@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { Anime } from "@/types/animes";
+import type { Anime } from "@/types/Anime";
 
 export default function AnimeCard(item: Anime) {
   const router = useRouter();

@@ -1,6 +1,6 @@
 'use client'
 
-import { Anime } from "@/types/animes";
+import { Anime } from "@/types/Anime";
 import React from "react";
 import AnimeCard from "./animeCard";
 import ReusableCarousel from "./carousel";

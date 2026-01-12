@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Anime } from "@/types/animes";
+import { Anime } from "@/types/Anime";
 import AnimeCard from "./animeCard";
 
 interface AllAnimesProps {
