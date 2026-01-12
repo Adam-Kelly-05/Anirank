@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from "react"
-import { Review } from "@/types/reviews"
+import { Review } from "@/types/Review"
 import { ReviewsCard } from "./reviewsCard"
 
 export default function ReviewsObject() {
