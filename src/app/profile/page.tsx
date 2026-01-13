@@ -6,21 +6,13 @@ import { Button } from '@/components/ui/button'
 import users from '@/extras/users.json'
 import reviews from '@/extras/reviews.json'
 import anime from '@/extras/anime.json'
+import { Review } from '@/types/Review'
 
 interface User {
   userId: number
   username: string
   createdAt: string
   bio: string
-}
-
-interface Review {
-  reviewId: number
-  userId: number
-  animeId: number
-  score: number
-  reviewText: string
-  ratedAt: string
 }
 
 interface AnimeItem {

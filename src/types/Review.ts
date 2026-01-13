@@ -6,4 +6,6 @@ export interface Review {
   reviewBody: string;
   reviewHeader: string;
   userId: string;
+  score: number;
+  ratedAt: string
 }
