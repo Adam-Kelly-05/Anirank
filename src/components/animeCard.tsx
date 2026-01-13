@@ -62,8 +62,6 @@ export default function AnimeCard(item: Anime) {
             >
               <a
                 href={item.trailer}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center"
                 onClick={stopPropagation}
               >
