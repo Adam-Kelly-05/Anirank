@@ -8,6 +8,8 @@ import FetchReviewsObject from '@/components/reviews'
 
 export default function ProfilePage() {
   const fetchedUser = useUserObject(1);
+  const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
+  const [averageScore, setAverageScore] = React.useState(0);
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -47,7 +49,7 @@ export default function ProfilePage() {
                     <p className="text-gray-400">User Since: <span className="ml-2 text-white font-semibold">{fetchedUser?.DateJoin}</span></p>
                   </div>
                 </div>
-                
+
                 {/*Logout Button*/}
                 <div className="mt-6">
                   <Button
@@ -66,24 +68,18 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
 
-        {/* Stats Section */} {/* Used 1 as a temperaty value here, lambda's have not been made yet */}
+        {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card className="bg-card border-primary/20">
             <CardContent className="p-6 text-center">
-              <div className="text-4xl font-bold text-blue-400 mb-2">{1}</div>
+              <div className="text-4xl font-bold text-blue-400 mb-2">{reviewsAmount}</div>
               <div className="text-gray-400">Total Reviews</div>
             </CardContent>
           </Card>
           <Card className="bg-card border-primary/20">
             <CardContent className="p-6 text-center">
-              <div className="text-4xl font-bold text-purple-400 mb-2">{1}</div>
+              <div className="text-4xl font-bold text-purple-400 mb-2">{averageScore}</div>
               <div className="text-gray-400">Average Score</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-card border-primary/20">
-            <CardContent className="p-6 text-center">
-              <div className="text-4xl font-bold text-green-400 mb-2">{1}</div>
-              <div className="text-gray-400">Anime Reviewed</div>
             </CardContent>
           </Card>
         </div>
@@ -92,9 +88,14 @@ export default function ProfilePage() {
         <div>
           <h2 className="text-3xl font-bold text-white mb-6">My Reviews</h2>
 
-          <FetchReviewsObject id={fetchedUser?.userId} idType="user" />
+          <FetchReviewsObject
+            id={fetchedUser?.userId}
+            idType="user"
+            onReviewsAmount={setReviewsAmount}
+            onAverageScore={setAverageScore}
+          />
         </div>
-          
+
       </div>
     </main>
   )
