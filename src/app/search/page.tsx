@@ -69,7 +69,7 @@ function SearchContent() {
 
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
-            <SearchBar placeholder="Search by title or description..." />
+            <SearchBar/>
           </div>
         </div>
 
