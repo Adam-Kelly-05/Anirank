@@ -1,4 +1,4 @@
-import { Anime } from "@/types/animes";
+import { Anime } from "@/types/Anime";
 import ReviewCard from "@/components/ui/ReviewCard"
 
 interface Props {

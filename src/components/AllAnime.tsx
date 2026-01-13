@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Anime } from "@/types/animes";
+import { Anime } from "@/types/Anime";
 import AnimeCard from "./animeCard";
 
 interface AllAnimesProps {
@@ -41,7 +41,6 @@ export default function AllAnimesObject({ genre, limit }: AllAnimesProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
       {animes.map((anime) => (
-        console.log(anime),
         <AnimeCard key={anime.animeId} {...anime} />
       ))}
     </div>

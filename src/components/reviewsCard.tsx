@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { Review } from "@/types/reviews"
+import { Review } from "@/types/Review"
 
 interface ReviewsCardProps {
     review: Review

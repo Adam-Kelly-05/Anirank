@@ -3,7 +3,7 @@
 import React, { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import SearchBar from "@/components/searchBar";
-import { Anime } from "@/types/animes";
+import { Anime } from "@/types/Anime";
 import AnimeCard from "@/components/animeCard";
 
 function EmptyState({ query }: { query: string }) {

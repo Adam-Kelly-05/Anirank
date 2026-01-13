@@ -1,12 +1,14 @@
-export interface Character {
-  id: number;
-  name: string;
+export interface Anime {
+  animeId: number;
+  aired: string;
+  episodes: number;
+  genres: string[];
   image: string;
-}
-
-export interface AnimeDetails {
-  id: number;
-  title: string;
-  description: string;
-  characters: Character[];
+  source: string;
+  studio: string;
+  synopsis: string;
+  title_english: string;
+  title_japanese: string;
+  trailer: string;
+  type: string;
 }

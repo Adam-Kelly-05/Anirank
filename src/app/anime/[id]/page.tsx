@@ -1,5 +1,5 @@
 import AnimeDetailsPage from "./AnimeDetailsPage";
-import { Anime } from "@/types/animes";
+import { Anime } from "@/types/Anime";
 import animeData from "@/extras/anime.json";
 import { notFound } from "next/navigation";
 
