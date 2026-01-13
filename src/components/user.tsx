@@ -1,25 +1,19 @@
 'use client'
 
 import * as React from "react"
-import { Review } from "@/types/Review"
-import { ReviewsCard } from "./reviewsCard"
+import { User } from "@/types/User";
 
-export default function ReviewsObject() {
-    const [reviews, setReviews] = React.useState<Review[]>([]);
+export function fetchUserObject(userId?: string | number) {
+    const [user, setUser] = React.useState<User>();
 
     React.useEffect(() => {
-        async function fetchReviews() {
-            const response = await fetch("https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/1");
-            const reviews = await response.json();
-            setReviews(reviews);
+        async function fetchUser() {
+            const response = await fetch(`https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userId}`);
+            const user = await response.json();
+            setUser(user);
         }
-        fetchReviews();
-    }, []);
-    return ( // returns all reviews
-        <div className="space-y-4 p-4">
-            {reviews.map((review) => (
-                <ReviewsCard key={review.reviewId} review={review} />
-            ))}
-        </div>
-    )
+        fetchUser();
+    }, [userId]);
+
+    return user;
 }

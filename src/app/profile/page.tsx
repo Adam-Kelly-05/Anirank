@@ -3,52 +3,41 @@
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import users from '@/extras/users.json'
-import reviews from '@/extras/reviews.json'
-import anime from '@/extras/anime.json'
 import { Review } from '@/types/Review'
-
-interface User {
-  userId: number
-  username: string
-  createdAt: string
-  bio: string
-}
-
-interface AnimeItem {
-  animeId: number
-  englishTitle: string
-  cover: string
-}
+import { fetchUserObject } from '@/components/user'
 
 export default function ProfilePage() {
-    //Sample current user
-    const currentUserId = 1
-  const currentUser = users.find(u => u.userId === currentUserId) as User
-  const userReviews = reviews.filter(r => r.userId === currentUserId) as Review[]
+  const fetchedUser = fetchUserObject(1);
+
+
+
+  //   //Sample current user
+  //   const currentUserId = 1
+  // const currentUser = users.find(u => u.userId === currentUserId) as User
+  // const userReviews = reviews.filter(r => r.userId === currentUserId) as Review[]
   
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    })
-  }
+  // const formatDate = (dateString: string) => {
+  //   const date = new Date(dateString)
+  //   return date.toLocaleDateString('en-US', { 
+  //     year: 'numeric', 
+  //     month: 'long', 
+  //     day: 'numeric' 
+  //   })
+  // }
 
-  const getAnimeTitle = (animeId: number) => {
-    const animeItem = anime.find(a => a.animeId === animeId) as AnimeItem | undefined
-    return animeItem?.englishTitle || 'Unknown Anime'
-  }
+  // const getAnimeTitle = (animeId: number) => {
+  //   const animeItem = anime.find(a => a.animeId === animeId) as AnimeItem | undefined
+  //   return animeItem?.englishTitle || 'Unknown Anime'
+  // }
 
-  const getAnimeCover = (animeId: number) => {
-    const animeItem = anime.find(a => a.animeId === animeId) as AnimeItem | undefined
-    return animeItem?.cover || ''
-  }
+  // const getAnimeCover = (animeId: number) => {
+  //   const animeItem = anime.find(a => a.animeId === animeId) as AnimeItem | undefined
+  //   return animeItem?.cover || ''
+  // }
 
-  const averageScore = userReviews.length > 0 
-    ? (userReviews.reduce((sum, r) => sum + r.score, 0) / userReviews.length).toFixed(1)
-    : 'N/A'
+  // const averageScore = userReviews.length > 0 
+  //   ? (userReviews.reduce((sum, r) => sum + r.score, 0) / userReviews.length).toFixed(1)
+  //   : 'N/A'
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -58,37 +47,43 @@ export default function ProfilePage() {
           <CardContent className="p-8">
             <div className="flex flex-col items-center gap-6">
               {/* Avatar */}
-              <div className="flex-shrink-0">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-5xl font-bold shadow-2xl">
-                  {/* First letter as default Avatar */}
-                  {currentUser.username.charAt(0).toUpperCase()}
+              {fetchedUser?.ProfilePicture ? (
+                <div className="flex-shrink-0">
+                  <img
+                    src={fetchedUser.ProfilePicture}
+                    alt={`${fetchedUser.Username}'s avatar`}
+                    className="w-32 h-32 rounded-full object-cover shadow-2xl"
+                  />
                 </div>
-              </div>
+              ) : (
+                <div className="flex-shrink-0">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-5xl font-bold shadow-2xl">
+                    {/* First letter as default Avatar */}
+                    {fetchedUser?.Username?.charAt(0).toUpperCase()}
+                  </div>
+                </div>
+              )}
 
               {/* User Info */}
               <div className="flex-1 text-center">
                 <h1 className="text-4xl font-bold text-white mb-2">
-                  {currentUser.username}
+                  {fetchedUser?.Username}
                 </h1>
                 <p className="text-gray-400 text-lg italic mb-4">
-                  &ldquo;{currentUser.bio}&rdquo;
+                  {fetchedUser?.Bio};
                 </p>
                 <div className="flex flex-wrap justify-center gap-4 text-sm">
                   <div className="px-4 py-2 bg-card rounded-lg border border-primary/20">
-                    <span className="text-gray-400">Member since:</span>
-                    <span className="ml-2 text-white font-semibold">{formatDate(currentUser.createdAt)}</span>
+                    <p className="text-gray-400">User Since: <span className="ml-2 text-white font-semibold">{fetchedUser?.DateJoin}</span></p>
                   </div>
                 </div>
                 
                 {/*Logout Button*/}
                 <div className="mt-6">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500"
-                    onClick={() => {
-                      //Logout functionality implemented later
-                      console.log('Logout clicked')
-                    }}
+                    onClick={() => console.log("Logout clicked")}
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
