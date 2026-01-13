@@ -1,5 +1,5 @@
 import { Anime } from "@/types/Anime";
-import ReviewCard from "@/components/ui/ReviewCard"
+import ReviewCard from "@/components/ui/ReviewCard";
 
 interface Props {
   anime: Anime;
@@ -81,23 +81,12 @@ export default function AnimeDetailsPage({ anime }: Props) {
                 <span aria-hidden>▶</span>
               </a>
             </div>
-            
           )}
-            <div>
-              <ReviewCard
-              name="Joshua Zirkzee"
-              rating={6}
-              comment="Really enjoyed this anime! Great pacing and beautiful animation."
-              date="Feb 2, 2025"
-/>
-</div>
-
+          <div>
+            
+          </div>
         </div>
-        
       </div>
     </div>
-
-    
   );
-
 }

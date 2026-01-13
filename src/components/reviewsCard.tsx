@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent } from "./ui/card"
 import { Review } from "@/types/Review"
 
 interface ReviewsCardProps {
@@ -9,14 +9,35 @@ interface ReviewsCardProps {
 
 export function ReviewsCard({ review }: ReviewsCardProps) {
     return (
-        <Card className="bg-white text-black rounded-xl">
-            <CardHeader>
-                <CardTitle>{review.animeName}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <CardDescription>{review.reviewHeader}</CardDescription>
-                <CardDescription>{review.reviewBody}</CardDescription>
-                <CardDescription>Rating: {review.rating}/10</CardDescription>
+        <Card className="bg-card border-primary/20 hover:border-primary/40 transition-all">
+            <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex-shrink-0">
+                        <div className="w-24 h-32 rounded bg-primary/10 border border-primary/20 flex items-center justify-center text-xs text-primary">
+                            No cover
+                        </div>
+                    </div>
+
+                    <div className="flex-1">
+                        <div className="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 className="text-xl font-bold text-white mb-1">
+                                    {review.animeName}
+                                </h3>
+                                <p className="text-gray-500 text-sm">
+                                    Reviewed on {review.ratedDate}
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-1 px-3 py-1 bg-primary/20 text-primary rounded-full font-bold">
+                                <p>⭐</p>
+                                {review.rating}/10
+                            </div>
+                        </div>
+                        <p className="text-gray-300">
+                            {review.reviewBody}
+                        </p>
+                    </div>
+                </div>
             </CardContent>
         </Card>
     )

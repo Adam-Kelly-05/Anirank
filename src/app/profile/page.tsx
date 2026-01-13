@@ -92,7 +92,7 @@ export default function ProfilePage() {
         <div>
           <h2 className="text-3xl font-bold text-white mb-6">My Reviews</h2>
 
-          <FetchReviewsObject userId={fetchedUser?.userId} />
+          <FetchReviewsObject id={fetchedUser?.userId} idType="user" />
         </div>
           
       </div>
