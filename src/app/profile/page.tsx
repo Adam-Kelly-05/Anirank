@@ -3,11 +3,11 @@
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { fetchUserObject } from '@/components/user'
+import { useUserObject } from '@/components/user'
 import FetchReviewsObject from '@/components/reviews'
 
 export default function ProfilePage() {
-  const fetchedUser = fetchUserObject(1);
+  const fetchedUser = useUserObject(1);
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">

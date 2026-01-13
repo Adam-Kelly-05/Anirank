@@ -4,7 +4,7 @@ import * as React from "react"
 import { Review } from "@/types/Review"
 import { ReviewsCard } from "./reviewsCard"
 
-export default function fetchReviewsObject({ userId }: { userId?: string | number }) {
+export default function FetchReviewsObject({ userId }: { userId?: string | number }) {
     const [reviews, setReviews] = React.useState<Review[]>([]);
 
     React.useEffect(() => {

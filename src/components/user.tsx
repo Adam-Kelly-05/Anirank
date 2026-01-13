@@ -3,7 +3,7 @@
 import { User } from "@/types/User";
 import * as React from "react"
 
-export function fetchUserObject(userId?: string | number) {
+export function useUserObject(userId?: string | number) {
     const [user, setUser] = React.useState<User>();
 
     React.useEffect(() => {
