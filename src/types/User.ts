@@ -1,7 +1,7 @@
 export interface User {
-    userId: string;
+    userId: number;
     Bio: string;
     DateJoin: string;
-    ProfilePicture: string;
+    ProfilePicture: string | null;
     Username: string;
 }
