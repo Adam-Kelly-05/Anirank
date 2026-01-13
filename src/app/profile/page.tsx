@@ -69,7 +69,7 @@ export default function ProfilePage() {
         </Card>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card className="bg-card border-primary/20">
             <CardContent className="p-6 text-center">
               <div className="text-4xl font-bold text-blue-400 mb-2">{reviewsAmount}</div>
