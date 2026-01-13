@@ -1,11 +1,7 @@
 import { Anime } from "@/types/Anime";
-import ReviewCard from "@/components/ui/ReviewCard";
+import FetchReviewsObject from "@/components/reviews";
 
-interface Props {
-  anime: Anime;
-}
-
-export default function AnimeDetailsPage({ anime }: Props) {
+export default function AnimeDetailsPage({ anime } : { anime : Anime }) {
   return (
     <div className="max-w-6xl mx-auto p-4">
       <div className="flex flex-col gap-10 md:flex-row md:items-start">
@@ -73,8 +69,6 @@ export default function AnimeDetailsPage({ anime }: Props) {
             <div>
               <a
                 href={anime.trailer}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground shadow-lg hover:shadow-xl transition"
               >
                 Watch Trailer
@@ -83,7 +77,7 @@ export default function AnimeDetailsPage({ anime }: Props) {
             </div>
           )}
           <div>
-            
+            <FetchReviewsObject id={anime.animeId} idType="anime" />
           </div>
         </div>
       </div>

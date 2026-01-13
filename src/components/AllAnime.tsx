@@ -4,12 +4,7 @@ import * as React from "react";
 import { Anime } from "@/types/Anime";
 import AnimeCard from "./animeCard";
 
-interface AllAnimesProps {
-  genre?: string;
-  limit?: number;
-}
-
-export default function AllAnimesObject({ genre, limit }: AllAnimesProps) {
+export default function AllAnimesObject({ genre, limit }: { genre?: string; limit?: number; }) {
   const [animes, setAnime] = React.useState<Anime[]>([]);
 
   React.useEffect(() => {
