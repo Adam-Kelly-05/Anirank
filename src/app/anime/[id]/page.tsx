@@ -127,10 +127,11 @@ export default async function Page({
                   </a>
                 </div>
               )}
-              <div>
-                <FetchReviewsObject id={anime.animeId} idType="anime" />
-              </div>
             </div>
+          </div>
+          <br />
+          <div>
+            <FetchReviewsObject id={anime.animeId} idType="anime" />
           </div>
         </div>
       );
