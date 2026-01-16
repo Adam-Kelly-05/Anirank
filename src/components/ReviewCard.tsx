@@ -2,10 +2,10 @@
 
 import { Card, CardContent } from "./ui/card"
 import { Review } from "@/types/Review"
-import { getSpecificAnime } from "./UseAnime"
+import { useAnimeById } from "./UseAnime"
 
 export function ReviewCard({ review }: { review : Review }) {
-    const anime = getSpecificAnime(review.animeId)
+    const anime = useAnimeById(review.animeId)
 
     return (
         <Card className="bg-card border-primary/20 hover:border-primary/40 transition-all">
