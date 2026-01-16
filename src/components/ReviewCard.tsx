@@ -2,18 +2,25 @@
 
 import { Card, CardContent } from "./ui/card"
 import { Review } from "@/types/Review"
+import { getSpecificAnime } from "./UseAnime"
 
 export function ReviewCard({ review }: { review : Review }) {
+    const anime = getSpecificAnime(review.animeId)
+
     return (
         <Card className="bg-card border-primary/20 hover:border-primary/40 transition-all">
             <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row gap-4">
-                    {/* <div className="flex-shrink-0">
-                        <div className="w-24 h-32 rounded bg-primary/10 border border-primary/20 flex items-center justify-center text-xs text-primary">
-                            No cover
+                    <div className="flex-shrink-0">
+                        <div className="w-24 h-32 rounded overflow-hidden border border-primary/30 shadow-lg">
+                            <img
+                                src={anime?.image}
+                                alt={anime?.title_english || anime?.title_japanese || review.animeName}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                            />
                         </div>
-                    </div> */}
-                    {/* Code to handle review's anime cover goes here */}
+                    </div>
 
                     <div className="flex-1">
                         <div className="flex justify-between items-start mb-3">
