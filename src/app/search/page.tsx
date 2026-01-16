@@ -1,10 +1,10 @@
 "use client"
 
-import React, { Suspense, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import SearchBar from "@/components/searchBar";
+import React, { Suspense } from "react";
+import SearchBar from "@/components/SearchBar";
+import AnimeCard from "@/components/AnimeCard";
 import { Anime } from "@/types/Anime";
-import AnimeCard from "@/components/animeCard";
+import { SearchLogic } from "@/components/SearchLogic";
 
 function EmptyState({ query }: { query: string }) {
   return (
@@ -21,42 +21,7 @@ function EmptyState({ query }: { query: string }) {
   );
 }
 
-function SearchContent() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("q") || "";
-  const [animes, setAnimes] = useState<Anime[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const term = query.trim();
-
-    if (!term) {
-      setAnimes([]);
-      setIsLoading(false);
-      return;
-    }
-
-    async function fetchAnime() {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/${encodeURIComponent(term)}`,
-        );
-        const result = await response.json();
-        const data = Array.isArray(result)
-          ? result
-          : result?.Items ?? result?.data ?? [];
-        setAnimes(data);
-      } catch (error) {
-        setAnimes([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchAnime();
-  }, [query]);
-
+function SearchPageContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,33 +34,38 @@ function SearchContent() {
 
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
-            <SearchBar/>
+            <SearchBar />
           </div>
         </div>
 
-        {/* Search Results */}
-        <div className="mb-8">
-          <p className="text-gray-300 mb-6">
-            {isLoading
-              ? "Searching..."
-              : query
-                ? `Showing ${animes.length} result${animes.length !== 1 ? "s" : ""} for ${query}`
-                : `Showing ${animes.length} anime`}
-          </p>
+        <SearchLogic>
+          {({ query, animes, isLoading }) => (
+            <div className="mb-8">
+              <p className="text-gray-300 mb-6">
+                {isLoading
+                  ? "Searching..."
+                  : query
+                  ? `Showing ${animes.length} result${
+                      animes.length !== 1 ? "s" : ""
+                    } for ${query}`
+                  : `Showing ${animes.length} anime`}
+              </p>
 
-          {!isLoading && animes.length === 0 && (
-            <EmptyState query={query} />
-          )}
+              {!isLoading && animes.length === 0 && (
+                <EmptyState query={query} />
+              )}
 
-          {/* Results Grid */}
-          {animes.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {animes.map((item: Anime) => (
-                <AnimeCard key={item.animeId} {...item} />
-              ))}
+              {/* Results Grid */}
+              {animes.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {animes.map((item: Anime) => (
+                    <AnimeCard key={item.animeId} {...item} />
+                  ))}
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </SearchLogic>
       </div>
     </div>
   );
@@ -103,8 +73,12 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="text-center text-gray-400 pt-20">Loading search...</div>}>
-      <SearchContent />
+    <Suspense
+      fallback={
+        <div className="text-center text-gray-400 pt-20">Loading search...</div>
+      }
+    >
+      <SearchPageContent />
     </Suspense>
   );
 }

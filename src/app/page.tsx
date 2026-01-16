@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react";
-import CallAnimeObject from "@/components/trendingAnime";
-import AllAnimesObject from "@/components/AllAnime";
+import TrendingAnimeSection from "@/components/TrendingAnimeSection";
+import AnimeGrid from "@/components/AnimeGrid";
 
 const genres = ["Action","Fantasy","Comedy","Romance","Drama","Adventure","Supernatural","Sci-Fi","Suspense","Mystery","Horror","Sports"]
 
@@ -29,7 +29,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <CallAnimeObject />
+      <TrendingAnimeSection />
 
         {genres.map((genre, index) => (
           <section
@@ -56,7 +56,7 @@ export default function Home() {
                 ></div>
               </div>
 
-              <AllAnimesObject genre={genre} limit={8} />
+              <AnimeGrid genre={genre} limit={8} />
             </div>
           </section>
         ))}

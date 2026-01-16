@@ -1,4 +1,4 @@
-import AllAnimesObject from "@/components/AllAnime";
+import AnimeGrid from "@/components/AnimeGrid";
 
 export default function AboutPage() {
   return (
@@ -21,7 +21,7 @@ export default function AboutPage() {
       {/* Anime Carousel Section */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AllAnimesObject />
+          <AnimeGrid />
         </div>
       </section>
     </div>

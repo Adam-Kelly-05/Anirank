@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { Anime } from "@/types/Anime";
-import AnimeCard from "./animeCard";
 
-export default function AllAnimesObject({ genre, limit }: { genre?: string; limit?: number; }) {
+// Fetch anime list with optional genre/limit filters
+export function useAnimeList({ genre, limit }: { genre?: string; limit?: number }) {
   const [animes, setAnime] = React.useState<Anime[]>([]);
 
   React.useEffect(() => {
@@ -33,11 +33,5 @@ export default function AllAnimesObject({ genre, limit }: { genre?: string; limi
     fetchAnime();
   }, [genre, limit]);
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
-      {animes.map((anime) => (
-        <AnimeCard key={anime.animeId} {...anime} />
-      ))}
-    </div>
-  );
+  return { animes };
 }

@@ -3,11 +3,11 @@
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { useUserObject } from '@/components/user'
-import FetchReviewsObject from '@/components/reviews'
+import { useUser } from '@/components/UseUser'
+import ReviewsList from '@/components/ReviewsList'
 
 export default function ProfilePage() {
-  const fetchedUser = useUserObject(1);
+  const fetchedUser = useUser(1);
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
 
@@ -88,7 +88,7 @@ export default function ProfilePage() {
         <div>
           <h2 className="text-3xl font-bold text-white mb-6">My Reviews</h2>
 
-          <FetchReviewsObject
+          <ReviewsList
             id={fetchedUser?.userId}
             idType="user"
             onReviewsAmount={setReviewsAmount}

@@ -3,7 +3,7 @@
 import { Card, CardContent } from "./ui/card"
 import { Review } from "@/types/Review"
 
-export function ReviewsCard({ review }: { review : Review }) {
+export function ReviewCard({ review }: { review : Review }) {
     return (
         <Card className="bg-card border-primary/20 hover:border-primary/40 transition-all">
             <CardContent className="p-6">

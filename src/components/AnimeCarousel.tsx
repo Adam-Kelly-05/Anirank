@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import {
-  Carousel,
+  Carousel as CarouselRoot,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
@@ -12,15 +12,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-interface ReusableCarouselProps <T>{
-  data: T[]                          // JSON array passed in
-  render: (item: T) => React.ReactNode // component to render each item
-}
-
-export default function ReusableCarousel<T>({
+export default function ContentCarousel<T>({
   data,
   render
-}: ReusableCarouselProps<T>) {
+}: {
+  data?: T[]
+  render: (item: T) => React.ReactNode
+}) {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
@@ -38,39 +36,27 @@ export default function ReusableCarousel<T>({
     api.on("reInit", onSelect)
     api.on("select", onSelect)
 
-    // ✅ FIXED CLEANUP (returns only void)
     return () => {
       api.off("reInit", onSelect)
       api.off("select", onSelect)
     }
   }, [api, onSelect])
 
-  // Reinitialize embla when the slides (data) change so newly-loaded
-  // items are picked up. This fixes cases where data is loaded
-  // asynchronously after the carousel was initialized.
-  React.useEffect(() => {
-    if (!api) return
-    try {
-      api.reInit()
-      api.scrollTo(0)
-    } catch (e) {
-      // ignore if reInit isn't available yet
-    }
-  }, [api, data.length])
-
   const scrollTo = (index: number) => {
     api?.scrollTo(index)
   }
 
+  const items = data ?? [];
+
   return (
     <div className="w-full overflow-visible">
-      <Carousel
+      <CarouselRoot
         setApi={setApi}
         className="w-full max-w-full overflow-visible"
         opts={{ align: "start", loop: true }}
       >
         <CarouselContent className="-ml-4 md:-ml-6 overflow-visible">
-          {data.map((item, i) => (
+          {items.map((item, i) => (
             <CarouselItem key={i} className="pl-4 md:pl-6 basis-auto">
               {render(item)}
             </CarouselItem>
@@ -89,7 +75,7 @@ export default function ReusableCarousel<T>({
             "shadow-lg hover:shadow-xl hover:scale-110 transition-all"
           )}
         />
-      </Carousel>
+      </CarouselRoot>
 
       <CarouselIndicators count={count} current={current} onSelect={scrollTo} />
     </div>

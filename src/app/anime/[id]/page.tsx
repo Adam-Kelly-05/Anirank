@@ -1,6 +1,6 @@
 import { Anime } from "@/types/Anime";
 import { notFound } from "next/navigation";
-import FetchReviewsObject from "@/components/reviews";
+import ReviewsList from "@/components/ReviewsList";
 
 export const dynamicParams = false;
 
@@ -131,7 +131,7 @@ export default async function Page({
           </div>
           <br />
           <div>
-            <FetchReviewsObject id={anime.animeId} idType="anime" />
+            <ReviewsList id={anime.animeId} idType="anime" />
           </div>
         </div>
       );

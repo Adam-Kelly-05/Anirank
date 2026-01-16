@@ -1,5 +1,5 @@
 import React from "react";
-import ReviewsObject from "@/components/reviews";
+import ReviewsList from "@/components/ReviewsList";
 
 export default function AboutPage() {
   return (
@@ -22,7 +22,7 @@ export default function AboutPage() {
       {/* Reviews Section */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ReviewsObject />
+          <ReviewsList />
         </div>
       </section>
     </div>

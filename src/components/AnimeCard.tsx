@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,24 +8,11 @@ import type { Anime } from "@/types/Anime";
 
 export default function AnimeCard(item: Anime) {
   const router = useRouter();
-  const id = (item as { id?: number }).id ?? item.animeId;
-  const synopsis =
-    item.synopsis && item.synopsis.length > 180
-      ? `${item.synopsis.slice(0, 177)}...`
-      : item.synopsis;
-
-  const handleCardClick = () => {
-    router.push(`/anime/${id}`);
-  };
-
-  const stopPropagation = (event: React.MouseEvent) => {
-    event.stopPropagation();
-  };
 
   return (
     <div className="relative w-[280px] h-full overflow-visible transition-transform duration-200 will-change-transform hover:scale-105 hover:z-50 isolate">
       <Card
-        onClick={handleCardClick}
+        onClick={() => router.push(`/anime/${item.animeId}`)}
         className={cn(
           "relative h-full flex flex-col overflow-hidden cursor-pointer",
           "bg-card border-primary/20 shadow-lg hover:shadow-2xl hover:border-primary/40",
@@ -52,7 +41,7 @@ export default function AnimeCard(item: Anime) {
               Aired: {item.aired}
             </p>
             <p className="text-sm text-card-foreground/80 line-clamp-3">
-              {synopsis}
+              {item.synopsis?.length > 180 ? `${item.synopsis.slice(0, 177)}...` : item.synopsis ?? ""}
             </p>
             <Button
               asChild
@@ -63,7 +52,7 @@ export default function AnimeCard(item: Anime) {
               <a
                 href={item.trailer}
                 className="inline-flex items-center justify-center"
-                onClick={stopPropagation}
+                onClick={(event) => event.stopPropagation()}
               >
                 Watch Trailer
                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
