@@ -13,7 +13,7 @@ export async function generateStaticParams() {
     const payload = await res.json();
     const list = Array.isArray(payload)
       ? payload
-      : payload?.Items ?? payload?.data ?? [];
+      : (payload?.Items ?? payload?.data ?? []);
 
     const apiIds = list
       .map((item: { id?: number; animeId?: number }) =>
@@ -42,9 +42,11 @@ export default async function Page({
 
   if (res.ok) {
     const payload = await res.json();
-    const rawAnime = (Array.isArray(payload)
-      ? payload[0]
-      : (payload)?.Item ?? (payload)?.data ?? (payload)) as Anime | null;
+    const rawAnime = (
+      Array.isArray(payload)
+        ? payload[0]
+        : (payload?.Item ?? payload?.data ?? payload)
+    ) as Anime | null;
     if (rawAnime) {
       const anime = rawAnime;
       return (
@@ -112,9 +114,7 @@ export default async function Page({
                 </div>
               ) : null}
 
-              <p className="text-gray-100 leading-relaxed">
-                {anime.synopsis}
-              </p>
+              <p className="text-gray-100 leading-relaxed">{anime.synopsis}</p>
 
               {anime.trailer && (
                 <div>

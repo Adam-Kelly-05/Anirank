@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import AnimeGrid from "@/components/AnimeGrid";
@@ -6,7 +6,20 @@ import ContentCarousel from "@/components/AnimeCarousel";
 import AnimeCard from "@/components/AnimeCard";
 import { useAnimeList } from "@/components/UseAnimeList";
 
-const genres = ["Action","Fantasy","Comedy","Romance","Drama","Adventure","Supernatural","Sci-Fi","Suspense","Mystery","Horror","Sports"]
+const genres = [
+  "Action",
+  "Fantasy",
+  "Comedy",
+  "Romance",
+  "Drama",
+  "Adventure",
+  "Supernatural",
+  "Sci-Fi",
+  "Suspense",
+  "Mystery",
+  "Horror",
+  "Sports",
+];
 
 export default function Home() {
   const { animes } = useAnimeList({ limit: 15 });
@@ -14,43 +27,54 @@ export default function Home() {
   return (
     <>
       <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="blue-gradient py-16 border-b-4 border-blue-400" style={{background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #1d4ed8 100%)'}}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Logo */}
-          <div className="mb-8">
-            <img
-              src="/anirankLogo.png"
-              alt="Anirank Logo"
-              className="mx-auto w-24 h-24 md:w-32 md:h-32"
-            />
+        {/* Hero Section */}
+        <section
+          className="blue-gradient py-16 border-b-4 border-blue-400"
+          style={{
+            background:
+              "linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #1d4ed8 100%)",
+          }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* Logo */}
+            <div className="mb-8">
+              <img
+                src="/anirankLogo.png"
+                alt="Anirank Logo"
+                className="mx-auto w-24 h-24 md:w-32 md:h-32"
+              />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+              Welcome to Anirank
+            </h1>
+            <p className="text-lg md:text-xl text-blue-100 mb-8 font-medium">
+              Discover, rate, and review your favorite anime series
+            </p>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-            Welcome to Anirank
-          </h1>
-          <p className="text-lg md:text-xl text-blue-100 mb-8 font-medium">
-            Discover, rate, and review your favorite anime series
-          </p>
-        </div>
-      </section>
-          <div className="min-h-screen bg-background">
-            {/* Trending Anime Section */}
-            <section
-              className="py-12 bg-blue-950"
-              style={{ backgroundColor: "#172554" }}
-            >
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center mb-8">
-                  <div
+        </section>
+        <div className="min-h-screen bg-background">
+          {/* Trending Anime Section */}
+          <section
+            className="py-12 bg-blue-950"
+            style={{ backgroundColor: "#172554" }}
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center mb-8">
+                <div
                   className="h-8 w-1 bg-blue-500 rounded-full mr-4"
-                    style={{ backgroundColor: "#3b82f6" }}
-                  ></div>
-                  <h2 className="text-3xl font-bold text-white">Trending Anime</h2>
-                </div>
-                <ContentCarousel data={animes} render={(item) => <AnimeCard {...item} />} />
+                  style={{ backgroundColor: "#3b82f6" }}
+                ></div>
+                <h2 className="text-3xl font-bold text-white">
+                  Trending Anime
+                </h2>
               </div>
-            </section>
-          </div>
+              <ContentCarousel
+                data={animes}
+                render={(item) => <AnimeCard {...item} />}
+              />
+            </div>
+          </section>
+        </div>
 
         {genres.map((genre, index) => (
           <section

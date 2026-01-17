@@ -1,19 +1,29 @@
-'use client'
+"use client";
 
-import * as React from "react"
-import { ReviewCard } from "./ReviewCard"
-import { useReviews } from "./UseReviews"
+import * as React from "react";
+import { ReviewCard } from "./ReviewCard";
+import { useReviews } from "./UseReviews";
 
-export default function ReviewsList({ id, idType, onReviewsAmount, onAverageScore, }: { id?: string | number; idType?: string | number; onReviewsAmount?: (count: number) => void; onAverageScore?: (count: number) => void }) {
-  const { reviews, reviewCount, averageRating } = useReviews({ id, idType })
+export default function ReviewsList({
+  id,
+  idType,
+  onReviewsAmount,
+  onAverageScore,
+}: {
+  id?: string | number;
+  idType?: string | number;
+  onReviewsAmount?: (count: number) => void;
+  onAverageScore?: (count: number) => void;
+}) {
+  const { reviews, reviewCount, averageRating } = useReviews({ id, idType });
 
   React.useEffect(() => {
-    onReviewsAmount?.(reviewCount)
-  }, [onReviewsAmount, reviewCount])
+    onReviewsAmount?.(reviewCount);
+  }, [onReviewsAmount, reviewCount]);
 
   React.useEffect(() => {
-    onAverageScore?.(averageRating)
-  }, [onAverageScore, averageRating])
+    onAverageScore?.(averageRating);
+  }, [onAverageScore, averageRating]);
 
   return (
     <div className="space-y-4 p-4">
@@ -21,5 +31,5 @@ export default function ReviewsList({ id, idType, onReviewsAmount, onAverageScor
         <ReviewCard key={review.reviewId} review={review} />
       ))}
     </div>
-  )
+  );
 }

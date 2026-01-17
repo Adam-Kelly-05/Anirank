@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Carousel as CarouselRoot,
   CarouselContent,
@@ -8,43 +8,43 @@ import {
   CarouselPrevious,
   CarouselNext,
   type CarouselApi,
-} from "@/components/ui/carousel"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function ContentCarousel<T>({
   data,
-  render
+  render,
 }: {
-  data?: T[]
-  render: (item: T) => React.ReactNode
+  data?: T[];
+  render: (item: T) => React.ReactNode;
 }) {
-  const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(0)
-  const [count, setCount] = React.useState(0)
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = React.useState(0);
+  const [count, setCount] = React.useState(0);
 
   const onSelect = React.useCallback((api: CarouselApi) => {
-    if (!api) return
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
-  }, [])
+    if (!api) return;
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+  }, []);
 
   React.useEffect(() => {
-    if (!api) return
+    if (!api) return;
 
-    onSelect(api)
-    api.on("reInit", onSelect)
-    api.on("select", onSelect)
+    onSelect(api);
+    api.on("reInit", onSelect);
+    api.on("select", onSelect);
 
     return () => {
-      api.off("reInit", onSelect)
-      api.off("select", onSelect)
-    }
-  }, [api, onSelect])
+      api.off("reInit", onSelect);
+      api.off("select", onSelect);
+    };
+  }, [api, onSelect]);
 
   const scrollTo = (index: number) => {
-    api?.scrollTo(index)
-  }
+    api?.scrollTo(index);
+  };
 
   const items = data ?? [];
 
@@ -66,20 +66,20 @@ export default function ContentCarousel<T>({
         <CarouselPrevious
           className={cn(
             "left-4 bg-primary border-primary/50 hover:bg-primary/90 text-primary-foreground",
-            "shadow-lg hover:shadow-xl hover:scale-110 transition-all"
+            "shadow-lg hover:shadow-xl hover:scale-110 transition-all",
           )}
         />
         <CarouselNext
           className={cn(
             "right-4 bg-primary border-primary/50 hover:bg-primary/90 text-primary-foreground",
-            "shadow-lg hover:shadow-xl hover:scale-110 transition-all"
+            "shadow-lg hover:shadow-xl hover:scale-110 transition-all",
           )}
         />
       </CarouselRoot>
 
       <CarouselIndicators count={count} current={current} onSelect={scrollTo} />
     </div>
-  )
+  );
 }
 
 function CarouselIndicators({
@@ -87,11 +87,11 @@ function CarouselIndicators({
   current,
   onSelect,
 }: {
-  count: number
-  current: number
-  onSelect: (index: number) => void
+  count: number;
+  current: number;
+  onSelect: (index: number) => void;
 }) {
-  if (count <= 1) return null
+  if (count <= 1) return null;
 
   return (
     <div className="flex justify-center mt-6 space-x-2">
@@ -104,18 +104,16 @@ function CarouselIndicators({
           className={cn(
             "w-3 h-3 rounded-full p-0 transition-all duration-300",
             "hover:scale-110 focus-visible:ring-2 focus-visible:ring-primary",
-            current === i + 1 && "scale-125"
+            current === i + 1 && "scale-125",
           )}
           style={{
             backgroundColor: current === i + 1 ? "#3b82f6" : "#1a1f3a",
             borderColor: current === i + 1 ? "#3b82f6" : "#60a5fa",
             boxShadow:
-              current === i + 1
-                ? "0 0 15px rgba(59, 130, 246, 0.6)"
-                : "none",
+              current === i + 1 ? "0 0 15px rgba(59, 130, 246, 0.6)" : "none",
           }}
         />
       ))}
     </div>
-  )
+  );
 }

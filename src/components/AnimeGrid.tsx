@@ -3,7 +3,13 @@
 import AnimeCard from "./AnimeCard";
 import { useAnimeList } from "./UseAnimeList";
 
-export default function AnimeGrid({ genre, limit }: { genre?: string; limit?: number }) {
+export default function AnimeGrid({
+  genre,
+  limit,
+}: {
+  genre?: string;
+  limit?: number;
+}) {
   const { animes } = useAnimeList({ genre, limit });
   const items = animes ?? [];
 

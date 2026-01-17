@@ -1,10 +1,18 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Anime } from "@/types/Anime";
 
-export function SearchLogic({ children }: {children: (state: { query: string; animes: Anime[]; isLoading: boolean }) => React.ReactNode; }) {
+export function SearchLogic({
+  children,
+}: {
+  children: (state: {
+    query: string;
+    animes: Anime[];
+    isLoading: boolean;
+  }) => React.ReactNode;
+}) {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
   const [animes, setAnimes] = useState<Anime[]>([]);
@@ -28,7 +36,7 @@ export function SearchLogic({ children }: {children: (state: { query: string; an
         const result = await response.json();
         const data = Array.isArray(result)
           ? result
-          : result?.Items ?? result?.data ?? [];
+          : (result?.Items ?? result?.data ?? []);
         setAnimes(data);
       } catch (error) {
         setAnimes([]);

@@ -16,7 +16,7 @@ export default function AnimeCard(item: Anime) {
         className={cn(
           "relative h-full flex flex-col overflow-hidden cursor-pointer",
           "bg-card border-primary/20 shadow-lg hover:shadow-2xl hover:border-primary/40",
-          "ring-1 ring-transparent hover:ring-2 hover:ring-primary hover:ring-offset-2 hover:ring-offset-background"
+          "ring-1 ring-transparent hover:ring-2 hover:ring-primary hover:ring-offset-2 hover:ring-offset-background",
         )}
       >
         <CardContent className="p-0 h-full flex flex-col">
@@ -27,8 +27,7 @@ export default function AnimeCard(item: Anime) {
               className="w-full h-[380px] object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-primary/5 to-transparent" />
-            <div className="absolute top-2 right-2">
-            </div>
+            <div className="absolute top-2 right-2"></div>
           </div>
           <div className="p-4 space-y-2 flex-1 flex flex-col">
             <h3 className="font-bold text-lg text-foreground leading-tight line-clamp-2 hover:text-primary transition-colors">
@@ -37,11 +36,11 @@ export default function AnimeCard(item: Anime) {
             <p className="text-sm text-muted-foreground font-medium line-clamp-1">
               {item.title_japanese}
             </p>
-            <p className="text-sm text-muted-foreground">
-              Aired: {item.aired}
-            </p>
+            <p className="text-sm text-muted-foreground">Aired: {item.aired}</p>
             <p className="text-sm text-card-foreground/80 line-clamp-3">
-              {item.synopsis?.length > 180 ? `${item.synopsis.slice(0, 177)}...` : item.synopsis ?? ""}
+              {item.synopsis?.length > 180
+                ? `${item.synopsis.slice(0, 177)}...`
+                : (item.synopsis ?? "")}
             </p>
             <Button
               asChild
@@ -55,8 +54,18 @@ export default function AnimeCard(item: Anime) {
                 onClick={(event) => event.stopPropagation()}
               >
                 Watch Trailer
-                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1" />
+                <svg
+                  className="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1"
+                  />
                 </svg>
               </a>
             </Button>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { Suspense } from "react";
 import SearchBar from "@/components/SearchBar";
@@ -45,10 +45,10 @@ function SearchPageContent() {
                 {isLoading
                   ? "Searching..."
                   : query
-                  ? `Showing ${animes.length} result${
-                      animes.length !== 1 ? "s" : ""
-                    } for ${query}`
-                  : `Showing ${animes.length} anime`}
+                    ? `Showing ${animes.length} result${
+                        animes.length !== 1 ? "s" : ""
+                      } for ${query}`
+                    : `Showing ${animes.length} anime`}
               </p>
 
               {!isLoading && animes.length === 0 && (
