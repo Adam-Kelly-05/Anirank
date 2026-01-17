@@ -3,6 +3,7 @@
 import { Card, CardContent } from "./ui/card";
 import { Review } from "@/types/Review";
 import { useAnimeById } from "./UseAnime";
+import Link from "next/link";
 
 export function ReviewCard({ review }: { review: Review }) {
   const anime = useAnimeById(review.animeId);
@@ -12,25 +13,29 @@ export function ReviewCard({ review }: { review: Review }) {
       <CardContent className="p-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-shrink-0">
-            <div className="w-24 h-32 rounded overflow-hidden border border-primary/30 shadow-lg">
-              <img
-                src={anime?.image}
-                alt={
-                  anime?.title_english ||
-                  anime?.title_japanese ||
-                  review.animeName
-                }
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
+            <Link href={`/anime/${review.animeId}`} className="block">
+              <div className="w-24 h-32 rounded overflow-hidden border border-primary/30 shadow-lg">
+                <img
+                  src={anime?.image}
+                  alt={
+                    anime?.title_english ||
+                    anime?.title_japanese ||
+                    review.animeName
+                  }
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </Link>
           </div>
 
           <div className="flex-1">
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">
-                  {review.animeName}
+                  <Link href={`/anime/${review.animeId}`} className="hover:underline">
+                    {review.animeName}
+                  </Link>
                 </h3>
                 <p className="text-gray-500 text-sm">
                   Reviewed on {review.ratedDate}
