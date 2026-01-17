@@ -160,7 +160,11 @@ export default function RootLayout({
 
                 {/* Mobile Profile */}
                 <div className="border-t border-blue-500 pt-3 mt-3">
-                  <button className="flex items-center w-full px-3 py-2 text-base font-medium text-white hover:bg-blue-700 rounded-md transition-colors">
+                  <Link
+                    href="/profile"
+                    className="flex items-center w-full px-3 py-2 text-base font-medium text-white hover:bg-blue-700 rounded-md transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     <div className="flex items-center justify-center w-8 h-8 bg-blue-700 rounded-full mr-3">
                       <svg
                         className="w-5 h-5 text-white"
@@ -175,7 +179,7 @@ export default function RootLayout({
                       </svg>
                     </div>
                     Profile
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
