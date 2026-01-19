@@ -38,7 +38,7 @@ export function SearchLogic({
           ? result
           : (result?.Items ?? result?.data ?? []);
         setAnimes(data);
-      } catch (error) {
+      } catch {
         setAnimes([]);
       } finally {
         setIsLoading(false);

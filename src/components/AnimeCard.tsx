@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -21,9 +22,11 @@ export default function AnimeCard(item: Anime) {
       >
         <CardContent className="p-0 h-full flex flex-col">
           <div className="relative">
-            <img
+            <Image
               src={item.image}
-              alt={item.title_english}
+              alt={item.title_english || item.title_japanese || "Anime image"}
+              width={280}
+              height={380}
               className="w-full h-[380px] object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-primary/5 to-transparent" />

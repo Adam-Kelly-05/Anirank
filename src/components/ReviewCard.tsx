@@ -4,6 +4,7 @@ import { Card, CardContent } from "./ui/card";
 import { Review } from "@/types/Review";
 import { useAnimeById } from "./UseAnime";
 import Link from "next/link";
+import Image from "next/image";
 
 export function ReviewCard({ review }: { review: Review }) {
   const anime = useAnimeById(review.animeId);
@@ -15,16 +16,22 @@ export function ReviewCard({ review }: { review: Review }) {
           <div className="flex-shrink-0">
             <Link href={`/anime/${review.animeId}`} className="block">
               <div className="w-24 h-32 rounded overflow-hidden border border-primary/30 shadow-lg">
-                <img
-                  src={anime?.image}
-                  alt={
-                    anime?.title_english ||
-                    anime?.title_japanese ||
-                    review.animeName
-                  }
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                {anime?.image ? (
+                  <Image
+                    src={anime.image}
+                    alt={
+                      anime?.title_english ||
+                      anime?.title_japanese ||
+                      review.animeName
+                    }
+                    width={96}
+                    height={128}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted" />
+                )}
               </div>
             </Link>
           </div>

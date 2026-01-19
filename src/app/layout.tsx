@@ -3,7 +3,6 @@
 "use client";
 
 import React, { useState } from "react";
-import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

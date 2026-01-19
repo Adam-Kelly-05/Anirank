@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/UseUser";
@@ -21,9 +22,11 @@ export default function ProfilePage() {
               {/* Avatar */}
               {fetchedUser?.ProfilePicture ? (
                 <div className="flex-shrink-0">
-                  <img
+                  <Image
                     src={fetchedUser.ProfilePicture}
                     alt={`${fetchedUser.Username}'s avatar`}
+                    width={128}
+                    height={128}
                     className="w-32 h-32 rounded-full object-cover shadow-2xl"
                   />
                 </div>

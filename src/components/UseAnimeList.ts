@@ -35,7 +35,7 @@ export function useAnimeList({
           : (result?.Items ?? result?.data ?? []);
 
         setAnime(data);
-      } catch (error) {
+      } catch {
         setAnime([]);
       }
     }
