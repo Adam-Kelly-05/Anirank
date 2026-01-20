@@ -84,12 +84,10 @@ export default function RootLayout({
                       className="w-5 h-5 text-white"
                       fill="currentColor"
                       viewBox="0 0 24 24"
+                      aria-hidden="true"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
-                        clipRule="evenodd"
-                      />
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M4 19c0-3.5 4-5.5 8-5.5s8 2 8 5.5v1H4z" />
                     </svg>
                   </Link>
                 </div>
@@ -110,10 +108,9 @@ export default function RootLayout({
                     stroke="currentColor"
                   >
                     <path
+                      d="M3 6h18M3 12h18M3 18h18"
+                      strokeWidth="2"
                       strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
                     />
                   </svg>
                 </Button>
@@ -170,12 +167,10 @@ export default function RootLayout({
                         className="w-5 h-5 text-white"
                         fill="currentColor"
                         viewBox="0 0 24 24"
+                        aria-hidden="true"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
-                          clipRule="evenodd"
-                        />
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 19c0-3.5 4-5.5 8-5.5s8 2 8 5.5v1H4z" />
                       </svg>
                     </div>
                     Profile

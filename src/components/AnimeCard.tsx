@@ -53,20 +53,7 @@ export default function AnimeCard(item: Anime) {
                 className="inline-flex items-center justify-center"
                 onClick={(event) => event.stopPropagation()}
               >
-                Watch Trailer
-                <svg
-                  className="w-4 h-4 ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1"
-                  />
-                </svg>
+                Watch Trailer 🧲
               </a>
             </Button>
           </div>
