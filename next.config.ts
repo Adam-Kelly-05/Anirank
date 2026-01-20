@@ -6,12 +6,17 @@ const nextConfig: NextConfig = {
 
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.myanimelist.net",
+        pathname: "/images/**",
+      },
+    ],
   },
 
-  experimental: {
-    turbo: {
-      root: __dirname,
-    },
+  turbopack: {
+    root: __dirname
   },
 
   outputFileTracingRoot: __dirname,

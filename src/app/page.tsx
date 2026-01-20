@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import AnimeGrid from "@/components/AnimeGrid";
 import ContentCarousel from "@/components/AnimeCarousel";
 import AnimeCard from "@/components/AnimeCard";
@@ -38,10 +39,13 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Logo */}
             <div className="mb-8">
-              <img
+              <Image
                 src="/anirankLogo.png"
                 alt="Anirank Logo"
+                width={128}
+                height={128}
                 className="mx-auto w-24 h-24 md:w-32 md:h-32"
+                priority
               />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
