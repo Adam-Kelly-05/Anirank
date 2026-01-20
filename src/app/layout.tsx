@@ -7,6 +7,7 @@ import "./globals.css";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SearchBar from "@/components/SearchBar";
+import Providers from "./providers";
 
 export default function RootLayout({
   children,
@@ -17,11 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-background text-foreground min-h-screen">
-        {/* Navigation Bar */}
-        <nav
-          className="bg-blue-600 text-white shadow-lg border-b-2 border-blue-500"
-          style={{ backgroundColor: "#3b82f6" }}
-        >
+        <Providers>
+          {/* Navigation Bar */}
+          <nav
+            className="bg-blue-600 text-white shadow-lg border-b-2 border-blue-500"
+            style={{ backgroundColor: "#3b82f6" }}
+          >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               {/* Logo */}
@@ -260,6 +262,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        </Providers>
       </body>
     </html>
   );

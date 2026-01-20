@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/UseUser";
 import ReviewsList from "@/components/ReviewsList";
+import OidcAuthPanel from "@/components/OidcAuthPanel";
 
 export default function ProfilePage() {
   const fetchedUser = useUser(1);
@@ -63,8 +64,11 @@ export default function ProfilePage() {
                     className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500"
                     onClick={() => console.log("Logout clicked")}
                   >
-                    ➜] ㅤ ㅤ ㅤ Logout
+                    Logout
                   </Button>
+                  <div className="mt-4">
+                    <OidcAuthPanel />
+                  </div>
                 </div>
               </div>
             </div>
@@ -106,3 +110,4 @@ export default function ProfilePage() {
     </main>
   );
 }
+
