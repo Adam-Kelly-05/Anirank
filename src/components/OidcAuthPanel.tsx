@@ -26,19 +26,19 @@ export default function OidcAuthPanel() {
     return <div>Encountering error... {auth.error.message}</div>;
   }
 
-  if (auth.isAuthenticated) {
-    return (
-      <div className="space-y-2 text-sm text-gray-300">
-        <pre>Email: {auth.user?.profile.email}</pre>
-        <pre>Username: {appUser?.Username ?? auth.user?.profile?.preferred_username}</pre>
-        <pre>User ID: {appUser?.userId ?? auth.user?.profile?.sub}</pre>
-        <pre>Bio: {appUser?.Bio ?? "N/A"}</pre>
-        <pre>Date Joined: {appUser?.DateJoin ?? "N/A"}</pre>
-        <pre>Profile Picture: {appUser?.ProfilePicture ?? "N/A"}</pre>
-        <button onClick={() => auth.removeUser()}>Sign out</button>
-      </div>
-    );
-  }
+  // if (auth.isAuthenticated) {
+  //   return (
+  //     <div className="space-y-2 text-sm text-gray-300">
+  //       <pre>Email: {auth.user?.profile.email}</pre>
+  //       <pre>Username: {appUser?.Username ?? auth.user?.profile?.preferred_username}</pre>
+  //       <pre>User ID: {appUser?.userId ?? auth.user?.profile?.sub}</pre>
+  //       <pre>Bio: {appUser?.Bio ?? "N/A"}</pre>
+  //       <pre>Date Joined: {appUser?.DateJoin ?? "N/A"}</pre>
+  //       <pre>Profile Picture: {appUser?.ProfilePicture ?? "N/A"}</pre>
+  //       <button onClick={() => auth.removeUser()}>Sign out</button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-wrap gap-2">
