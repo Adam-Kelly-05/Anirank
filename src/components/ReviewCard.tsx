@@ -26,7 +26,8 @@ export function ReviewCard({ review }: { review: Review }) {
                     }
                     width={96}
                     height={128}
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto object-cover"
+                    style={{ width: "100%", height: "auto" }}
                     loading="lazy"
                   />
                 ) : (
@@ -40,7 +41,10 @@ export function ReviewCard({ review }: { review: Review }) {
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">
-                  <Link href={`/anime/${review.animeId}`} className="hover:underline">
+                  <Link
+                    href={`/anime/${review.animeId}`}
+                    className="hover:underline"
+                  >
                     {review.animeName}
                   </Link>
                 </h3>

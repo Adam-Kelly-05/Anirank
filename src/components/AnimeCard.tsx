@@ -27,7 +27,8 @@ export default function AnimeCard(item: Anime) {
               alt={item.title_english || item.title_japanese || "Anime image"}
               width={280}
               height={380}
-              className="w-full h-[380px] object-cover"
+              className="w-full h-auto object-cover"
+              style={{ width: "100%", height: "auto" }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-primary/5 to-transparent" />
             <div className="absolute top-2 right-2"></div>
@@ -57,7 +58,7 @@ export default function AnimeCard(item: Anime) {
                 onClick={(event) => event.stopPropagation()}
               >
                 Watch Trailer 🧲
-                </a>
+              </a>
             </Button>
           </div>
         </CardContent>
