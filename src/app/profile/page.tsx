@@ -8,7 +8,7 @@ import { useUser } from "@/components/UseUser";
 import ReviewsList from "@/components/ReviewsList";
 
 export default function ProfilePage() {
-  const fetchedUser = useUser(1);
+  const fetchedUser = useUser("32d5a424-50d1-70c0-1029-0c47db40e02d");
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
 
