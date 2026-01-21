@@ -56,7 +56,7 @@ export default function Home() {
             </p>
           </div>
         </section>
-        <div className="min-h-screen bg-background">
+        <div className="bg-background">
           {/* Trending Anime Section */}
           <section
             className="py-12 bg-blue-950"
