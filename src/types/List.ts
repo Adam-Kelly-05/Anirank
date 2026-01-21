@@ -1,14 +1,10 @@
 export interface List {
   listId: number;
-  userId: number;
+  userId: string;
   name: string;
   description?: string;
-  items: ListItem[];
+  items: number[];
   dateCreated: string;
-}
-
-export interface ListItem {
-  animeId: number;
 }
 
 // Example Return from DB (user 10's lists):
