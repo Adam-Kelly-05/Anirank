@@ -8,11 +8,24 @@ export function useUser(userId?: string | number) {
 
   React.useEffect(() => {
     async function fetchUser() {
-      const response = await fetch(
-        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userId}`,
-      );
-      const raw = await response.json();
-      setUser(raw?.data ?? raw);
+      if (!userId) {
+        setUser(undefined);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userId}`,
+        );
+        if (!response.ok) {
+          setUser(undefined);
+          return;
+        }
+        const raw = await response.json();
+        setUser(raw?.data ?? raw);
+      } catch {
+        setUser(undefined);
+      }
     }
     fetchUser();
   }, [userId]);

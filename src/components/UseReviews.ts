@@ -14,6 +14,11 @@ export function useReviews({
 
   React.useEffect(() => {
     async function fetchReviews() {
+      if ((idType === "user" || idType === "anime") && !id) {
+        setReviews([]);
+        return;
+      }
+
       let url =
         "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/reviews";
       if (idType === "user") {
@@ -22,10 +27,18 @@ export function useReviews({
         url += `/animeId/${id}`;
       }
 
-      const response = await fetch(url);
-      const raw = await response.json();
-      const data = Array.isArray(raw) ? raw : (raw?.Items ?? raw?.data ?? []);
-      setReviews(data);
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          setReviews([]);
+          return;
+        }
+        const raw = await response.json();
+        const data = Array.isArray(raw) ? raw : (raw?.Items ?? raw?.data ?? []);
+        setReviews(data);
+      } catch {
+        setReviews([]);
+      }
     }
 
     fetchReviews();

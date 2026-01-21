@@ -9,10 +9,19 @@ export function useList({ userId }: { userId?: number }) {
 
   React.useEffect(() => {
     async function fetchLists() {
+      if (!userId) {
+        setLists([]);
+        return;
+      }
+
       try {
         const response = await fetch(
           `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${userId}`,
         );
+        if (!response.ok) {
+          setLists([]);
+          return;
+        }
         const result = await response.json();
 
         const data = Array.isArray(result)
