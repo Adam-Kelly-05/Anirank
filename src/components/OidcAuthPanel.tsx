@@ -6,21 +6,7 @@ import { useUser } from "./UseUser";
 
 export default function OidcAuthPanel() {
   const auth = useAuth();
-  const appUser = useUser(auth.user?.id_token as string);
-
-  console.log("ADAM auth/user snapshot", {
-    status:
-      auth.activeNavigator ??
-      (auth.isAuthenticated ? "authenticated" : "unauthenticated"),
-    oidcProfile: auth.user?.profile ?? null,
-    tokens: {
-      id: auth.user?.id_token ?? null,
-      access: auth.user?.access_token ?? null,
-      refresh: auth.user?.refresh_token ?? null,
-    },
-    appUser: appUser ?? null,
-    error: auth.error?.message ?? null,
-  });
+  const appUser = useUser(auth.user?.profile?.sub as string);
 
   const signOutRedirect = () => {
     const clientId = "2a56v5hnl5nn65tho958c2rcj3";
@@ -49,11 +35,6 @@ export default function OidcAuthPanel() {
         <pre>Bio: {appUser?.Bio ?? "N/A"}</pre>
         <pre>Date Joined: {appUser?.DateJoin ?? "N/A"}</pre>
         <pre>Profile Picture: {appUser?.ProfilePicture ?? "N/A"}</pre>
-        <pre>ID Token: {auth.user?.id_token}</pre>
-        <pre>Access Token: {auth.user?.access_token}</pre>
-        <pre>Refresh Token: {auth.user?.refresh_token}</pre>
-        <pre>OIDC Profile: {JSON.stringify(auth.user?.profile, null, 2)}</pre>
-        <pre>App User: {JSON.stringify(appUser ?? {}, null, 2)}</pre>
         <button onClick={() => auth.removeUser()}>Sign out</button>
       </div>
     );
