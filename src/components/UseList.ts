@@ -29,7 +29,7 @@ export function useList({ userId }: { userId?: number }) {
           : (result?.Items ?? result?.data ?? []);
 
         setLists(data);
-      } catch (error) {
+      } catch {
         setLists([]);
       }
     }
