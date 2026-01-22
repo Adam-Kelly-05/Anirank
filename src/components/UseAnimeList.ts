@@ -15,16 +15,17 @@ export function useAnimeList({
 
   React.useEffect(() => {
     async function fetchAnime() {
-      let url =
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime";
+      const url = new URL(
+        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime"
+      );
       if (genre) {
-        url += `genre/${genre}`;
+        url.searchParams.set("genre", genre);
       }
       if (limit) {
-        url += `?limit=${limit}`;
+        url.searchParams.set("limit", String(limit));
       }
 
-      const response = await fetch(url);
+      const response = await fetch(url.toString());
       const raw = await response.json();
       const data = Array.isArray(raw) ? raw : (raw?.Items ?? raw?.data ?? []);
       setAnime(data);
