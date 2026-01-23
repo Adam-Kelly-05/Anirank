@@ -9,7 +9,7 @@ export async function generateStaticParams() {
   try {
     const res = await fetch(
       "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime",
-      { cache: "force-cache" },
+      { cache: "no-store" },
     );
     const payload = await res.json();
     const list = Array.isArray(payload)
