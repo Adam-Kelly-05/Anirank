@@ -21,14 +21,14 @@ export default function AnimeCard(item: Anime) {
         )}
       >
         <CardContent className="p-0 h-full flex flex-col">
-          <div className="relative">
+          <div className="relative w-full aspect-[7/10]">
             <Image
               src={item.image}
               alt={item.title_english || item.title_japanese || "Anime image"}
-              width={280}
-              height={380}
-              className="w-full h-auto object-cover"
-              style={{ width: "100%", height: "auto" }}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 280px"
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-primary/5 to-transparent" />
             <div className="absolute top-2 right-2"></div>
