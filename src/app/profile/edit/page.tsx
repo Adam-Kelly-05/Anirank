@@ -15,6 +15,7 @@ export default function EditAccountPage() {
 
   const [form, setForm] = React.useState({
     username: "",
+    bio: "",
   });
   const [saving, setSaving] = React.useState(false);
   const [saveError, setSaveError] = React.useState("");
@@ -24,11 +25,12 @@ export default function EditAccountPage() {
     if (fetchedUser) {
       setForm({
         username: fetchedUser.Username || "",
+        bio: fetchedUser.Bio || "",
       });
     }
   }, [fetchedUser]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -48,6 +50,7 @@ export default function EditAccountPage() {
           },
           body: JSON.stringify({
             Username: form.username,
+            Bio: form.bio,
           }),
         }
       );
@@ -120,6 +123,21 @@ export default function EditAccountPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
                   required
+                />
+              </div>
+
+              {/* Bio Field */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Bio
+                </label>
+                <textarea
+                  name="bio"
+                  value={form.bio}
+                  onChange={handleChange}
+                  rows={4}
+                  className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20 resize-none"
+                  placeholder="Tell us about yourself..."
                 />
               </div>
 
