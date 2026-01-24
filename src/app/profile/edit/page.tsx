@@ -16,6 +16,7 @@ export default function EditAccountPage() {
   const [form, setForm] = React.useState({
     username: "",
     bio: "",
+    profilePicture: "",
   });
   const [saving, setSaving] = React.useState(false);
   const [saveError, setSaveError] = React.useState("");
@@ -26,6 +27,7 @@ export default function EditAccountPage() {
       setForm({
         username: fetchedUser.Username || "",
         bio: fetchedUser.Bio || "",
+        profilePicture: fetchedUser.ProfilePicture || "",
       });
     }
   }, [fetchedUser]);
@@ -51,6 +53,7 @@ export default function EditAccountPage() {
           body: JSON.stringify({
             Username: form.username,
             Bio: form.bio,
+            ProfilePicture: form.profilePicture || null,
           }),
         }
       );
@@ -111,6 +114,24 @@ export default function EditAccountPage() {
         <Card className="bg-card border-primary/20">
           <CardContent className="p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Profile Picture Preview */}
+              <div className="flex flex-col items-center gap-4 pb-6 border-b border-primary/20">
+                {form.profilePicture ? (
+                  <Image
+                    src={form.profilePicture}
+                    alt="Profile Preview"
+                    width={128}
+                    height={128}
+                    className="w-32 h-32 rounded-full object-cover shadow-2xl"
+                  />
+                ) : (
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-5xl font-bold shadow-2xl">
+                    {form.username?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <p className="text-sm text-gray-400">Profile Picture Preview</p>
+              </div>
+
               {/* Username Field */}
               <div>
                 <label className="block text-white font-semibold mb-2">
@@ -139,6 +160,24 @@ export default function EditAccountPage() {
                   className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20 resize-none"
                   placeholder="Tell us about yourself..."
                 />
+              </div>
+
+              {/* Profile Picture URL Field */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Profile Picture URL
+                </label>
+                <input
+                  type="url"
+                  name="profilePicture"
+                  value={form.profilePicture}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                  placeholder="https://example.com/image.jpg"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Leave blank to use default avatar
+                </p>
               </div>
 
               {/* Error/Success Messages */}
