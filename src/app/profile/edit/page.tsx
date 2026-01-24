@@ -1,0 +1,62 @@
+"use client";
+
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { useUser } from "@/components/UseUser";
+import { useAuth } from "react-oidc-context";
+
+export default function EditAccountPage() {
+  const router = useRouter();
+  const auth = useAuth();
+  const fetchedUser = useUser(auth.user?.profile?.sub as string);
+
+  if (!auth.isAuthenticated) {
+    return (
+      <main className="min-h-screen flex items-center justify-center py-12 px-4">
+        <Card className="bg-card border-primary/20">
+          <CardContent className="p-8 text-center">
+            <p className="text-gray-400 mb-4">Please log in to edit your account</p>
+            <Button onClick={() => router.push('/profile')}>Go to Profile</Button>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
+
+  if (!fetchedUser) {
+    return (
+      <main className="min-h-screen flex items-center justify-center py-12 px-4">
+        <div className="text-white text-xl">Loading...</div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <Button
+            variant="outline"
+            onClick={() => router.push('/profile')}
+            className="mb-4 border-primary/30 text-gray-400 hover:text-white hover:border-primary/50"
+          >
+            ← Back to Profile
+          </Button>
+          <h1 className="text-4xl font-bold text-white">Edit Account</h1>
+          <p className="text-gray-400 mt-2">Update your profile information</p>
+        </div>
+
+        {/* Edit Form */}
+        <Card className="bg-card border-primary/20">
+          <CardContent className="p-8">
+            <p className="text-gray-400">Form fields coming soon...</p>
+          </CardContent>
+        </Card>
+      </div>
+    </main>
+  );
+}
