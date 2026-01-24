@@ -13,6 +13,22 @@ export default function EditAccountPage() {
   const auth = useAuth();
   const fetchedUser = useUser(auth.user?.profile?.sub as string);
 
+  const [form, setForm] = React.useState({
+    username: "",
+  });
+
+  React.useEffect(() => {
+    if (fetchedUser) {
+      setForm({
+        username: fetchedUser.Username || "",
+      });
+    }
+  }, [fetchedUser]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   if (!auth.isAuthenticated) {
     return (
       <main className="min-h-screen flex items-center justify-center py-12 px-4">
@@ -53,7 +69,22 @@ export default function EditAccountPage() {
         {/* Edit Form */}
         <Card className="bg-card border-primary/20">
           <CardContent className="p-8">
-            <p className="text-gray-400">Form fields coming soon...</p>
+            <form className="space-y-6">
+              {/* Username Field */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  value={form.username}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                  required
+                />
+              </div>
+            </form>
           </CardContent>
         </Card>
       </div>
