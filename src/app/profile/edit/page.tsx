@@ -16,6 +16,9 @@ export default function EditAccountPage() {
   const [form, setForm] = React.useState({
     username: "",
   });
+  const [saving, setSaving] = React.useState(false);
+  const [saveError, setSaveError] = React.useState("");
+  const [saveSuccess, setSaveSuccess] = React.useState(false);
 
   React.useEffect(() => {
     if (fetchedUser) {
@@ -27,6 +30,41 @@ export default function EditAccountPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setSaveError("");
+    setSaveSuccess(false);
+
+    try {
+      const response = await fetch(
+        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${auth.user?.profile?.sub}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Username: form.username,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update account");
+      }
+
+      setSaveSuccess(true);
+      setTimeout(() => {
+        router.push("/profile");
+      }, 1500);
+    } catch (err: any) {
+      setSaveError(err.message || "Failed to update account.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (!auth.isAuthenticated) {
@@ -69,7 +107,7 @@ export default function EditAccountPage() {
         {/* Edit Form */}
         <Card className="bg-card border-primary/20">
           <CardContent className="p-8">
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Username Field */}
               <div>
                 <label className="block text-white font-semibold mb-2">
@@ -83,6 +121,38 @@ export default function EditAccountPage() {
                   className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
                   required
                 />
+              </div>
+
+              {/* Error/Success Messages */}
+              {saveError && (
+                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400">
+                  {saveError}
+                </div>
+              )}
+              {saveSuccess && (
+                <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400">
+                  Account updated successfully! Redirecting...
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-4 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.push("/profile")}
+                  disabled={saving}
+                  className="border-primary/30 text-gray-400 hover:text-white hover:border-primary/50"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={saving}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                >
+                  {saving ? "Saving..." : "Save Changes"}
+                </Button>
               </div>
             </form>
           </CardContent>
