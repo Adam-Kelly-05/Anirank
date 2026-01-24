@@ -59,8 +59,15 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/*Logout Button*/}
-                <div className="mt-6">
+                {/*Action Buttons*/}
+                <div className="mt-6 flex flex-wrap gap-3 justify-center">
+                  <Button
+                    variant="outline"
+                    className="border-primary/30 text-gray-300 hover:bg-primary/10 hover:text-white hover:border-primary/50"
+                    onClick={() => window.location.href = '/profile/edit'}
+                  >
+                    Edit Profile
+                  </Button>
                   <Button
                     variant="outline"
                     className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500"
@@ -68,7 +75,7 @@ export default function ProfilePage() {
                   >
                     Logout
                   </Button>
-                  <div className="mt-4">
+                  <div className="mt-4 w-full">
                     <OidcAuthPanel />
                   </div>
                 </div>
