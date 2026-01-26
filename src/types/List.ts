@@ -1,38 +1,36 @@
 export interface List {
   listId: number;
-  userId: number;
+  userId: string;
   name: string;
   description?: string;
-  items: ListItem[];
+  items: number[];
   dateCreated: string;
-}
-
-export interface ListItem {
-  animeId: number;
 }
 
 // Example Return from DB (user 10's lists):
 // {
-//   listId: 1,
-//   userId: 10,
-//   name: "Top Shonen",
-//   description: "My must-watch action picks.",
-//   items: [
-//     { animeId: 3 },
-//     { animeId: 11 },
-//     { animeId: 6 },
-//   ],
-//   dateCreated: "January 20, 2026",
-// },
-// {
-//   listId: 2,
-//   userId: 10,
-//   name: "Cozy Slice of Life",
-//   description: "Comfort shows for easy evenings.",
-//   items: [
-//     { animeId: 4 },
-//     { animeId: 9 },
-//     { animeId: 6 },
-//   ],
-//   dateCreated: "December 2, 2025",
+//   {
+//     "listId": 2,
+//     "items": [
+//       339,
+//       39195,
+//       57334
+//     ],
+//     "userId": "32d5a424-50d1-70c0-1029-0c47db40e02d",
+//     "dateCreated": "January 21, 2026",
+//     "name": "Watched Together",
+//     "description": "This is all the anime I watched with someone else"
+//   },
+//   {
+//     "listId": 1,
+//     "items": [
+//       1535,
+//       22319,
+//       38691
+//     ],
+//     "userId": "32d5a424-50d1-70c0-1029-0c47db40e02d",
+//     "description": "This is all the anime I first watched years ago",
+//     "name": "First Watched Anime",
+//     "dateCreated": "January 20, 2026"
+//   }
 // }
