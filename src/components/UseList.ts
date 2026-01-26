@@ -38,11 +38,6 @@ export function useList({
       } catch {
         setLists([]);
       }
-
-      const response = await fetch(url);
-      const raw = await response.json();
-      const data = Array.isArray(raw) ? raw : (raw?.Items ?? raw?.data ?? []);
-      setLists(data);
     }
     fetchLists();
   }, [id, idType]);
