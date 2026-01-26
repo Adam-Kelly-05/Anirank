@@ -15,7 +15,7 @@ export function useList({
 
   React.useEffect(() => {
     async function fetchLists() {
-      if (!userId) {
+      if (!id) {
         setLists([]);
         return;
       }
