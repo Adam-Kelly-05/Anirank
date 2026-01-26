@@ -8,16 +8,25 @@ export function useAnimeById(animeId: number) {
 
   React.useEffect(() => {
     async function fetchAnime() {
-      const response = await fetch(
-        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/${animeId}`,
-      );
-      if (!response.ok) {
+      if (!animeId) {
         setAnime(undefined);
         return;
       }
-      const raw = await response.json();
-      const data = raw?.data ?? raw;
-      setAnime(data || undefined);
+
+      try {
+        const response = await fetch(
+          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/${animeId}`,
+        );
+        if (!response.ok) {
+          setAnime(undefined);
+          return;
+        }
+        const raw = await response.json();
+        const data = raw?.data ?? raw;
+        setAnime(data || undefined);
+      } catch {
+        setAnime(undefined);
+      }
     }
     fetchAnime();
   }, [animeId]);

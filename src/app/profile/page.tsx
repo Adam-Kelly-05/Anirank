@@ -5,10 +5,13 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/UseUser";
+import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
+import OidcAuthPanel from "@/components/OidcAuthPanel";
 
 export default function ProfilePage() {
-  const fetchedUser = useUser("32d5a424-50d1-70c0-1029-0c47db40e02d");
+  const auth = useAuth();
+  const fetchedUser = useUser(auth.user?.profile?.sub as string);
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
 
@@ -63,8 +66,11 @@ export default function ProfilePage() {
                     className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500"
                     onClick={() => console.log("Logout clicked")}
                   >
-                    ➜] ㅤ ㅤ ㅤ Logout
+                    Logout
                   </Button>
+                  <div className="mt-4">
+                    <OidcAuthPanel />
+                  </div>
                 </div>
               </div>
             </div>

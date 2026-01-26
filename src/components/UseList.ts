@@ -15,12 +15,28 @@ export function useList({
 
   React.useEffect(() => {
     async function fetchLists() {
-      let url =
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/";
-      if (idType === "user") {
-        url += `user/${id}`;
-      } else if (idType === "list") {
-        url += `${id}`;
+      if (!userId) {
+        setLists([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${userId}`,
+        );
+        if (!response.ok) {
+          setLists([]);
+          return;
+        }
+        const result = await response.json();
+
+        const data = Array.isArray(result)
+          ? result
+          : (result?.Items ?? result?.data ?? []);
+
+        setLists(data);
+      } catch {
+        setLists([]);
       }
 
       const response = await fetch(url);
