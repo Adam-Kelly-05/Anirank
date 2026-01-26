@@ -2,6 +2,8 @@ import { Anime } from "@/types/Anime";
 import { notFound } from "next/navigation";
 import ReviewsList from "@/components/ReviewsList";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const dynamicParams = false;
 
@@ -120,8 +122,8 @@ export default async function Page({
 
               <p className="text-gray-100 leading-relaxed">{anime.synopsis}</p>
 
-              {anime.trailer && (
-                <div>
+              <div className="flex flex-wrap gap-4">
+                {anime.trailer && (
                   <a
                     href={anime.trailer}
                     className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground shadow-lg hover:shadow-xl transition"
@@ -129,8 +131,20 @@ export default async function Page({
                     Watch Trailer
                     <span aria-hidden>▶</span>
                   </a>
-                </div>
-              )}
+                )}
+                
+                <Link href={`/anime/${anime.animeId}/add-review`}>
+                  <Button variant="outline" size="default">
+                    Add Review
+                  </Button>
+                </Link>
+                
+                <Link href={`/reviews?animeId=${anime.animeId}`}>
+                  <Button variant="outline" size="default">
+                    View Reviews
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
           <br />
