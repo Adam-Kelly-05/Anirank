@@ -22,7 +22,7 @@ export function useList({
 
       try {
         const response = await fetch(
-          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${userId}`,
+          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${id}`,
         );
         if (!response.ok) {
           setLists([]);
