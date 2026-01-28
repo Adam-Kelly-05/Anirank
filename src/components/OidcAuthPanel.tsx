@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useAuth } from "react-oidc-context";
-import { useUser } from "./UseUser";
+import { useGetUser } from "./UseUserGet";
 
 export default function OidcAuthPanel() {
   const auth = useAuth();
-  const appUser = useUser(auth.user?.profile?.sub as string);
+  const appUser = useGetUser(auth.user?.profile?.sub as string);
 
   const signOutRedirect = () => {
     const clientId = "2a56v5hnl5nn65tho958c2rcj3";

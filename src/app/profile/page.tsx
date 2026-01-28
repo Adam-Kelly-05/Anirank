@@ -4,14 +4,14 @@ import React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/components/UseUser";
+import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
 
 export default function ProfilePage() {
   const auth = useAuth();
-  const fetchedUser = useUser(auth.user?.profile?.sub as string);
+  const fetchedUser = useGetUser(auth.user?.profile?.sub as string);
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
 
