@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ReviewCard } from "./ReviewCard";
-import { useReviews } from "./UseReviews";
+import { useReviewsGet } from "./UseReviewsGet";
 
 export default function ReviewsList({
   id,
@@ -15,7 +15,7 @@ export default function ReviewsList({
   onReviewsAmount?: (count: number) => void;
   onAverageScore?: (count: number) => void;
 }) {
-  const { reviews, reviewCount, averageRating } = useReviews({ id, idType });
+  const { reviews, reviewCount, averageRating } = useReviewsGet({ id, idType });
 
   React.useEffect(() => {
     onReviewsAmount?.(reviewCount);

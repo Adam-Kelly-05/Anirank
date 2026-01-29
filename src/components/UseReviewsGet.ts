@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Review } from "@/types/Review";
 
-export function useReviews({
+export function useReviewsGet({
   id,
   idType,
 }: {
