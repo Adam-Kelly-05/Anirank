@@ -9,12 +9,12 @@ export default function OidcAuthPanel() {
   const appUser = useGetUser(auth.user?.profile?.sub as string);
 
   const signOutRedirect = () => {
-    const clientId = "2a56v5hnl5nn65tho958c2rcj3";
+    const clientId = "7o79k59ebj2jg5s02mio124jc";
     const logoutUri = "https://anirank.ie/";
     const cognitoDomain =
-      "https://eu-west-1ce1rf5nox.auth.eu-west-1.amazoncognito.com";
+      "https://eu-west-1o9s7dru8c.auth.eu-west-1.amazoncognito.com";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
-      logoutUri
+      logoutUri,
     )}`;
   };
 

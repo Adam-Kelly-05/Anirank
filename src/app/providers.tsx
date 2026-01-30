@@ -4,11 +4,11 @@ import React from "react";
 import { AuthProvider } from "react-oidc-context";
 
 const cognitoAuthConfig = {
-  authority: "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_CE1rF5NoX",
-  client_id: "2a56v5hnl5nn65tho958c2rcj3",
+  authority: "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_O9S7Dru8C",
+  client_id: "7o79k59ebj2jg5s02mio124jc",
   redirect_uri: "https://anirank.ie/",
   response_type: "code",
-  scope: "email openid phone",
+  scope: "phone openid email",
 };
 
 export default function Providers({
