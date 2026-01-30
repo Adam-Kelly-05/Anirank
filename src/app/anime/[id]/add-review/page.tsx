@@ -1,7 +1,6 @@
 import { Anime } from "@/types/Anime";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import AddReviewForm from "./AddReviewForm";
 
 export const dynamicParams = false;
 
@@ -59,29 +58,5 @@ export default async function AddReviewPage({
 
   const anime = rawAnime;
 
-  return (
-    <div className="max-w-3xl mx-auto p-4">
-      <div className="mb-6">
-        <Link href={`/anime/${id}`}>
-          <Button variant="ghost" size="sm">
-            ← Back to {anime.title_english || anime.title_japanese}
-          </Button>
-        </Link>
-      </div>
-
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Write a Review</h1>
-          <p className="text-gray-400 mt-2">
-            Share your thoughts about {anime.title_english || anime.title_japanese}
-          </p>
-        </div>
-
-        {/* Review form will go here */}
-        <div className="bg-card p-6 rounded-lg border">
-          <p className="text-gray-400">Review form component will be added here.</p>
-        </div>
-      </div>
-    </div>
-  );
+  return <AddReviewForm anime={anime} animeId={id} />;
 }
