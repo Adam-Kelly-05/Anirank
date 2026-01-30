@@ -33,16 +33,25 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
     setSaveSuccess(false);
 
     try {
-      // TODO: Implement API call to save review
-      console.log("Submitting review:", {
-        animeId,
-        userId: auth.user?.profile?.sub,
-        rating: form.rating,
-        reviewText: form.reviewText,
-      });
+      const response = await fetch(
+        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/review`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            AnimeId: animeId,
+            UserId: auth.user?.profile?.sub,
+            Rating: form.rating,
+            ReviewText: form.reviewText,
+          }),
+        }
+      );
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!response.ok) {
+        throw new Error("Failed to submit review");
+      }
 
       setSaveSuccess(true);
       setTimeout(() => {
