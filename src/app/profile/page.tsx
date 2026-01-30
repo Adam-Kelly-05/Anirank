@@ -53,11 +53,10 @@ export default function ProfilePage() {
                     <p className="text-gray-400">
                       User Since:{" "}
                       <span className="ml-2 text-white font-semibold">
-                        {fetchedUser?.DateJoin &&
-                          new Date(fetchedUser.DateJoin).toLocaleDateString(
-                            "en-GB",
-                            { day: "numeric", month: "long", year: "numeric" },
-                          )}
+                        {new Date(fetchedUser?.DateJoin ?? "").toLocaleDateString(
+                          "en-GB",
+                          { day: "numeric", month: "long", year: "numeric" },
+                        )}
                       </span>
                     </p>
                   </div>
