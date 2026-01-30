@@ -64,18 +64,18 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
     }
   };
 
-  // if (!auth.isAuthenticated) {
-  //   return (
-  //     <main className="min-h-screen flex items-center justify-center py-12 px-4">
-  //       <Card className="bg-card border-primary/20">
-  //         <CardContent className="p-8 text-center">
-  //           <p className="text-gray-400 mb-4">Please log in to write a review</p>
-  //           <Button onClick={() => router.push(`/anime/${animeId}`)}>Go Back</Button>
-  //         </CardContent>
-  //       </Card>
-  //     </main>
-  //   );
-  // }
+   if (!auth.isAuthenticated) {
+     return (
+       <main className="min-h-screen flex items-center justify-center py-12 px-4">
+         <Card className="bg-card border-primary/20">
+           <CardContent className="p-8 text-center">
+             <p className="text-gray-400 mb-4">Please log in to write a review</p>
+             <Button onClick={() => router.push(`/anime/${animeId}`)}>Go Back</Button>
+           </CardContent>
+         </Card>
+       </main>
+     );
+}
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
