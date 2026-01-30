@@ -54,18 +54,18 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
     }
   };
 
-   if (!auth.isAuthenticated) {
-     return (
-       <main className="min-h-screen flex items-center justify-center py-12 px-4">
-         <Card className="bg-card border-primary/20">
-           <CardContent className="p-8 text-center">
-             <p className="text-gray-400 mb-4">Please log in to write a review</p>
-             <Button onClick={() => router.push(`/anime/${animeId}`)}>Go Back</Button>
-           </CardContent>
-         </Card>
-       </main>
-     );
-   }
+  // if (!auth.isAuthenticated) {
+  //   return (
+  //     <main className="min-h-screen flex items-center justify-center py-12 px-4">
+  //       <Card className="bg-card border-primary/20">
+  //         <CardContent className="p-8 text-center">
+  //           <p className="text-gray-400 mb-4">Please log in to write a review</p>
+  //           <Button onClick={() => router.push(`/anime/${animeId}`)}>Go Back</Button>
+  //         </CardContent>
+  //       </Card>
+  //     </main>
+  //   );
+  // }
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -123,6 +123,25 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
                 )}
               </div>
 
+              {/* Review Text Field */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Review
+                </label>
+                <textarea
+                  name="reviewText"
+                  value={form.reviewText}
+                  onChange={(e) => setForm({ ...form, reviewText: e.target.value })}
+                  rows={6}
+                  className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20 resize-none"
+                  placeholder="Share your thoughts about this anime..."
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {form.reviewText.length} characters
+                </p>
+              </div>
+
               {/* Error/Success Messages */}
               {saveError && (
                 <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400">
@@ -148,7 +167,7 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={saving || form.rating === 0}
+                  disabled={saving || form.rating === 0 || !form.reviewText.trim()}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {saving ? "Submitting..." : "Submit Review"}
