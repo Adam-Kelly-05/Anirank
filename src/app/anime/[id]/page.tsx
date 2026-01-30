@@ -1,6 +1,6 @@
 import { Anime } from "@/types/Anime";
 import { notFound } from "next/navigation";
-import ReviewsList from "@/components/ReviewsList";
+import AnimeReviewsSection from "@/components/AnimeReviewsSection";
 import Image from "next/image";
 
 export const dynamicParams = false;
@@ -56,7 +56,9 @@ export default async function Page({
             <div className="w-full max-w-xs md:max-w-sm rounded-xl overflow-hidden shadow-2xl bg-black/40">
               <Image
                 src={anime.image}
-                alt={anime.title_english || anime.title_japanese || "Anime image"}
+                alt={
+                  anime.title_english || anime.title_japanese || "Anime image"
+                }
                 width={320}
                 height={480}
                 className="w-full h-auto object-cover"
@@ -134,9 +136,7 @@ export default async function Page({
             </div>
           </div>
           <br />
-          <div>
-            <ReviewsList id={anime.animeId} idType="anime" />
-          </div>
+          <AnimeReviewsSection animeId={anime.animeId} />
         </div>
       );
     }
