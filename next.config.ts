@@ -15,11 +15,7 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  turbopack: {
-    root: __dirname
-  },
-
-  outputFileTracingRoot: __dirname,
+  assetPrefix: "",
 };
 
 export default nextConfig;

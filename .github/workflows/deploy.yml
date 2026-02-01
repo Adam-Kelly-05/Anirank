@@ -16,16 +16,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20 (Next.js requires >=20.9.0)
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js static site
-        run: npm run build
+      - name: Build Next.js static site (fresh)
+        run: |
+          rm -rf out .next
+          npm run build
+          test -f out/index.html
+          test -d out/_next/static
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -35,4 +40,5 @@ jobs:
           aws-region: eu-west-1
 
       - name: Sync exported files to S3
-        run: aws s3 sync out/ s3://anirank.ie --delete --no-progress --only-show-errors --size-only
+        run: |
+          aws s3 sync out/ s3://anirank.ie --delete --only-show-errors
