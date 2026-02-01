@@ -3,8 +3,7 @@ name: Deploy Next.js App to S3
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
@@ -20,17 +19,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ hashFiles('package-lock.json') }}-
+            ${{ runner.os }}-next-
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js static site (fresh)
-        run: |
-          rm -rf out .next
-          npm run build
-          test -f out/index.html
-          test -d out/_next/static
+      - name: Build Next.js static site
+        run: npm run build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -39,6 +50,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
           aws-region: eu-west-1
 
-      - name: Sync exported files to S3
+      # Cache static hashed assets for 1 year
+      - name: Sync Next static assets
         run: |
-          aws s3 sync out/ s3://anirank.ie --delete --only-show-errors
+          aws s3 sync out/_next/ s3://anirank.ie/_next/ \
+            --delete --only-show-errors \
+            --cache-control "public,max-age=31536000,immutable"
+
+      # Everything else: no cache
+      - name: Sync site files
+        run: |
+          aws s3 sync out/ s3://anirank.ie \
+            --delete --only-show-errors \
+            --exclude "_next/*" \
+            --cache-control "public,max-age=0,must-revalidate"
