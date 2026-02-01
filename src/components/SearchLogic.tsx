@@ -31,7 +31,7 @@ export function SearchLogic({
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/${encodeURIComponent(term)}`,
+          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/${term}`,
         );
         const result = await response.json();
         const data = Array.isArray(result)
