@@ -43,13 +43,13 @@ export default function OidcAuthPanel() {
   return (
     <div className="flex flex-wrap gap-2">
       <button
-        className="rounded border-2 border-green-600 bg-transparent px-4 py-2 text-green-600 hover:border-green-700 hover:text-green-700"
+        className="appearance-none rounded border-2 border-green-600 bg-transparent px-4 py-2 text-green-600 hover:border-green-700 hover:text-green-700 active:border-green-700 active:text-green-700 focus-visible:border-green-600 focus-visible:ring-0"
         onClick={() => auth.signinRedirect()}
       >
         Sign in
       </button>
       <button
-        className="rounded border-2 border-red-600 bg-transparent px-4 py-2 text-red-600 hover:border-red-700 hover:text-red-700"
+        className="appearance-none rounded border-2 border-red-600 bg-transparent px-4 py-2 text-red-600 hover:border-red-700 hover:text-red-700 active:border-red-700 active:text-red-700 focus-visible:border-red-600 focus-visible:ring-0"
         onClick={() => signOutRedirect()}
       >
         Sign out
