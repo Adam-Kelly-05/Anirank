@@ -4,6 +4,8 @@ import AnimeReviewsSection from "@/components/AnimeReviewsSection";
 import Image from "next/image";
 
 export const dynamicParams = false;
+export const dynamic = "error";
+export const fetchCache = "force-no-store";
 
 export async function generateStaticParams() {
   try {
