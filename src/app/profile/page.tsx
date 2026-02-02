@@ -62,18 +62,8 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/*Logout Button*/}
                 <div className="mt-6">
-                  <Button
-                    variant="outline"
-                    className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500"
-                    onClick={() => console.log("Logout clicked")}
-                  >
-                    Logout
-                  </Button>
-                  <div className="mt-4">
-                    <OidcAuthPanel />
-                  </div>
+                  <OidcAuthPanel />
                 </div>
               </div>
             </div>
