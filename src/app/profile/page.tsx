@@ -15,6 +15,27 @@ export default function ProfilePage() {
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
 
+  if (auth.isLoading) {
+    return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
+  }
+
+  if (!auth.isAuthenticated) {
+    return (
+      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <Card className="mb-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-primary/30">
+            <CardContent className="p-8">
+              <div className="flex flex-col items-center gap-6">
+                <h1 className="text-3xl font-bold text-white">Sign in</h1>
+                <OidcAuthPanel />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
