@@ -26,11 +26,16 @@ export default function OidcAuthPanel() {
     }
   };
 
-  const signOutRedirect = () => {
+  const signOutRedirect = async () => {
     const clientId = "2a56v5hnl5nn65tho958c2rcj3";
     const logoutUri = "https://anirank.ie/";
     const cognitoDomain =
       "https://eu-west-1ce1rf5nox.auth.eu-west-1.amazoncognito.com";
+    try {
+      await auth.removeUser();
+    } catch {
+      // Ignore removal errors and still proceed with client cleanup.
+    }
     clearClientStorage();
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
       logoutUri
