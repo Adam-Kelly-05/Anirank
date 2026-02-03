@@ -30,6 +30,13 @@ export default function AddReviewForm({
   const [saveError, setSaveError] = React.useState("");
   const [saveSuccess, setSaveSuccess] = React.useState(false);
 
+  const resetForm = () => {
+    setForm({ rating: 0, reviewHeader: "", reviewText: "" });
+    setHoveredStar(0);
+    setSaveError("");
+    setSaveSuccess(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -193,7 +200,7 @@ export default function AddReviewForm({
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.refresh()}
+                  onClick={resetForm}
                   disabled={saving}
                   className="border-primary/30 text-gray-400 hover:text-white hover:border-primary/50"
                 >
