@@ -133,10 +133,12 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <div className="mt-6 flex flex-col items-center gap-3">
                   <Button
+                    type="button"
+                    variant="outline"
                     onClick={() => router.push("/profile/edit")}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                    className="border-primary/60 text-white hover:border-primary hover:text-white"
                   >
                     Edit Profile
                   </Button>
