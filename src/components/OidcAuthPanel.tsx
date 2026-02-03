@@ -51,13 +51,22 @@ export default function OidcAuthPanel() {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 justify-center items-center w-full text-center">
-      <button
-        className="appearance-none rounded border-2 border-red-600 bg-transparent px-4 py-2 text-red-600 hover:border-red-700 hover:text-red-700 active:border-red-700 active:text-red-700 focus-visible:border-red-600 focus-visible:ring-0"
-        onClick={() => signOutRedirect()}
-      >
-        Sign out
-      </button>
+    <div className="flex w-full justify-center items-center text-center">
+      {auth.isAuthenticated ? (
+        <button
+          className="appearance-none rounded border-2 border-red-600 bg-transparent px-4 py-2 text-red-600 hover:border-red-700 hover:text-red-700 active:border-red-700 active:text-red-700 focus-visible:border-red-600 focus-visible:ring-0"
+          onClick={() => signOutRedirect()}
+        >
+          Sign out
+        </button>
+      ) : (
+        <button
+          className="appearance-none rounded border-2 border-blue-600 bg-transparent px-4 py-2 text-blue-600 hover:border-blue-700 hover:text-blue-700 active:border-blue-700 active:text-blue-700 focus-visible:border-blue-600 focus-visible:ring-0"
+          onClick={() => auth.signinRedirect()}
+        >
+          Sign in
+        </button>
+      )}
     </div>
   );
 }
