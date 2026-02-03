@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
@@ -11,7 +10,13 @@ import OidcAuthPanel from "@/components/OidcAuthPanel";
 
 export default function ProfilePage() {
   const auth = useAuth();
-  const fetchedUser = useGetUser(auth.user?.profile?.sub as string);
+  const userSub = auth.user?.profile?.sub as string | undefined;
+  const {
+    user: fetchedUser,
+    loading: userLoading,
+    error: userError,
+    refetch: refetchUser,
+  } = useGetUser(userSub);
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
 
@@ -28,6 +33,48 @@ export default function ProfilePage() {
               <div className="flex flex-col items-center gap-6">
                 <h1 className="text-3xl font-bold text-white">Sign in</h1>
                 <OidcAuthPanel showSignIn />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    );
+  }
+
+  if (!userSub) {
+    return (
+      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <Card className="mb-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-primary/30">
+            <CardContent className="p-8 text-center text-white">
+              <p className="mb-4">We couldn&apos;t determine your account id.</p>
+              <OidcAuthPanel showSignIn />
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    );
+  }
+
+  if (userLoading) {
+    return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
+  }
+
+  if (userError) {
+    return (
+      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <Card className="mb-8 bg-card border-primary/30">
+            <CardContent className="p-8 text-center text-white space-y-4">
+              <p>{userError}</p>
+              <div className="flex justify-center gap-4">
+                <button
+                  className="appearance-none rounded border-2 border-primary px-4 py-2 text-primary hover:border-primary/80 hover:text-primary/80"
+                  onClick={refetchUser}
+                >
+                  Retry
+                </button>
+                <OidcAuthPanel />
               </div>
             </CardContent>
           </Card>

@@ -10,8 +10,8 @@ type OidcAuthPanelProps = {
 
 export default function OidcAuthPanel({ showSignIn = false }: OidcAuthPanelProps) {
   const auth = useAuth();
-  const appUser = useGetUser(auth.user?.profile?.sub as string);
-  const isSignedIn = auth.isAuthenticated || !!auth.user || !!appUser;
+  const { user: appUser, loading: userLoading } = useGetUser(auth.user?.profile?.sub as string);
+  const isSignedIn = auth.isAuthenticated || (!!auth.user && !userLoading) || !!appUser;
 
   const clearClientStorage = () => {
     try {

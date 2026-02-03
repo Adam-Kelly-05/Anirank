@@ -7,15 +7,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "react-oidc-context";
 import { Anime } from "@/types/Anime";
 import Image from "next/image";
+import { useCreateReview } from "@/components/UseReviewsPost";
 
-interface AddReviewFormProps {
+export default function AddReviewForm({
+  anime,
+  animeId,
+}: {
   anime: Anime;
   animeId: string;
-}
-
-export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
+}) {
   const router = useRouter();
   const auth = useAuth();
+  const { createReview } = useCreateReview();
+  const numericAnimeId = Number(anime.animeId ?? animeId);
 
   const [form, setForm] = React.useState({
     rating: 0,
@@ -32,24 +36,20 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
     setSaveError("");
     setSaveSuccess(false);
 
-    try {
-      const response = await fetch(
-        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/review`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            AnimeId: animeId,
-            UserId: auth.user?.profile?.sub,
-            Rating: form.rating,
-            ReviewText: form.reviewText,
-          }),
-        }
-      );
+    if (Number.isNaN(numericAnimeId)) {
+      setSaveError("Missing anime id for review submission.");
+      return;
+    }
 
-      if (!response.ok) {
+    try {
+      const review = await createReview({
+        animeId: numericAnimeId,
+        animeName: anime.title_english || anime.title_japanese,
+        rating: form.rating,
+        reviewBody: form.reviewText,
+      });
+
+      if (!review) {
         throw new Error("Failed to submit review");
       }
 
@@ -57,25 +57,39 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
       setTimeout(() => {
         router.push(`/anime/${animeId}`);
       }, 1500);
-    } catch (err: any) {
-      setSaveError(err.message || "Failed to submit review.");
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Failed to submit review.";
+      setSaveError(message);
     } finally {
       setSaving(false);
     }
   };
 
-   if (!auth.isAuthenticated) {
-     return (
-       <main className="min-h-screen flex items-center justify-center py-12 px-4">
-         <Card className="bg-card border-primary/20">
-           <CardContent className="p-8 text-center">
-             <p className="text-gray-400 mb-4">Please log in to write a review</p>
-             <Button onClick={() => router.push(`/anime/${animeId}`)}>Go Back</Button>
-           </CardContent>
-         </Card>
-       </main>
-     );
-}
+  if (auth.isLoading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center py-12 px-4">
+        <p className="text-gray-400">Checking your session...</p>
+      </main>
+    );
+  }
+
+  if (!auth.isAuthenticated) {
+    return (
+      <main className="min-h-screen flex items-center justify-center py-12 px-4">
+        <Card className="bg-card border-primary/20">
+          <CardContent className="p-8 text-center">
+            <p className="text-gray-400 mb-4">
+              Please log in to write a review
+            </p>
+            <Button onClick={() => router.push(`/anime/${animeId}`)}>
+              Go Back
+            </Button>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -91,7 +105,8 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
           </Button>
           <h1 className="text-4xl font-bold text-white">Write a Review</h1>
           <p className="text-gray-400 mt-2">
-            Share your thoughts about {anime.title_english || anime.title_japanese}
+            Share your thoughts about{" "}
+            {anime.title_english || anime.title_japanese}
           </p>
         </div>
 
@@ -171,7 +186,9 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
                 <textarea
                   name="reviewText"
                   value={form.reviewText}
-                  onChange={(e) => setForm({ ...form, reviewText: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, reviewText: e.target.value })
+                  }
                   rows={6}
                   className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20 resize-none"
                   placeholder="Share your thoughts about this anime..."
@@ -207,7 +224,9 @@ export default function AddReviewForm({ anime, animeId }: AddReviewFormProps) {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={saving || form.rating === 0 || !form.reviewText.trim()}
+                  disabled={
+                    saving || form.rating === 0 || !form.reviewText.trim()
+                  }
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {saving ? "Submitting..." : "Submit Review"}

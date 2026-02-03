@@ -4,6 +4,7 @@ import AnimeReviewsSection from "@/components/AnimeReviewsSection";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import AddReviewForm from "./add-review/AddReviewForm";
 
 export const dynamicParams = false;
 export const dynamic = "error";
@@ -136,13 +137,13 @@ export default async function Page({
                     <span aria-hidden>▶</span>
                   </a>
                 )}
-                
-                <Link href={`/anime/${anime.animeId}/add-review`}>
+
+                <Link href="#add-review">
                   <Button variant="outline" size="default">
                     Add Review
                   </Button>
                 </Link>
-                
+
                 <Link href={`/reviews?animeId=${anime.animeId}`}>
                   <Button variant="outline" size="default">
                     View Reviews
@@ -152,6 +153,13 @@ export default async function Page({
             </div>
           </div>
           <br />
+          <section id="add-review" className="scroll-mt-24">
+            <AddReviewForm
+              anime={anime}
+              animeId={(anime.animeId ?? id).toString()}
+            />
+          </section>
+
           <AnimeReviewsSection animeId={anime.animeId} />
         </div>
       );

@@ -5,13 +5,19 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { useUser } from "@/components/UseUser";
+import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
 
 export default function EditAccountPage() {
   const router = useRouter();
   const auth = useAuth();
-  const fetchedUser = useUser(auth.user?.profile?.sub as string);
+  const userSub = auth.user?.profile?.sub as string | undefined;
+  const {
+    user: fetchedUser,
+    loading: userLoading,
+    error: userError,
+    refetch: refetchUser,
+  } = useGetUser(userSub);
 
   const [form, setForm] = React.useState({
     username: "",
@@ -42,9 +48,14 @@ export default function EditAccountPage() {
     setSaveError("");
     setSaveSuccess(false);
 
+    if (!userSub) {
+      setSaveError("Missing user id. Please sign in again.");
+      return;
+    }
+
     try {
       const response = await fetch(
-        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${auth.user?.profile?.sub}`,
+        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userSub}`,
         {
           method: "PUT",
           headers: {
@@ -66,8 +77,10 @@ export default function EditAccountPage() {
       setTimeout(() => {
         router.push("/profile");
       }, 1500);
-    } catch (err: any) {
-      setSaveError(err.message || "Failed to update account.");
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Failed to update account.";
+      setSaveError(message);
     } finally {
       setSaving(false);
     }
@@ -86,10 +99,41 @@ export default function EditAccountPage() {
     );
   }
 
-  if (!fetchedUser) {
+  if (!userSub) {
+    return (
+      <main className="min-h-screen flex items-center justify-center py-12 px-4">
+        <Card className="bg-card border-primary/20">
+          <CardContent className="p-8 text-center text-white space-y-4">
+            <p>We couldn&apos;t determine your account id.</p>
+            <Button onClick={() => router.push("/profile")}>Go to Profile</Button>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
+
+  if (userLoading) {
     return (
       <main className="min-h-screen flex items-center justify-center py-12 px-4">
         <div className="text-white text-xl">Loading...</div>
+      </main>
+    );
+  }
+
+  if (userError) {
+    return (
+      <main className="min-h-screen flex items-center justify-center py-12 px-4">
+        <Card className="bg-card border-primary/20">
+          <CardContent className="p-8 text-center text-white space-y-4">
+            <p>{userError}</p>
+            <div className="flex justify-center gap-3">
+              <Button variant="outline" onClick={refetchUser}>
+                Retry
+              </Button>
+              <Button onClick={() => router.push("/profile")}>Back to Profile</Button>
+            </div>
+          </CardContent>
+        </Card>
       </main>
     );
   }
