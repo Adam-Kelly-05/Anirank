@@ -130,8 +130,10 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="mt-6">
-                  <div className="flex flex-wrap gap-3 justify-center">
-                    <OidcAuthPanel />
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <div className="shrink-0">
+                      <OidcAuthPanel />
+                    </div>
                     <Button
                       variant="outline"
                       onClick={() => setEditing((v) => !v)}
