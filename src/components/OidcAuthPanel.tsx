@@ -42,8 +42,8 @@ export default function OidcAuthPanel() {
     )}`;
   };
 
-  if (auth.isLoading) {
-    return <div>Loading...</div>;
+  if (auth.isLoading || auth.activeNavigator) {
+    return null;
   }
 
   if (auth.error) {
