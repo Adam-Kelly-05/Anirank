@@ -3,13 +3,16 @@
 import React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const auth = useAuth();
+  const router = useRouter();
   const userSub = auth.user?.profile?.sub as string | undefined;
   const {
     user: fetchedUser,
@@ -130,7 +133,13 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
+                  <Button
+                    onClick={() => router.push("/profile/edit")}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  >
+                    Edit Profile
+                  </Button>
                   <OidcAuthPanel />
                 </div>
               </div>
