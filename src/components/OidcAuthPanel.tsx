@@ -7,6 +7,7 @@ import { useGetUser } from "./UseUserGet";
 export default function OidcAuthPanel() {
   const auth = useAuth();
   const appUser = useGetUser(auth.user?.profile?.sub as string);
+  const isSignedIn = auth.isAuthenticated || !!auth.user || !!appUser;
 
   const clearClientStorage = () => {
     try {
@@ -52,7 +53,7 @@ export default function OidcAuthPanel() {
 
   return (
     <div className="flex w-full justify-center items-center text-center">
-      {auth.isAuthenticated ? (
+      {isSignedIn ? (
         <button
           className="appearance-none rounded border-2 border-red-600 bg-transparent px-4 py-2 text-red-600 hover:border-red-700 hover:text-red-700 active:border-red-700 active:text-red-700 focus-visible:border-red-600 focus-visible:ring-0"
           onClick={() => signOutRedirect()}
