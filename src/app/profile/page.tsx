@@ -134,15 +134,16 @@ export default function ProfilePage() {
                     <div className="shrink-0">
                       <OidcAuthPanel />
                     </div>
-                    <Button
-                      variant="outline"
-                      onClick={() => setEditing((v) => !v)}
-                      className="border-primary/40 text-gray-200"
-                    >
-                      {editing ? "Close Edit" : "Edit Profile"}
-                    </Button>
                   </div>
                 </div>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setEditing((v) => !v)}
+                  className="border-primary/40 text-gray-200"
+                >
+                  {editing ? "Close Edit" : "Edit Profile"}
+                </Button>
               </div>
             </div>
           </CardContent>
