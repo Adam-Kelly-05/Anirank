@@ -57,6 +57,9 @@ export function ReviewCard({ review }: { review: Review }) {
                 {review.rating}/10
               </div>
             </div>
+            <p className="text-base font-semibold uppercase tracking-wide text-gray-200 mb-2">
+              {review.reviewHeader}
+            </p>
             <p className="text-gray-300">{review.reviewBody}</p>
           </div>
         </div>

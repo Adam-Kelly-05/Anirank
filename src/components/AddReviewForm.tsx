@@ -22,6 +22,7 @@ export default function AddReviewForm({
 
   const [form, setForm] = React.useState({
     rating: 0,
+    reviewHeader: "",
     reviewText: "",
   });
   const [hoveredStar, setHoveredStar] = React.useState(0);
@@ -45,6 +46,7 @@ export default function AddReviewForm({
         animeId: numericAnimeId,
         animeName: anime.title_english || anime.title_japanese,
         rating: form.rating,
+        reviewHeader: form.reviewHeader,
         reviewBody: form.reviewText,
       });
 
@@ -131,6 +133,28 @@ export default function AddReviewForm({
                 )}
               </div>
 
+              {/* Review Header Field */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Review headline
+                </label>
+                <input
+                  type="text"
+                  name="reviewHeader"
+                  value={form.reviewHeader}
+                  onChange={(e) =>
+                    setForm({ ...form, reviewHeader: e.target.value })
+                  }
+                  maxLength={120}
+                  className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                  placeholder="e.g. Watch this before you die"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {form.reviewHeader.length}/120 characters
+                </p>
+              </div>
+
               {/* Review Text Field */}
               <div>
                 <label className="block text-white font-semibold mb-2">
@@ -160,7 +184,7 @@ export default function AddReviewForm({
               )}
               {saveSuccess && (
                 <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400">
-                  Review submitted successfully! Redirecting...
+                  Review submitted successfully!
                 </div>
               )}
 
@@ -169,7 +193,7 @@ export default function AddReviewForm({
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push(`/anime/${animeId}`)}
+                  onClick={() => router.refresh()}
                   disabled={saving}
                   className="border-primary/30 text-gray-400 hover:text-white hover:border-primary/50"
                 >
@@ -178,7 +202,10 @@ export default function AddReviewForm({
                 <Button
                   type="submit"
                   disabled={
-                    saving || form.rating === 0 || !form.reviewText.trim()
+                    saving ||
+                    form.rating === 0 ||
+                    !form.reviewHeader.trim() ||
+                    !form.reviewText.trim()
                   }
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
