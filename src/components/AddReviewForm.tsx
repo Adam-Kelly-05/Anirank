@@ -30,6 +30,13 @@ export default function AddReviewForm({
   const [saveError, setSaveError] = React.useState("");
   const [saveSuccess, setSaveSuccess] = React.useState(false);
 
+  const resetForm = () => {
+    setForm({ rating: 0, reviewHeader: "", reviewText: "" });
+    setHoveredStar(0);
+    setSaveError("");
+    setSaveSuccess(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -77,18 +84,17 @@ export default function AddReviewForm({
 
   if (!auth.isAuthenticated) {
     return (
-      <main className="min-h-screen flex items-center justify-center py-12 px-4">
-        <Card className="bg-card border-primary/20">
-          <CardContent className="p-8 text-center">
-            <p className="text-gray-400 mb-4">
-              Please log in to write a review
-            </p>
-            <Button onClick={() => router.push(`/anime/${animeId}`)}>
-              Go Back
-            </Button>
-          </CardContent>
-        </Card>
-      </main>
+      <section className="py-16 px-6 flex justify-center">
+        <div className="w-full max-w-[640px] min-w-[320px]">
+          <Card className="bg-card border-primary/20 shadow-xl h-[240px]">
+            <CardContent className="h-full flex flex-col items-center justify-center gap-4 p-8 sm:p-10 text-center">
+              <p className="text-white text-lg sm:text-xl md:text-2xl font-bold">
+                Please log in to write a review
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     );
   }
 
@@ -193,7 +199,7 @@ export default function AddReviewForm({
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.refresh()}
+                  onClick={resetForm}
                   disabled={saving}
                   className="border-primary/30 text-gray-400 hover:text-white hover:border-primary/50"
                 >
