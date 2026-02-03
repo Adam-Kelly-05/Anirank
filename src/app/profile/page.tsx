@@ -27,7 +27,7 @@ export default function ProfilePage() {
             <CardContent className="p-8">
               <div className="flex flex-col items-center gap-6">
                 <h1 className="text-3xl font-bold text-white">Sign in</h1>
-                <OidcAuthPanel />
+                <OidcAuthPanel showSignIn />
               </div>
             </CardContent>
           </Card>

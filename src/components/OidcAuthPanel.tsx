@@ -4,7 +4,11 @@ import React from "react";
 import { useAuth } from "react-oidc-context";
 import { useGetUser } from "./UseUserGet";
 
-export default function OidcAuthPanel() {
+type OidcAuthPanelProps = {
+  showSignIn?: boolean;
+};
+
+export default function OidcAuthPanel({ showSignIn = false }: OidcAuthPanelProps) {
   const auth = useAuth();
   const appUser = useGetUser(auth.user?.profile?.sub as string);
   const isSignedIn = auth.isAuthenticated || !!auth.user || !!appUser;
@@ -60,14 +64,14 @@ export default function OidcAuthPanel() {
         >
           Sign out
         </button>
-      ) : (
+      ) : showSignIn ? (
         <button
           className="appearance-none rounded border-2 border-blue-600 bg-transparent px-4 py-2 text-blue-600 hover:border-blue-700 hover:text-blue-700 active:border-blue-700 active:text-blue-700 focus-visible:border-blue-600 focus-visible:ring-0"
           onClick={() => auth.signinRedirect()}
         >
           Sign in
         </button>
-      )}
+      ) : null}
     </div>
   );
 }
