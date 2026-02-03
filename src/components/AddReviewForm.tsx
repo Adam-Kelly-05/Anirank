@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "react-oidc-context";
 import { Anime } from "@/types/Anime";
-import Image from "next/image";
 import { useCreateReview } from "@/components/UseReviewsPost";
 
 export default function AddReviewForm({
@@ -92,54 +91,8 @@ export default function AddReviewForm({
   }
 
   return (
-    <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <Button
-            variant="outline"
-            onClick={() => router.push(`/anime/${animeId}`)}
-            className="mb-4 border-primary/30 text-gray-400 hover:text-white hover:border-primary/50"
-          >
-            ← Back to {anime.title_english || anime.title_japanese}
-          </Button>
-          <h1 className="text-4xl font-bold text-white">Write a Review</h1>
-          <p className="text-gray-400 mt-2">
-            Share your thoughts about{" "}
-            {anime.title_english || anime.title_japanese}
-          </p>
-        </div>
-
-        {/* Anime Info Card */}
-        <Card className="bg-card border-primary/20 mb-6">
-          <CardContent className="p-4">
-            <div className="flex gap-3">
-              <div className="flex-shrink-0">
-                <Image
-                  src={anime.image}
-                  alt={anime.title_english || anime.title_japanese || "Anime"}
-                  width={80}
-                  height={120}
-                  className="rounded-lg object-cover shadow-lg"
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="text-xl font-bold text-white mb-0.5">
-                  {anime.title_english || anime.title_japanese}
-                </h2>
-                {anime.title_japanese && anime.title_english && (
-                  <p className="text-xs text-gray-400 mb-2">
-                    {anime.title_japanese}
-                  </p>
-                )}
-                <p className="text-gray-300 text-xs line-clamp-2">
-                  {anime.synopsis}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
+    <main className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto w-full">
         {/* Review Form */}
         <Card className="bg-card border-primary/20">
           <CardContent className="p-8">

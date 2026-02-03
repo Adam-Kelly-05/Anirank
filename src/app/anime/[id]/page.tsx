@@ -2,9 +2,7 @@ import { Anime } from "@/types/Anime";
 import { notFound } from "next/navigation";
 import AnimeReviewsSection from "@/components/AnimeReviewsSection";
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import AddReviewForm from "./add-review/AddReviewForm";
+import AddReviewForm from "@/components/AddReviewForm";
 
 export const dynamicParams = false;
 export const dynamic = "error";
@@ -137,18 +135,6 @@ export default async function Page({
                     <span aria-hidden>▶</span>
                   </a>
                 )}
-
-                <Link href="#add-review">
-                  <Button variant="outline" size="default">
-                    Add Review
-                  </Button>
-                </Link>
-
-                <Link href={`/reviews?animeId=${anime.animeId}`}>
-                  <Button variant="outline" size="default">
-                    View Reviews
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
