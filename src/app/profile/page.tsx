@@ -8,11 +8,10 @@ import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
-import { useRouter } from "next/navigation";
+import { EditUserForm } from "@/components/EditUserForm";
 
 export default function ProfilePage() {
   const auth = useAuth();
-  const router = useRouter();
   const userSub = auth.user?.profile?.sub as string | undefined;
   const {
     user: fetchedUser,
@@ -22,9 +21,14 @@ export default function ProfilePage() {
   } = useGetUser(userSub);
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
+  const [editing, setEditing] = React.useState(false);
 
   if (auth.isLoading) {
-    return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
+    return (
+      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        Loading...
+      </main>
+    );
   }
 
   if (!auth.isAuthenticated) {
@@ -44,23 +48,12 @@ export default function ProfilePage() {
     );
   }
 
-  if (!userSub) {
+  if (userLoading) {
     return (
       <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <Card className="mb-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-primary/30">
-            <CardContent className="p-8 text-center text-white">
-              <p className="mb-4">We couldn&apos;t determine your account id.</p>
-              <OidcAuthPanel showSignIn />
-            </CardContent>
-          </Card>
-        </div>
+        Loading...
       </main>
     );
-  }
-
-  if (userLoading) {
-    return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
   }
 
   if (userError) {
@@ -124,30 +117,46 @@ export default function ProfilePage() {
                     <p className="text-gray-400">
                       User Since:{" "}
                       <span className="ml-2 text-white font-semibold">
-                        {new Date(fetchedUser?.DateJoin ?? "").toLocaleDateString(
-                          "en-GB",
-                          { day: "numeric", month: "long", year: "numeric" },
-                        )}
+                        {new Date(
+                          fetchedUser?.DateJoin ?? "",
+                        ).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
                       </span>
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-col items-center gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => router.push("/profile/edit")}
-                    className="border-primary/60 text-white hover:border-primary hover:text-white"
-                  >
-                    Edit Profile
-                  </Button>
-                  <OidcAuthPanel />
+                <div className="mt-6">
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <OidcAuthPanel />
+                    <Button
+                      variant="outline"
+                      onClick={() => setEditing((v) => !v)}
+                      className="border-primary/40 text-gray-200"
+                    >
+                      {editing ? "Close Edit" : "Edit Profile"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
+
+        {editing && (
+          <EditUserForm
+            userId={userSub}
+            user={fetchedUser}
+            onSaved={async () => {
+              await refetchUser();
+              setEditing(false);
+            }}
+            onCancel={() => setEditing(false)}
+          />
+        )}
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

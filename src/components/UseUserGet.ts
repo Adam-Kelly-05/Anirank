@@ -3,14 +3,12 @@
 import { User } from "@/types/User";
 import * as React from "react";
 
-type UseUserGetResult = {
+export function useGetUser(userId?: string | number): {
   user?: User;
   loading: boolean;
   error?: string;
   refetch: () => Promise<void>;
-};
-
-export function useGetUser(userId?: string | number): UseUserGetResult {
+} {
   const [user, setUser] = React.useState<User>();
   const [loading, setLoading] = React.useState<boolean>(!!userId);
   const [error, setError] = React.useState<string>();
