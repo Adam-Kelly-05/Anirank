@@ -4,19 +4,25 @@ import * as React from "react";
 import { List } from "@/types/List";
 
 // Fetch lists by userId
-export function useList({ userId }: { userId?: number }) {
-  const [lists, setLists] = React.useState<List[]>([]);
+export function useList({
+  id,
+  idType,
+}: {
+  id?: string | number;
+  idType?: string | number;
+}) {
+  const [list, setLists] = React.useState<List[]>([]);
 
   React.useEffect(() => {
     async function fetchLists() {
-      if (!userId) {
+      if (!id) {
         setLists([]);
         return;
       }
 
       try {
         const response = await fetch(
-          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${userId}`,
+          `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${id}`,
         );
         if (!response.ok) {
           setLists([]);
@@ -34,7 +40,7 @@ export function useList({ userId }: { userId?: number }) {
       }
     }
     fetchLists();
-  }, [userId]);
+  }, [id, idType]);
 
-  return lists;
+  return list;
 }

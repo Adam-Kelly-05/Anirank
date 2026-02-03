@@ -6,6 +6,8 @@ import AnimeGrid from "@/components/AnimeGrid";
 import ContentCarousel from "@/components/AnimeCarousel";
 import AnimeCard from "@/components/AnimeCard";
 import { useAnimeList } from "@/components/UseAnimeList";
+import type { Anime } from "@/types/Anime";
+import mostPopularAnime from "../../public/16MostPopularAnime.json";
 
 const genres = [
   "Action",
@@ -13,12 +15,12 @@ const genres = [
   "Comedy",
   "Romance",
   "Drama",
-  "Adventure",
-  "Supernatural",
-  "Sci-Fi",
-  "Suspense",
-  "Mystery",
-  "Horror",
+  // "Adventure",
+  // "Supernatural",
+  // "Sci-Fi",
+  // "Suspense",
+  // "Mystery",
+  // "Horror",
   "Sports",
 ];
 
@@ -73,8 +75,8 @@ export default function Home() {
                 </h2>
               </div>
               <ContentCarousel
-                data={animes}
-                render={(item) => <AnimeCard {...item} />}
+                data={mostPopularAnime}
+                render={(item) => <AnimeCard {...(item as Anime)} />}
               />
             </div>
           </section>

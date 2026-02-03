@@ -4,16 +4,37 @@ import React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/components/UseUser";
+import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
 
 export default function ProfilePage() {
   const auth = useAuth();
-  const fetchedUser = useUser(auth.user?.profile?.sub as string);
+  const fetchedUser = useGetUser(auth.user?.profile?.sub as string);
   const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
   const [averageScore, setAverageScore] = React.useState(0);
+
+  if (auth.isLoading) {
+    return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
+  }
+
+  if (!auth.isAuthenticated) {
+    return (
+      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <Card className="mb-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-primary/30">
+            <CardContent className="p-8">
+              <div className="flex flex-col items-center gap-6">
+                <h1 className="text-3xl font-bold text-white">Sign in</h1>
+                <OidcAuthPanel showSignIn />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -53,31 +74,17 @@ export default function ProfilePage() {
                     <p className="text-gray-400">
                       User Since:{" "}
                       <span className="ml-2 text-white font-semibold">
-                        {fetchedUser?.DateJoin}
+                        {new Date(fetchedUser?.DateJoin ?? "").toLocaleDateString(
+                          "en-GB",
+                          { day: "numeric", month: "long", year: "numeric" },
+                        )}
                       </span>
                     </p>
                   </div>
                 </div>
 
-                {/*Action Buttons*/}
-                <div className="mt-6 flex flex-wrap gap-3 justify-center">
-                  <Button
-                    variant="outline"
-                    className="border-primary/30 text-gray-300 hover:bg-primary/10 hover:text-white hover:border-primary/50"
-                    onClick={() => window.location.href = '/profile/edit'}
-                  >
-                    Edit Profile
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500"
-                    onClick={() => console.log("Logout clicked")}
-                  >
-                    Logout
-                  </Button>
-                  <div className="mt-4 w-full">
-                    <OidcAuthPanel />
-                  </div>
+                <div className="mt-6">
+                  <OidcAuthPanel />
                 </div>
               </div>
             </div>
