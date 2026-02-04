@@ -174,7 +174,7 @@ export default function ProfilePage() {
           <Card className="bg-card border-primary/20">
             <CardContent className="p-6 text-center">
               <div className="text-4xl font-bold text-purple-400 mb-2">
-                {averageScore}
+                {Number(averageScore ?? 0).toFixed(2)}
               </div>
               <div className="text-gray-400">Average Score</div>
             </CardContent>
