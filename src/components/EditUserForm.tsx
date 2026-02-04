@@ -8,14 +8,12 @@ import { useUpdateUser } from "@/components/UseUserPatch";
 import { User } from "@/types/User";
 
 type EditUserFormProps = {
-  userId?: string;
   user?: User | null;
   onSaved?: () => Promise<void> | void;
   onCancel?: () => void;
 };
 
 export function EditUserForm({
-  userId,
   user,
   onSaved,
   onCancel,
@@ -46,14 +44,12 @@ export function EditUserForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) return;
     setSaving(true);
     setSaveError("");
     setSaveSuccess(false);
 
     try {
       const ok = await updateUser({
-        userId,
         payload: {
           Username: form.username,
           Bio: form.bio,

@@ -24,8 +24,8 @@ export function useUpdateUser() {
   }): Promise<boolean> => {
     try {
       const endpoint = userId
-        ? `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userId}`
-        : "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/me";
+        ? `/api/user/${userId}`
+        : "/api/user/me";
 
       const headers: Record<string, string> = {
         "Content-Type": "application/json",

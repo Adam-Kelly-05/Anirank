@@ -151,7 +151,6 @@ export default function ProfilePage() {
 
         {editing && (
           <EditUserForm
-            userId={userSub}
             user={fetchedUser}
             onSaved={async () => {
               await refetchUser();

@@ -25,9 +25,7 @@ export function useGetUser(userId?: string | number): {
     setError(undefined);
 
     try {
-      const response = await fetch(
-        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userId}`,
-      );
+      const response = await fetch(`$https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userId}`);
       if (!response.ok) {
         setUser(undefined);
         setError("Unable to load user details.");
