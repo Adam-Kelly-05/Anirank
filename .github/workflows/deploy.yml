@@ -21,15 +21,6 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Cache Next.js build cache
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: ${{ runner.os }}-next-${{ hashFiles('package-lock.json', 'next.config.*', 'src/**') }}
-          restore-keys: |
-            ${{ runner.os }}-next-${{ hashFiles('package-lock.json', 'next.config.*') }}-
-            ${{ runner.os }}-next-
-
       - name: Install dependencies
         run: npm ci
 
@@ -43,25 +34,27 @@ jobs:
           aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
           aws-region: eu-west-1
 
-      - name: Sync Next static assets (_next)
+      - name: Install s5cmd
         run: |
-          aws s3 sync out/_next/ s3://anirank.ie/_next/ \
-            --only-show-errors \
-            --no-progress \
-            --delete \
-            --cache-control "public,max-age=31536000,immutable"
+          curl -L https://github.com/peak/s5cmd/releases/latest/download/s5cmd_2.2.2_Linux-64bit.tar.gz -o s5cmd.tar.gz
+          tar -xzf s5cmd.tar.gz
+          sudo mv s5cmd /usr/local/bin/s5cmd
+          s5cmd version
 
-      - name: Sync site files (HTML / routes)
+      - name: Upload site (no-cache) - fast
         run: |
-          aws s3 sync out/ s3://anirank.ie \
-            --only-show-errors \
-            --no-progress \
-            --delete \
-            --exclude "_next/*" \
+          s5cmd sync --delete --exclude "_next/*" \
+            out/ s3://anirank.ie/ \
             --cache-control "public,max-age=0,must-revalidate"
 
-      - name: Invalidate CloudFront
+      - name: Upload _next (long cache) - fast
+        run: |
+          s5cmd sync --delete \
+            out/_next/ s3://anirank.ie/_next/ \
+            --cache-control "public,max-age=31536000,immutable"
+
+      - name: Invalidate CloudFront (small)
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+            --paths "/" "/index.html"
