@@ -48,16 +48,16 @@ jobs:
           aws s3 sync out/_next/ s3://anirank.ie/_next/ \
             --only-show-errors \
             --no-progress \
-            --size-only \
+            --delete \
             --cache-control "public,max-age=31536000,immutable"
 
-      - name: Sync site files (no-cache, no delete)
+      - name: Sync site files (HTML / routes)
         run: |
           aws s3 sync out/ s3://anirank.ie \
             --only-show-errors \
             --no-progress \
+            --delete \
             --exclude "_next/*" \
-            --size-only \
             --cache-control "public,max-age=0,must-revalidate"
 
       - name: Invalidate CloudFront
