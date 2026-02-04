@@ -2,6 +2,10 @@
 
 import { useAuth } from "react-oidc-context";
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE ??
+  "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
+
 type UpdateUserPayload = {
   Bio?: string;
   ProfilePicture?: string | null;
@@ -24,8 +28,8 @@ export function useUpdateUser() {
   }): Promise<boolean> => {
     try {
       const endpoint = userId
-        ? `/api/user/${userId}`
-        : "/api/user/me";
+        ? `${API_BASE}/user/${userId}`
+        : `${API_BASE}/user/me`;
 
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
