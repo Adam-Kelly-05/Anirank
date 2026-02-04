@@ -62,6 +62,8 @@ export default function AddReviewForm({
       }
 
       setSaveSuccess(true);
+      setForm({ rating: 0, reviewHeader: "", reviewText: "" });
+      setHoveredStar(0);
       setTimeout(() => {
         router.push(`/anime/${animeId}`);
       }, 1500);
