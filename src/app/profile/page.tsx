@@ -140,7 +140,7 @@ export default function ProfilePage() {
                 <Button
                   variant="outline"
                   onClick={() => setEditing((v) => !v)}
-                  className="border-primary/40 text-gray-200"
+                  className="mt-4 border-primary/40 text-gray-200"
                 >
                   {editing ? "Close Edit" : "Edit Profile"}
                 </Button>
