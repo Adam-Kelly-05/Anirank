@@ -9,7 +9,7 @@ const genres = [
 
 export default function GenreFilter({ selectedGenre, onSelect }) {
   return (
-    <div className="w-full overflow-x-auto py-4 bg-[#0a0e1a] border-b border-blue-500">
+    <div className="w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-4 bg-[#0a0e1a] border-b border-blue-500">
       <div className="flex space-x-4 px-4">
         {genres.map((genre) => (
           <button
