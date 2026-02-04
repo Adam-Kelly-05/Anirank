@@ -1,6 +1,10 @@
+"use client";
 import AnimeGrid from "@/components/AnimeGrid";
+import GenreFilter from "@/components/GenreFilter";
+import { useState } from "react";
 
 export default function AboutPage() {
+  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -18,10 +22,15 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Genre Filter Section */}    
+      <div className="sticky top-0 z-50 bg-background border-primary/20">
+        <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
+      </div>
+
       {/* Anime Carousel Section */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimeGrid limit={52}/>
+          <AnimeGrid genre={selectedGenre} limit={52}/>
         </div>
       </section>
     </div>
