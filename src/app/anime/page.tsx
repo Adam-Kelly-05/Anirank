@@ -2,9 +2,15 @@
 import AnimeGrid from "@/components/AnimeGrid";
 import GenreFilter from "@/components/GenreFilter";
 import { useState } from "react";
+import { useEffect } from "react";
 
 export default function AboutPage() {
   const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, [selectedGenre]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
