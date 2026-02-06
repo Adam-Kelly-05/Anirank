@@ -1,38 +1,44 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
+import AnimeCard from "./AnimeCard";
+import type { Anime } from "@/types/Anime";
 
-type RecItem = {
-  animeId: number;
-  score: number;
-  title_english: string;
-  title_japanese: string;
-  image: string;
-  aired: string;
-  synopsis: string;
-  trailer: string;
-  type: string;
-  genres: string[];
-};
+type Section =
+  | {
+      kind: "genre";
+      genre: string;
+      title: string;
+      items: Anime[];
+    }
+  | {
+      kind: "anime";
+      animeId: number;
+      title: string;
+      seed: Anime;
+      items: Anime[];
+    };
 
 type ApiResponse = {
-  items: RecItem[];
+  sections: Section[];
 };
 
-export function RecommendationsTester() {
+export default function RecommendationsTester() {
   const auth = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [items, setItems] = useState<RecItem[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
 
   const load = async () => {
     setLoading(true);
     setError("");
+    setSections([]);
 
-    const idToken = auth.user?.id_token; // same as your other components
+    const idToken = auth.user?.id_token;
     if (!idToken) {
       setLoading(false);
-      setItems([]);
       setError("Not authenticated (no id_token)");
       return;
     }
@@ -52,127 +58,82 @@ export function RecommendationsTester() {
       const text = await res.text();
       console.log("RAW:", text);
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status} ${res.statusText}\n\n${text}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}\n\n${text}`);
+
+      const parsed = JSON.parse(text) as ApiResponse;
+
+      if (!parsed || !Array.isArray(parsed.sections)) {
+        throw new Error("Unexpected API response shape (missing sections[])");
       }
 
-      const json = JSON.parse(text) as ApiResponse;
-
-      if (!json || !Array.isArray(json.items)) {
-        throw new Error("Unexpected API response shape (missing items[])");
-      }
-
-      setItems(json.items);
+      setSections(parsed.sections);
     } catch (e: any) {
       setError(e?.message ?? String(e));
-      setItems([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // auto-load when signed in
     if (auth.isAuthenticated) load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.isAuthenticated]);
 
   return (
-    <div style={{ padding: 16 }}>
-      <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
-        <h3 style={{ margin: 0 }}>Recommendations Tester</h3>
-
-        <button onClick={load} disabled={loading || !auth.isAuthenticated}>
+    <div className="p-4 space-y-10">
+      <div className="flex items-center gap-3">
+        <h2 className="text-2xl font-bold">Recommendations Tester</h2>
+        <button
+          onClick={load}
+          disabled={loading || !auth.isAuthenticated}
+          className="px-3 py-1.5 rounded-md border border-primary/30 hover:border-primary/60 hover:bg-primary/5 disabled:opacity-50"
+        >
           {loading ? "Loading..." : "Reload"}
         </button>
-
-        <span style={{ opacity: 0.75 }}>
-          {auth.isAuthenticated ? `${items.length} items` : "Not signed in"}
-        </span>
       </div>
 
-      {error && (
-        <pre
-          style={{
-            whiteSpace: "pre-wrap",
-            padding: 12,
-            borderRadius: 8,
-            border: "1px solid #ffbdbd",
-            background: "#fff2f2",
-          }}
-        >
+      {error ? (
+        <pre className="whitespace-pre-wrap rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           {error}
         </pre>
-      )}
+      ) : null}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-          gap: 12,
-        }}
-      >
-        {items.map((x) => (
-          <div
-            key={x.animeId}
-            style={{
-              border: "1px solid #2a2a2a33",
-              borderRadius: 12,
-              overflow: "hidden",
-              background: "white",
-            }}
-          >
-            <div style={{ width: "100%", aspectRatio: "16/9", background: "#eee" }}>
-              {x.image ? (
-                <img
-                  src={x.image}
-                  alt={x.title_english || x.title_japanese || String(x.animeId)}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              ) : null}
-            </div>
+      {!error && !loading && sections.length === 0 ? (
+        <div className="text-muted-foreground">No sections returned.</div>
+      ) : null}
 
-            <div style={{ padding: 12 }}>
-              <div style={{ fontWeight: 700 }}>
-                {x.title_english || x.title_japanese || `Anime ${x.animeId}`}
-              </div>
+      {sections.map((section, idx) => (
+        <div key={`${section.kind}-${idx}`} className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold">{section.title}</h3>
 
-              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 4 }}>
-                {x.type} {x.aired ? `• ${x.aired}` : ""}
-              </div>
-
-              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 6 }}>
-                score: {Number.isFinite(x.score) ? x.score.toFixed(2) : "?"}
-              </div>
-
-              {x.genres?.length ? (
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
-                  {x.genres.slice(0, 6).map((g) => (
-                    <span
-                      key={g}
-                      style={{
-                        fontSize: 12,
-                        padding: "2px 8px",
-                        borderRadius: 999,
-                        border: "1px solid #00000022",
-                        background: "#fafafa",
-                      }}
-                    >
-                      {g}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-
-              {x.synopsis ? (
-                <p style={{ marginTop: 8, marginBottom: 0, fontSize: 13, lineHeight: 1.35 }}>
-                  {x.synopsis}
-                </p>
-              ) : null}
-            </div>
+            {section.kind === "genre" ? (
+              <span className="text-sm text-muted-foreground">
+                genre: {section.genre}
+              </span>
+            ) : (
+              <span className="text-sm text-muted-foreground">
+                seed animeId: {section.animeId}
+              </span>
+            )}
           </div>
-        ))}
-      </div>
+
+          {section.kind === "anime" ? (
+            <div className="space-y-3">
+              <div className="text-sm text-muted-foreground">Because you like:</div>
+              <div className="max-w-[280px]">
+                <AnimeCard {...section.seed} />
+              </div>
+            </div>
+          ) : null}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {section.items.map((anime) => (
+              <AnimeCard key={anime.animeId} {...anime} />
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
