@@ -39,7 +39,7 @@ export function RecommendationsTester() {
 
     try {
       const res = await fetch(
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/me/recommendations",
+        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/me/recommendations",
         {
           method: "GET",
           headers: {
