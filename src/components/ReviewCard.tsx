@@ -49,7 +49,14 @@ export function ReviewCard({ review }: { review: Review }) {
                   </Link>
                 </h3>
                 <p className="text-gray-500 text-sm">
-                  Reviewed on {review.ratedDate}
+                  Reviewed on{" "}
+                  {new Date(review.ratedDate).toLocaleString("en-IE", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
               </div>
               <div className="flex items-center gap-1 px-3 py-1 bg-primary/20 text-primary rounded-full font-bold">
