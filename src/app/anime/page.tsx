@@ -31,7 +31,7 @@ export default function AboutPage() {
       </section>
 
       {/* Genre Filter Section */}
-      <div className="sticky top-0 z-50 bg-background border-primary/20">
+      <div className="sticky top-0 z-[60] bg-background border-primary/20">
         <GenreFilter
           selectedGenre={selectedGenre}
           onSelect={setSelectedGenre}

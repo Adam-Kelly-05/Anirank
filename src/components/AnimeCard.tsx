@@ -11,7 +11,7 @@ export default function AnimeCard(item: Anime) {
   const router = useRouter();
 
   return (
-    <div className="relative w-[280px] h-full overflow-visible transition-transform duration-200 will-change-transform hover:scale-105 hover:z-50 isolate">
+    <div className="relative w-[280px] h-full overflow-visible transition-transform duration-200 will-change-transform hover:scale-105 hover:z-20 isolate">
       <Card
         onClick={() => router.push(`/anime/${item.animeId}`)}
         className={cn(
