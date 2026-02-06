@@ -7,13 +7,10 @@ import type { RecommendationSection } from "@/types/RecommendationSection";
 export default function Recommendations() {
   const { error, sections } = useUserRecommendations();
 
-  const formatGenre = (genre: string) =>
-    genre.charAt(0).toUpperCase() + genre.slice(1);
-
   const titleFor = (s: RecommendationSection) =>
     s.kind === "anime"
-      ? `Because you liked ${s.seed.title_english || s.seed.title_japanese}`
-      : formatGenre(s.genre);
+      ? `${s.seed.title_english || s.seed.title_japanese}`
+      : `${s.genre.charAt(0).toUpperCase() + s.genre.slice(1)}`;
 
   return (
     <section className="py-8 border-t-2 bg-[#0a0e1a] border-[#3b82f6]">
@@ -35,7 +32,7 @@ export default function Recommendations() {
             <div className="flex items-center gap-2 text-white">
               <span className="text-blue-400">|</span>
               <h4 className="text-base font-semibold tracking-wide">
-                {titleFor(section)}
+                Because you like {titleFor(section)}
               </h4>
             </div>
 
