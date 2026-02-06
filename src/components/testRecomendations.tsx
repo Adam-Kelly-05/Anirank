@@ -50,6 +50,7 @@ export function RecommendationsTester() {
       );
 
       const text = await res.text();
+      console.log("RAW:", text);
 
       if (!res.ok) {
         throw new Error(`HTTP ${res.status} ${res.statusText}\n\n${text}`);
