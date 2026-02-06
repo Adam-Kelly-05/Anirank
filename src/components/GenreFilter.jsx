@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 const genres = [
   "Action",
   "Fantasy",
@@ -21,8 +19,8 @@ const genres = [
 
 export default function GenreFilter({ selectedGenre, onSelect }) {
   return (
-    <div className="w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-4 bg-[#0a0e1a] border-b border-blue-500">
-      <div className="flex space-x-4 px-4">
+    <div className="w-full py-4 bg-[#0a0e1a] border-b border-blue-500">
+      <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-3 px-4">
         {genres.map((genre) => (
           <button
             key={genre}
@@ -30,7 +28,7 @@ export default function GenreFilter({ selectedGenre, onSelect }) {
             className={`px-3 py-2 rounded-full font-semibold whitespace-nowrap transition
               ${
                 selectedGenre === genre
-                  ? " px-3 py-1 text-xs text-gray-100"
+                  ? " px-3 py-1 text-xs text-gray-100 rounded-full border border-blue-500 bg-blue-600"
                   : "rounded-full border  px-3 py-1 text-xs text-gray-100 hover:bg-blue-800 hover:text-white"
               }
             `}
