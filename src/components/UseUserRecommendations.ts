@@ -28,7 +28,7 @@ export function useUserRecommendations() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${idToken}`,
           },
-        },
+        }
       );
 
       const text = await res.text();
@@ -57,5 +57,5 @@ export function useUserRecommendations() {
     void load();
   }, [auth.isAuthenticated, load]);
 
-  return { error, sections, reload: load };
+  return { error, sections };
 }

@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import AnimeGrid from "@/components/AnimeGrid";
 import ContentCarousel from "@/components/AnimeCarousel";
 import AnimeCard from "@/components/AnimeCard";
 import { useAnimeList } from "@/components/UseAnimeList";
+import { useAuth } from "react-oidc-context";
 import type { Anime } from "@/types/Anime";
 import mostPopularAnime from "../../public/16MostPopularAnime.json";
-import RecommendationsTester from "@/components/testRecomendations";
+import Recommendations from "@/components/Recommendations";
 
 const genres = [
   "Action",
@@ -16,16 +16,17 @@ const genres = [
   "Comedy",
   "Romance",
   "Drama",
-  // "Adventure",
-  // "Supernatural",
-  // "Sci-Fi",
-  // "Suspense",
-  // "Mystery",
-  // "Horror",
+  "Adventure",
+  "Supernatural",
+  "Sci-Fi",
+  "Suspense",
+  "Mystery",
+  "Horror",
   "Sports",
 ];
 
 export default function Home() {
+  const auth = useAuth();
   const { animes } = useAnimeList({ limit: 15 });
 
   return (
@@ -83,9 +84,11 @@ export default function Home() {
           </section>
         </div>
 
-        <div>
-          <RecommendationsTester />
-        </div>
+        {auth.isAuthenticated ? (
+          <div>
+            <Recommendations />
+          </div>
+        ) : null}
 
         {animes.length > 0 &&
           genres.map((genre, index) => (
