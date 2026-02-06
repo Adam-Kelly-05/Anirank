@@ -5,11 +5,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 export default function AboutPage() {
-  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
+  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}, [selectedGenre]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [selectedGenre]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -28,15 +30,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Genre Filter Section */}    
+      {/* Genre Filter Section */}
       <div className="sticky top-0 z-50 bg-background border-primary/20">
-        <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
+        <GenreFilter
+          selectedGenre={selectedGenre}
+          onSelect={setSelectedGenre}
+        />
       </div>
 
       {/* Anime Carousel Section */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimeGrid genre={selectedGenre} limit={52}/>
+          <AnimeGrid genre={selectedGenre} limit={52} />
         </div>
       </section>
     </div>

@@ -1,10 +1,22 @@
 "use client";
 
-import React from "react"
+import React from "react";
 
 const genres = [
-  "Action","Fantasy","Comedy","Romance","Drama","Adventure",
-  "Supernatural","Sci-Fi","Suspense","Mystery","Horror","Sports"
+  "Action",
+  "Fantasy",
+  "Comedy",
+  "Romance",
+  "Drama",
+  "Adventure",
+  "Supernatural",
+  "Sci-Fi",
+  "Suspense",
+  "Mystery",
+  "Horror",
+  "Sports",
+  "Gourmet",
+  "Slice of Life",
 ];
 
 export default function GenreFilter({ selectedGenre, onSelect }) {
@@ -15,10 +27,12 @@ export default function GenreFilter({ selectedGenre, onSelect }) {
           <button
             key={genre}
             onClick={() => onSelect(genre)}
-            className={`px-3 py-2 rounded-full font-semibold whitespace-nowrap transition 
-              ${selectedGenre === genre 
-                ? " px-3 py-1 text-xs text-gray-100" 
-                : "rounded-full border  px-3 py-1 text-xs text-gray-100 hover:bg-blue-800 hover:text-white"}
+            className={`px-3 py-2 rounded-full font-semibold whitespace-nowrap transition
+              ${
+                selectedGenre === genre
+                  ? " px-3 py-1 text-xs text-gray-100"
+                  : "rounded-full border  px-3 py-1 text-xs text-gray-100 hover:bg-blue-800 hover:text-white"
+              }
             `}
           >
             {genre}
