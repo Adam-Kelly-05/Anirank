@@ -8,6 +8,7 @@ import AnimeCard from "@/components/AnimeCard";
 import { useAnimeList } from "@/components/UseAnimeList";
 import type { Anime } from "@/types/Anime";
 import mostPopularAnime from "../../public/16MostPopularAnime.json";
+import { RecommendationsTester } from "@/components/testRecomendations";
 
 const genres = [
   "Action",
@@ -80,6 +81,10 @@ export default function Home() {
               />
             </div>
           </section>
+        </div>
+
+        <div>
+          <RecommendationsTester />
         </div>
 
         {animes.length > 0 &&
