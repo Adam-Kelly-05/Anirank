@@ -12,9 +12,7 @@ export default function AnimeReviewsSection({ animeId }: { animeId?: number }) {
       <div className="flex items-baseline gap-3">
         <p className="font-semibold text-gray-100">Average score</p>
         <p className="text-3xl font-bold text-amber-300">
-          {reviewCount > 0 && averageScore !== null
-            ? averageScore.toFixed(1)
-            : "—"}
+          {reviewCount > 0 && averageScore !== null ? averageScore.toFixed(1) : "—"}
         </p>
         <p className="text-sm text-gray-400">({reviewCount} reviews)</p>
       </div>

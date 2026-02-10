@@ -109,8 +109,7 @@ function CarouselIndicators({
           style={{
             backgroundColor: current === i + 1 ? "#3b82f6" : "#1a1f3a",
             borderColor: current === i + 1 ? "#3b82f6" : "#60a5fa",
-            boxShadow:
-              current === i + 1 ? "0 0 15px rgba(59, 130, 246, 0.6)" : "none",
+            boxShadow: current === i + 1 ? "0 0 15px rgba(59, 130, 246, 0.6)" : "none",
           }}
         />
       ))}

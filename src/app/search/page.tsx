@@ -13,9 +13,7 @@ function EmptyState({ query }: { query: string }) {
         {query ? `No anime found matching ${query}` : "No anime available"}
       </div>
       <div className="text-gray-500">
-        {query
-          ? "Try searching with different keywords"
-          : "Please try again later"}
+        {query ? "Try searching with different keywords" : "Please try again later"}
       </div>
     </div>
   );
@@ -28,9 +26,7 @@ function SearchPageContent() {
         {/* Page Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-white mb-4">Search Anime</h1>
-          <p className="text-xl text-gray-300 mb-8">
-            Find your favorite anime series and movies
-          </p>
+          <p className="text-xl text-gray-300 mb-8">Find your favorite anime series and movies</p>
 
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
@@ -51,9 +47,7 @@ function SearchPageContent() {
                     : `Showing ${animes.length} anime`}
               </p>
 
-              {!isLoading && animes.length === 0 && (
-                <EmptyState query={query} />
-              )}
+              {!isLoading && animes.length === 0 && <EmptyState query={query} />}
 
               {/* Results Grid */}
               {animes.length > 0 && (
@@ -73,11 +67,7 @@ function SearchPageContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="text-center text-gray-400 pt-20">Loading search...</div>
-      }
-    >
+    <Suspense fallback={<div className="text-center text-gray-400 pt-20">Loading search...</div>}>
       <SearchPageContent />
     </Suspense>
   );

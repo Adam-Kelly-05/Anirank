@@ -3,13 +3,7 @@
 import * as React from "react";
 import { Review } from "@/types/Review";
 
-export function useReviewsGet({
-  id,
-  idType,
-}: {
-  id?: string | number;
-  idType?: string | number;
-}) {
+export function useReviewsGet({ id, idType }: { id?: string | number; idType?: string | number }) {
   const [reviews, setReviews] = React.useState<Review[]>([]);
 
   React.useEffect(() => {
@@ -19,8 +13,7 @@ export function useReviewsGet({
         return;
       }
 
-      let url =
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/reviews";
+      let url = "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/reviews";
       if (idType === "user") {
         url += `/${id}`;
       } else if (idType === "anime") {

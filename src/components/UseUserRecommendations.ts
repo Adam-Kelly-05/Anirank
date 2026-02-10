@@ -28,12 +28,11 @@ export function useUserRecommendations() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${idToken}`,
           },
-        }
+        },
       );
 
       const text = await res.text();
-      if (!res.ok)
-        throw new Error(`HTTP ${res.status} ${res.statusText}\n\n${text}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}\n\n${text}`);
 
       const parsed = JSON.parse(text) as { sections?: RecommendationSection[] };
       if (!Array.isArray(parsed.sections)) {

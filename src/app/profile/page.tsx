@@ -24,11 +24,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = React.useState(false);
 
   if (auth.isLoading) {
-    return (
-      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        Loading...
-      </main>
-    );
+    return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
   }
 
   if (!auth.isAuthenticated) {
@@ -49,11 +45,7 @@ export default function ProfilePage() {
   }
 
   if (userLoading) {
-    return (
-      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        Loading...
-      </main>
-    );
+    return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
   }
 
   if (userError) {
@@ -108,18 +100,14 @@ export default function ProfilePage() {
 
               {/* User Info */}
               <div className="flex-1 text-center">
-                <h1 className="text-4xl font-bold text-white mb-2">
-                  {fetchedUser?.Username}
-                </h1>
+                <h1 className="text-4xl font-bold text-white mb-2">{fetchedUser?.Username}</h1>
                 <p className="text-gray-400 text-lg mb-4">{fetchedUser?.Bio}</p>
                 <div className="flex flex-wrap justify-center gap-4 text-sm">
                   <div className="px-4 py-2 bg-card rounded-lg border border-primary/20">
                     <p className="text-gray-400">
                       User Since:{" "}
                       <span className="ml-2 text-white font-semibold">
-                        {new Date(
-                          fetchedUser?.DateJoin ?? "",
-                        ).toLocaleDateString("en-GB", {
+                        {new Date(fetchedUser?.DateJoin ?? "").toLocaleDateString("en-GB", {
                           day: "numeric",
                           month: "long",
                           year: "numeric",
@@ -164,9 +152,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card className="bg-card border-primary/20">
             <CardContent className="p-6 text-center">
-              <div className="text-4xl font-bold text-blue-400 mb-2">
-                {reviewsAmount}
-              </div>
+              <div className="text-4xl font-bold text-blue-400 mb-2">{reviewsAmount}</div>
               <div className="text-gray-400">Total Reviews</div>
             </CardContent>
           </Card>

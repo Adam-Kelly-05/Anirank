@@ -13,11 +13,7 @@ type EditUserFormProps = {
   onCancel?: () => void;
 };
 
-export function EditUserForm({
-  user,
-  onSaved,
-  onCancel,
-}: EditUserFormProps) {
+export function EditUserForm({ user, onSaved, onCancel }: EditUserFormProps) {
   const { updateUser } = useUpdateUser();
   const [form, setForm] = React.useState({
     username: user?.Username ?? "",
@@ -36,9 +32,7 @@ export function EditUserForm({
     });
   }, [user?.Username, user?.Bio, user?.ProfilePicture]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -67,8 +61,7 @@ export function EditUserForm({
       }
       setTimeout(() => setSaveSuccess(false), 1000);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Failed to update account.";
+      const message = err instanceof Error ? err.message : "Failed to update account.";
       setSaveError(message);
     } finally {
       setSaving(false);
@@ -110,9 +103,7 @@ export function EditUserForm({
 
           {/* Username Field */}
           <div>
-            <label className="block text-white font-semibold mb-2">
-              Username
-            </label>
+            <label className="block text-white font-semibold mb-2">Username</label>
             <input
               type="text"
               name="username"
@@ -138,9 +129,7 @@ export function EditUserForm({
 
           {/* Profile Picture URL Field */}
           <div>
-            <label className="block text-white font-semibold mb-2">
-              Profile Picture URL
-            </label>
+            <label className="block text-white font-semibold mb-2">Profile Picture URL</label>
             <input
               type="url"
               name="profilePicture"
@@ -149,9 +138,7 @@ export function EditUserForm({
               className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
               placeholder="https://example.com/image.jpg"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Leave blank to use default avatar
-            </p>
+            <p className="text-xs text-gray-500 mt-1">Leave blank to use default avatar</p>
           </div>
 
           {/* Error/Success Messages */}

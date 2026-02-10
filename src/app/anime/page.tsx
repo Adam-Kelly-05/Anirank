@@ -5,9 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 export default function AboutPage() {
-  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -32,10 +30,7 @@ export default function AboutPage() {
 
       {/* Genre Filter Section */}
       <div className="sticky top-0 z-[60] bg-background border-primary/20">
-        <GenreFilter
-          selectedGenre={selectedGenre}
-          onSelect={setSelectedGenre}
-        />
+        <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
       </div>
 
       {/* Anime Carousel Section */}

@@ -36,8 +36,7 @@ export default function Home() {
         <section
           className="blue-gradient py-16 border-b-4 border-blue-400"
           style={{
-            background:
-              "linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #1d4ed8 100%)",
+            background: "linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #1d4ed8 100%)",
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -62,19 +61,14 @@ export default function Home() {
         </section>
         <div className="bg-background">
           {/* Trending Anime Section */}
-          <section
-            className="py-12 bg-blue-950"
-            style={{ backgroundColor: "#172554" }}
-          >
+          <section className="py-12 bg-blue-950" style={{ backgroundColor: "#172554" }}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center mb-8">
                 <div
                   className="h-8 w-1 bg-blue-500 rounded-full mr-4"
                   style={{ backgroundColor: "#3b82f6" }}
                 ></div>
-                <h2 className="text-3xl font-bold text-white">
-                  Trending Anime
-                </h2>
+                <h2 className="text-3xl font-bold text-white">Trending Anime</h2>
               </div>
               <ContentCarousel
                 data={mostPopularAnime}
@@ -110,8 +104,7 @@ export default function Home() {
                   <div
                     className="flex-1 ml-4 h-px"
                     style={{
-                      background:
-                        "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
+                      background: "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
                     }}
                   ></div>
                 </div>

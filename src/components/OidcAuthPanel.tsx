@@ -6,11 +6,8 @@ import { useGetUser } from "./UseUserGet";
 
 export default function OidcAuthPanel() {
   const auth = useAuth();
-  const { user: appUser, loading: userLoading } = useGetUser(
-    auth.user?.profile?.sub as string,
-  );
-  const isSignedIn =
-    auth.isAuthenticated || (!!auth.user && !userLoading) || !!appUser;
+  const { user: appUser, loading: userLoading } = useGetUser(auth.user?.profile?.sub as string);
+  const isSignedIn = auth.isAuthenticated || (!!auth.user && !userLoading) || !!appUser;
 
   const clearClientStorage = () => {
     try {
@@ -33,8 +30,7 @@ export default function OidcAuthPanel() {
   const signOutRedirect = async () => {
     const clientId = "2a56v5hnl5nn65tho958c2rcj3";
     const logoutUri = "https://anirank.ie/";
-    const cognitoDomain =
-      "https://eu-west-1ce1rf5nox.auth.eu-west-1.amazoncognito.com";
+    const cognitoDomain = "https://eu-west-1ce1rf5nox.auth.eu-west-1.amazoncognito.com";
     try {
       await auth.removeUser();
     } catch {
