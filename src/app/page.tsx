@@ -67,7 +67,7 @@ export default function Home() {
                   className="h-8 w-1 bg-blue-500 rounded-full mr-4"
                   style={{ backgroundColor: "#3b82f6" }}
                 ></div>
-                <h2 className="text-3xl font-bold text-white">Trending Anime</h2>
+                <h2 className="text-3xl font-bold text-white">Popular Anime</h2>
               </div>
               <ContentCarousel
                 data={mostPopularAnime}
