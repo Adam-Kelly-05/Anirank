@@ -3,11 +3,10 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Anime } from "@/types/Anime";
 
-export default function AnimeCard(item: Anime) {
+export default function EpisodeCard(item: Anime) {
   const router = useRouter();
 
   return (

@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import AnimeReviewsSection from "@/components/AnimeReviewsSection";
 import Image from "next/image";
 import AddReviewForm from "@/components/AddReviewForm";
+import ContentCarousel from "@/components/AnimeCarousel";
+import EpisodeCard from "@/components/EpisodeCard";
+import mostPopularAnime from "../../../../public/16MostPopularAnime.json";
 
 export const dynamicParams = false;
 export const dynamic = "error";
@@ -127,6 +130,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </section>
 
           <AnimeReviewsSection animeId={anime.animeId} />
+
+              <ContentCarousel
+                data={mostPopularAnime}
+                render={(item) => <EpisodeCard {...(item as Anime)} />}
+              />
+
         </div>
       );
     }
