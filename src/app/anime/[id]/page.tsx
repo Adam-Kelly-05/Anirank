@@ -136,7 +136,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           <section className="mt-10">
             <h2 className="text-2xl font-bold mb-4">Episodes</h2>
             {/* Using anime data as placeholder episodes */}
-            <EpisodeCarousel items={[anime]} />
+            <EpisodeCarousel items={mostPopularAnime} />
           </section>
 
 
