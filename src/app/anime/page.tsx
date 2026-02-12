@@ -1,6 +1,7 @@
 "use client";
 import AnimeGrid from "@/components/AnimeGrid";
 import GenreFilter from "@/components/GenreFilter";
+import TopAnime from "@/components/TopAnime";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -39,6 +40,13 @@ export default function AboutPage() {
           <AnimeGrid genre={selectedGenre} limit={52} />
         </div>
       </section>
+      
+      {/* Anime List Section */}
+      <section className="py-12">
+        <TopAnime />
+      </section>
+      
     </div>
+
   );
 }
