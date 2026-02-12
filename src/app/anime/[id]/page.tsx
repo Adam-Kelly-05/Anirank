@@ -6,6 +6,8 @@ import AddReviewForm from "@/components/AddReviewForm";
 import ContentCarousel from "@/components/AnimeCarousel";
 import EpisodeCard from "@/components/EpisodeCard";
 import mostPopularAnime from "../../../../public/16MostPopularAnime.json";
+import EpisodeCarousel from "@/components/EpisodeCarousel";
+
 
 export const dynamicParams = false;
 export const dynamic = "error";
@@ -130,11 +132,13 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </section>
 
           <AnimeReviewsSection animeId={anime.animeId} />
+          
+          <section className="mt-10">
+            <h2 className="text-2xl font-bold mb-4">Episodes</h2>
+            {/* Using anime data as placeholder episodes */}
+            <EpisodeCarousel items={[anime]} />
+          </section>
 
-              <ContentCarousel
-                data={mostPopularAnime}
-                render={(item) => <EpisodeCard {...(item as Anime)} />}
-              />
 
         </div>
       );
