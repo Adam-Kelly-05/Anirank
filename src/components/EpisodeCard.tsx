@@ -34,8 +34,11 @@ export default function EpisodeCard(item: Anime) {
           </div>
           <div className="p-4 space-y-2 flex-1 flex flex-col">
             <h3 className="font-bold text-lg text-foreground leading-tight line-clamp-2 hover:text-primary transition-colors">
-              {item.title_english}
+              Episode:
             </h3>
+            <p className="text-sm text-muted-foreground font-medium line-clamp-1">
+              {item.title_english}
+            </p>
             <p className="text-sm text-muted-foreground font-medium line-clamp-1">
               {item.title_japanese}
             </p>
