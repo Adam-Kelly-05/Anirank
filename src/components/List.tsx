@@ -2,13 +2,15 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface RankedListProps {
   items: {
     title: string;
     imageUrl: string;
+    animeId: number;
   }[];
-  onAdd: (item: { title: string; imageUrl: string }) => void;
+  onAdd: (item: { title: string; imageUrl: string; animeId: number }) => void;
 }
 
 export default function RankedList({ items, onAdd }: RankedListProps) {
@@ -20,6 +22,7 @@ export default function RankedList({ items, onAdd }: RankedListProps) {
             key={index}
             className="flex items-center gap-4 p-3 border rounded-lg bg-background shadow-sm"
           >
+          <Link href={`/anime/${item.animeId}`} className="flex items-center gap-4 flex-1">
             <Image
               src={item.imageUrl}
               alt={item.title}
@@ -27,8 +30,8 @@ export default function RankedList({ items, onAdd }: RankedListProps) {
               height={50}
               className="rounded object-cover"
             />
-
-            <span className="font-medium flex-1">{item.title}</span>
+            
+            <span className="font-medium flex-1">{item.title}</span></Link>
 
             {/* Add button */}
             <button

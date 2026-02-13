@@ -29,9 +29,10 @@ export default function TopTenAnimeList() {
   const listItems = animes.map((anime) => ({
     title: anime.title_english || anime.title_japanese || "Unknown Title",
     imageUrl: anime.image,
+    animeId: anime.animeId,
   }));
 
-  const handleAdd = (item: { title: string; imageUrl: string }) => {
+  const handleAdd = (item: { title: string; imageUrl: string; animeId: number }) => {
     console.log("Adding anime:", item);
     //need to add logic to add anime to user's list
   };
