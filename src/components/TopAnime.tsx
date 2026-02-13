@@ -20,7 +20,9 @@ export default function TopTenAnimeList() {
 
       const sorted = [...data].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
 
-      setAnimes(sorted.slice(0, 10));
+      const normalized = sorted.map((a) => ({ ...a, animeId: a.animeId ?? a.id,}));
+
+      setAnimes(normalized.slice(0, 10));
     }
 
     fetchTopTen();

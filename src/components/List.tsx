@@ -31,7 +31,8 @@ export default function RankedList({ items, onAdd }: RankedListProps) {
               className="rounded object-cover"
             />
             
-            <span className="font-medium flex-1">{item.title}</span></Link>
+            <span className="font-medium flex-1">{item.title}</span>
+            </Link>
 
             {/* Add button */}
             <button
