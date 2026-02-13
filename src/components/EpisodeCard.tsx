@@ -10,7 +10,7 @@ export default function EpisodeCard(item: Anime) {
   const router = useRouter();
 
   return (
-    <div className="relative w-[200px] h-full overflow-visible transition-transform duration-200 will-change-transform hover:scale-105 hover:z-20 isolate">
+    <div className="relative w-[220px] h-full overflow-visible transition-transform duration-200 will-change-transform hover:scale-105 hover:z-20 isolate">
       <Card
         onClick={() => router.push(`/anime/${item.animeId}`)}
         className={cn(
@@ -26,23 +26,19 @@ export default function EpisodeCard(item: Anime) {
               alt={item.title_english || item.title_japanese || "Anime image"}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 200px"
+              sizes="(max-width: 768px) 100vw, 220px"
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-primary/5 to-transparent" />
             <div className="absolute top-2 right-2"></div>
           </div>
           <div className="p-4 space-y-2 flex-1 flex flex-col">
-            <h3 className="font-bold text-lg text-foreground leading-tight line-clamp-2 hover:text-primary transition-colors">
-              Episode:
-            </h3>
             <p className="text-sm text-muted-foreground font-medium line-clamp-1">
               {item.title_english}
             </p>
-            <p className="text-sm text-muted-foreground font-medium line-clamp-1">
-              {item.title_japanese}
-            </p>
-            <p className="text-sm text-muted-foreground">Aired: {item.aired}</p>
+            <h3 className="font-bold text-lg text-foreground leading-tight line-clamp-2 hover:text-primary transition-colors">
+              Episode: {item.episodes ? item.episodes : "N/A"}
+            </h3>
             <p className="text-sm text-card-foreground/80 line-clamp-3">
               {item.synopsis?.length > 180
                 ? `${item.synopsis.slice(0, 177)}...`
