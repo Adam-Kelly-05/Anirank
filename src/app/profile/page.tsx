@@ -9,6 +9,7 @@ import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
 import { EditUserForm } from "@/components/EditUserForm";
+import { useUserLists } from "../UserListsContext";
 
 export default function ProfilePage() {
   const auth = useAuth();
