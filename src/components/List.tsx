@@ -10,7 +10,7 @@ interface RankedListProps {
     imageUrl: string;
     animeId: number;
   }[];
-  onAdd: (item: { title: string; imageUrl: string; animeId: number }) => void;
+  onAdd?: ((item: { title: string; imageUrl: string; animeId: number }) => void) | undefined;
 }
 
 export default function RankedList({ items, onAdd }: RankedListProps) {
@@ -35,12 +35,14 @@ export default function RankedList({ items, onAdd }: RankedListProps) {
             </Link>
 
             {/* Add button */}
+            {onAdd && (
             <button
               onClick={() => onAdd(item)}
               className="px-2 py-1 text-sm bg-blue-600 text-white rounded"
             >
               Add
             </button>
+            )}
           </li>
         ))}
       </ul>
