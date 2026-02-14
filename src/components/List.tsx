@@ -11,9 +11,10 @@ interface RankedListProps {
     animeId: number;
   }[];
   onAdd?: ((item: { title: string; imageUrl: string; animeId: number }) => void) | undefined;
+  onRemove?: (animeId: number) => void;
 }
 
-export default function RankedList({ items, onAdd }: RankedListProps) {
+export default function RankedList({ items, onAdd, onRemove }: RankedListProps) {
   return (
     <div className="max-w-2xl mx-auto">
       <ul className="space-y-3">
@@ -41,6 +42,15 @@ export default function RankedList({ items, onAdd }: RankedListProps) {
               className="px-2 py-1 text-sm bg-blue-600 text-white rounded"
             >
               Add
+            </button>
+            )}
+            {/* Remove button */}
+            {onRemove && (
+            <button
+              onClick={() => onRemove(item.animeId)}
+              className="px-2 py-1 text-sm bg-red-600 text-white rounded"
+            >
+              Remove
             </button>
             )}
           </li>
