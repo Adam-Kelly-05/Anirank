@@ -6,7 +6,8 @@ import { List } from "@/types/List";
 interface UserListsContextType {
   userLists: List[]; 
   addAnimeToList: (listId: number, animeId: number  ) => void; 
-    createList: (name: string, description?: string) => number; 
+    createList: (name: string, description?: string) => number;
+    removeAnimeFromList: (listId: number, animeId: number) => void;
 }
 
 const UserListsContext = createContext<UserListsContextType | undefined>(undefined);
@@ -22,7 +23,8 @@ export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     useEffect(() => {
     localStorage.setItem("userLists", JSON.stringify(userLists));
   }, [userLists]);
-
+  
+  //function to create a new list
     const createList = (name: string, description?: string) => {
     const newList: List = {
       listId: Date.now(), 
@@ -36,7 +38,8 @@ export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setUserLists((prev) => [...prev, newList]);
     return newList.listId;
   };
-
+  
+  //function to add anime to a list
     const addAnimeToList = (listId: number, animeId: number) => {
     setUserLists((prev) =>
       prev.map((list) =>
@@ -51,11 +54,25 @@ export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       )
     );
   };
+  //function to remove anime from a list
+  const removeAnimeFromList = (listId: number, animeId: number) => {
+    setUserLists((prev) =>
+      prev.map((list) =>
+        list.listId === listId
+          ? {
+              ...list,
+              items: list.items.filter((id) => id !== animeId),
+            }
+          : list
+      )
+    );
+  };
 
   return (
     <UserListsContext.Provider value={{ userLists,
         addAnimeToList,
-        createList
+        createList,
+        removeAnimeFromList
  }}>
       {children}
     </UserListsContext.Provider>
