@@ -10,6 +10,7 @@ import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
 import { EditUserForm } from "@/components/EditUserForm";
 import { useUserLists } from "../UserListsContext";
+import ListFilter from "@/components/ListFilter";
 
 export default function ProfilePage() {
   const auth = useAuth();
@@ -71,6 +72,13 @@ export default function ProfilePage() {
       </main>
     );
   }
+
+  const { userLists } = useUserLists(); 
+  const defaultLists = ["Favourites", "Watching", "Watched", "Plan to Watch"]; 
+  const allListNames = [ ...defaultLists, ...userLists.map((l) => l.name), ]; 
+  const [selectedList, setSelectedList] = React.useState<string | null>(null); 
+  const [showCreateModal, setShowCreateModal] = React.useState(false); 
+  const [newListName, setNewListName] = React.useState("");
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -165,6 +173,17 @@ export default function ProfilePage() {
               <div className="text-gray-400">Average Score</div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* List Filter Section */}
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-6">My Lists</h2>        
+          <ListFilter        
+          lists={allListNames}         
+          selectedList={selectedList}         
+          onSelect={setSelectedList}  
+          onCreateList={() => setShowCreateModal(true)}          
+          />
         </div>
 
         {/* Reviews Section */}
