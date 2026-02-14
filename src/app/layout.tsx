@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SearchBar from "@/components/SearchBar";
 import Providers from "./providers";
+import { UserListsProvider } from "./UserListsContext";
 
 export default function RootLayout({
   children,
@@ -17,8 +18,9 @@ export default function RootLayout({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <html lang="en" className="dark">
-      <body className="bg-background text-foreground min-h-screen">
+      <body className="bg-background text-foreground min-h-screen">        
         <Providers>
+          <UserListsProvider>
           {/* Navigation Bar */}
           <nav
             className="bg-blue-600 text-white shadow-lg border-b-2 border-blue-500"
@@ -244,6 +246,9 @@ export default function RootLayout({
               </div>
             </div>
           </footer>
+                      {children}
+
+          </UserListsProvider>
         </Providers>
       </body>
     </html>
