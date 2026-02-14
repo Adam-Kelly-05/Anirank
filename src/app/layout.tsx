@@ -246,8 +246,8 @@ export default function RootLayout({
               </div>
             </div>
           </footer>
-                      {children}
 
+          {children}
           </UserListsProvider>
         </Providers>
       </body>
