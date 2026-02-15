@@ -27,7 +27,7 @@ export default function ListFilter({ lists, selectedList, onSelect, onCreateList
           </button>
         ))}
         <button onClick={onCreateList} className="px-3 py-1 text-xs rounded-full border border-blue-800 text-gray-100 hover:bg-blue-700 hover:text-white transition" >
-          + Create List
+          Create List
         </button>
       </div>
     </div>

@@ -69,7 +69,7 @@ export default function TopTenAnimeList() {
 
             {!creatingList ? (
               <>
-                <h2 className="text-xl font-bold mb-4">Add to List</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
 
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {userLists.map((list) => (
@@ -77,7 +77,7 @@ export default function TopTenAnimeList() {
                         addAnimeToList(list.listId, selectedAnime!);
                         setShowListSelector(false);
                       }}
-                      className="w-full text-left px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                      className="w-full text-left px-3 py-2 rounded bg-blue-600 text-gray-100 hover:bg-blue-800 border border-blue-500"
                     >
                       {list.name}
                     </button>
@@ -85,23 +85,26 @@ export default function TopTenAnimeList() {
                 </div>
 
                 <button onClick={() => setCreatingList(true)}
-                  className="mt-4 w-full px-3 py-2 rounded bg-green-700 text-white hover:bg-green-800"
+                  className="mt-4 w-full px-3 py-2 rounded border border-blue-500 bg-blue-700 text-gray-100 hover:bg-blue-800"
                 >
                   Create New List
                 </button>
 
                 <button onClick={() => setShowListSelector(false)}
-                  className="mt-2 w-full px-3 py-2 rounded bg-red-300 dark:bg-red-700 text-white"
+                  className="mt-2 w-full px-3 py-2 rounded border border-blue-500 bg-blue-800 text-gray-100 hover:bg-blue-900"
                 >
                   Cancel
                 </button>
               </>
             ) : (
               <>
-                <h2 className="text-xl font-bold mb-4">Create New List</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-100">Create New List</h2>
 
-                <input type="text" placeholder="List name" value={newListName} onChange={(e) => setNewListName(e.target.value)}
-                  className="w-full px-3 py-2 rounded bg-blue-800 text-white mb-3"
+                <input type="text" 
+                placeholder="List name" 
+                value={newListName} 
+                onChange={(e) => setNewListName(e.target.value)}
+                className="w-full px-3 py-2 rounded bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"
                 />
 
                 <button onClick={() => {
@@ -111,12 +114,12 @@ export default function TopTenAnimeList() {
                     setShowListSelector(false);
                     setNewListName("");
                   }}
-                  className="w-full px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"                >
+                  className="w-full px-3 py-2 rounded bg-blue-600 text-gray-100 hover:bg-blue-800"                >
                   Create
                 </button>
 
                 <button onClick={() => setCreatingList(false)}
-                  className="mt-2 w-full px-3 py-2 rounded bg-gray-300 dark:bg-gray-700 text-white"
+                  className="mt-2 w-full px-3 py-2 rounded border border-blue-500 text-gray-100 hover:bg-blue-800"
                 >
                   Back
                 </button>
