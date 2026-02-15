@@ -69,7 +69,7 @@ export default function TopTenAnimeList() {
 
             {!creatingList ? (
               <>
-                <h2 className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">Add to List</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
 
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {userLists.map((list) => (
