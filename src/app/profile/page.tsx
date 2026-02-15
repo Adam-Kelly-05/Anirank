@@ -75,7 +75,7 @@ export default function ProfilePage() {
   }
 
   {/* list filter state and anime fetching logic */}
-  const { userLists, createList, removeAnimeFromList } = useUserLists(); 
+  const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists(); 
   const defaultLists = [ "Favourites", "Watching", "Watched", "Plan to Watch" ]; 
   const allListNames = [ 
     ...defaultLists,    
@@ -85,12 +85,13 @@ export default function ProfilePage() {
   const [selectedList, setSelectedList] = React.useState<string | null>(null); 
   const [showCreateModal, setShowCreateModal] = React.useState(false); 
   const [newListName, setNewListName] = React.useState("");
+  const selectedListObject = userLists.find(l => l.name === selectedList);
 
   const [animeItems, setAnimeItems] = React.useState<any[]>([]); 
   React.useEffect(() => { 
     if (!selectedList) return;
-    const list = userLists.find((l) => l.name === selectedList); 
-    if (!list) return; 
+    if (!selectedListObject) return;
+    const list = selectedListObject;
     async function loadAnime() { 
       const results = []; 
       for (const id of list?.items || []) { 
@@ -99,7 +100,8 @@ export default function ProfilePage() {
         results.push(anime); } 
       setAnimeItems(results); 
     } 
-    loadAnime(); }, [selectedList, userLists]);
+    loadAnime(); 
+  }, [selectedList, userLists, selectedListObject]);
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -205,6 +207,24 @@ export default function ProfilePage() {
           onSelect={setSelectedList}  
           onCreateList={() => setShowCreateModal(true)}          
           />
+
+          {/* Delete list button */}         
+          {selectedList && (
+            <button
+            onClick={() => {      
+              const list = userLists.find(l => l.name === selectedList);      
+              if (!list) return;
+              
+              if (confirm(`Delete list "${selectedList}"?`)) {
+                deleteList(list.listId);
+                setSelectedList(null);
+              }
+            }}
+            className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+            >
+              Delete List
+              </button>
+            )}
         </div>
 
       {/* Display Anime in selected list */}
@@ -220,14 +240,14 @@ export default function ProfilePage() {
           })
         )} 
         onRemove={(animeId) => { 
-          const list = userLists.find((l) => l.name === selectedList); 
-          if (!list) 
-            return; 
-          removeAnimeFromList(list.listId, animeId); 
-          }} 
-          /> 
-          </div> 
-        )}
+          if (!selectedListObject) return; 
+          if (confirm("Remove this anime from the list?")) { 
+            removeAnimeFromList(selectedListObject.listId, animeId); 
+          } 
+        }}
+        /> 
+        </div>
+      )}
 
       {/* create list modal */}
         {showCreateModal && (
