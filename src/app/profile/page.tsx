@@ -26,6 +26,34 @@ export default function ProfilePage() {
   const [averageScore, setAverageScore] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
 
+    const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists(); 
+  const defaultLists = [ "Favourites", "Watching", "Watched", "Plan to Watch" ]; 
+  const allListNames = [ 
+    ...defaultLists,    
+    ...userLists.map((l) => l.name), 
+  ]; 
+
+  const [selectedList, setSelectedList] = React.useState<string | null>(null); 
+  const [showCreateModal, setShowCreateModal] = React.useState(false); 
+  const [newListName, setNewListName] = React.useState("");
+  const selectedListObject = userLists.find(l => l.name === selectedList);
+
+  const [animeItems, setAnimeItems] = React.useState<any[]>([]); 
+  React.useEffect(() => { 
+    if (!selectedList) return;
+    if (!selectedListObject) return;
+    const list = selectedListObject;
+    async function loadAnime() { 
+      const results = []; 
+      for (const id of list?.items || []) { 
+        const res = await fetch(`/api/anime/${id}`); 
+        const anime = await res.json(); 
+        results.push(anime); } 
+      setAnimeItems(results); 
+    } 
+    loadAnime(); 
+  }, [selectedList, userLists, selectedListObject]);
+
   if (auth.isLoading) {
     return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
   }
@@ -73,35 +101,6 @@ export default function ProfilePage() {
       </main>
     );
   }
-
-  {/* list filter state and anime fetching logic */}
-  const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists(); 
-  const defaultLists = [ "Favourites", "Watching", "Watched", "Plan to Watch" ]; 
-  const allListNames = [ 
-    ...defaultLists,    
-    ...userLists.map((l) => l.name), 
-  ]; 
-
-  const [selectedList, setSelectedList] = React.useState<string | null>(null); 
-  const [showCreateModal, setShowCreateModal] = React.useState(false); 
-  const [newListName, setNewListName] = React.useState("");
-  const selectedListObject = userLists.find(l => l.name === selectedList);
-
-  const [animeItems, setAnimeItems] = React.useState<any[]>([]); 
-  React.useEffect(() => { 
-    if (!selectedList) return;
-    if (!selectedListObject) return;
-    const list = selectedListObject;
-    async function loadAnime() { 
-      const results = []; 
-      for (const id of list?.items || []) { 
-        const res = await fetch(`/api/anime/${id}`); 
-        const anime = await res.json(); 
-        results.push(anime); } 
-      setAnimeItems(results); 
-    } 
-    loadAnime(); 
-  }, [selectedList, userLists, selectedListObject]);
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
