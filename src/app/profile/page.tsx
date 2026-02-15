@@ -34,6 +34,10 @@ export default function ProfilePage() {
     ...defaultLists,    
     ...userLists.map((l) => l.name), 
   ]; 
+  const combinedLists = [
+  ...defaultLists.map(name => ({ name, isDefault: true })),
+  ...userLists.map(list => ({ name: list.name, listId: list.listId, isDefault: false }))
+];
 
   const [selectedList, setSelectedList] = React.useState<string | null>(null); 
   const [showCreateModal, setShowCreateModal] = React.useState(false); 

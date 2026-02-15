@@ -15,6 +15,21 @@ export default function TopTenAnimeList() {
   const [newListName, setNewListName] = React.useState("");
   const [creatingList, setCreatingList] = React.useState(false);
 
+  const defaultLists = [ "Favourites", "Watching", "Completed", "Plan to Watch"];
+
+const combinedLists = [
+  ...defaultLists.map(name => ({ 
+    name, 
+    listId: undefined, 
+    isDefault: true 
+  })),
+  ...userLists.map(list => ({
+    name: list.name,
+    listId: list.listId,
+    isDefault: false
+  }))
+];
+
   React.useEffect(() => {
     async function fetchTopTen() {
       const url = new URL("https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime");
@@ -69,12 +84,18 @@ export default function TopTenAnimeList() {
 
             {!creatingList ? (
               <>
-                <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
+                <h2 className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">Add to List</h2>
 
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {userLists.map((list) => (
-                    <button key={list.listId} onClick={() => {
-                        addAnimeToList(list.listId, selectedAnime!);
+                  {combinedLists.map((list) => ( 
+                    <button key={list.name} 
+                    onClick={() => { 
+                      let listId = list.listId; 
+
+                      if (!listId) { 
+                        listId = createList(list.name); 
+                      }
+                        addAnimeToList(listId, selectedAnime!);
                         setShowListSelector(false);
                       }}
                       className="w-full text-left px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
