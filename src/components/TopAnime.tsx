@@ -5,30 +5,16 @@ import RankedList from "@/components/RankedList";
 import { Anime } from "@/types/Anime";
 import List from "./List";
 import { useUserLists } from "@/app/UserListsContext";
+import ListSelectorModal from "@/components/ListSelectorModal";
 
 export default function TopTenAnimeList() {
   const [animes, setAnimes] = React.useState<Anime[]>([]);
-  const { userLists, addAnimeToList, createList } = useUserLists()!;  
+  const { userLists } = useUserLists()!;  
 
   const [selectedAnime, setSelectedAnime] = React.useState<number | null>(null);
   const [showListSelector, setShowListSelector] = React.useState(false);
-  const [newListName, setNewListName] = React.useState("");
-  const [creatingList, setCreatingList] = React.useState(false);
 
   const defaultLists = [ "Favourites", "Watching", "Completed", "Plan to Watch"];
-
-const combinedLists = [
-  ...defaultLists.map(name => ({ 
-    name, 
-    listId: undefined, 
-    isDefault: true 
-  })),
-  ...userLists.map(list => ({
-    name: list.name,
-    listId: list.listId,
-    isDefault: false
-  }))
-];
 
   React.useEffect(() => {
     async function fetchTopTen() {
@@ -75,83 +61,14 @@ const combinedLists = [
           <List items={listItems} onAdd={handleAdd} />
         </div>
       </div>
-    </section>    
-
-    {/* List selector modal */}
-    {showListSelector && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl">
-
-            {!creatingList ? (
-              <>
-                <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
-
-                <div className="space-y-2 max-h-48 overflow-y-auto custom-scroll flex flex-col items-center">
-                  {combinedLists.map((list) => ( 
-                    <button key={list.name} 
-                    onClick={() => { 
-                      let existing = userLists.find(l => l.name === list.name);
-
-                      let listId = existing?.listId; 
-
-                      if (!listId) { 
-                        listId = createList(list.name); 
-                      }
-                        addAnimeToList(listId, selectedAnime!);
-                        setShowListSelector(false);
-                      }}
-                      className="w-80 text-center text-left px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
-                    >
-                      {list.name}
-                    </button>
-                  ))}
-                </div>
-
-                <button onClick={() => setCreatingList(true)}
-                  className="mt-4 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
-                >
-                  Create New List
-                </button>
-
-                <button onClick={() => setShowListSelector(false)}
-                  className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-900 transition"
-                >
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <>
-                <h2 className="text-xl font-bold mb-4 text-gray-100">Create New List</h2>
-
-                <input type="text" 
-                placeholder="List name" 
-                value={newListName} 
-                onChange={(e) => setNewListName(e.target.value)}
-                className="w-full px-3 py-2 rounded bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"
-                />
-
-                <button onClick={() => {
-                    const newId = createList(newListName);
-                    addAnimeToList(newId, selectedAnime!);
-                    setCreatingList(false);
-                    setShowListSelector(false);
-                    setNewListName("");
-                  }}
-                  className="w-full px-3 py-2 text-xs rounded-full bg-blue-600 text-gray-100 hover:bg-blue-800 transition"                >
-                  Create
-                </button>
-
-                <button onClick={() => setCreatingList(false)}
-                  className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
-                >
-                  Back
-                </button>
-              </>
-            )}
-
-          </div>
-        </div>
-      )}
+    </section>   
+    
+    <ListSelectorModal  
+    show={showListSelector}
+    onClose={() => setShowListSelector(false)}
+    selectedAnime={selectedAnime}
+    defaultLists={defaultLists}
+/>
     </>
   );
 }
