@@ -208,24 +208,6 @@ export default function ProfilePage() {
           onSelect={setSelectedList}  
           onCreateList={() => setShowCreateModal(true)}          
           />
-
-          {/* Delete list button */}         
-          {selectedList && (
-            <button
-            onClick={() => {      
-              const list = userLists.find(l => l.name === selectedList);      
-              if (!list) return;
-              
-              if (confirm(`Delete list "${selectedList}"?`)) {
-                deleteList(list.listId);
-                setSelectedList(null);
-              }
-            }}
-            className="px-3 py-1 bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
-            >
-              Delete List
-              </button>
-            )}
         </div>
 
       {/* Display Anime in selected list */}
@@ -246,14 +228,31 @@ export default function ProfilePage() {
             removeAnimeFromList(selectedListObject.listId, animeId); 
           } 
         }}
-        /> 
+        />
+        {/* Delete list button */}         
+          {selectedList && (
+            <button
+            onClick={() => {      
+              const list = userLists.find(l => l.name === selectedList);      
+              if (!list) return;
+              
+              if (confirm(`Delete list "${selectedList}"?`)) {
+                deleteList(list.listId);
+                setSelectedList(null);
+              }
+            }}
+            className="px-3 py-1 bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
+            >
+              Delete List
+              </button>
+            )}
         </div>
       )}
 
       {/* create list modal */}
         {showCreateModal && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-            <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl">
+            <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl z-50">
               
               <h2 className="text-xl font-bold mb-4 text-gray-100">Create New List</h2>
               <input        
@@ -261,7 +260,7 @@ export default function ProfilePage() {
               placeholder="List name"
               value={newListName}        
               onChange={(e) => setNewListName(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"       
+              className="w-full px-3 py-2 rounded-full bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"       
               />      
               <button 
               onClick={() => {          
