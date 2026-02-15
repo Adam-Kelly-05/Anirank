@@ -90,7 +90,9 @@ const combinedLists = [
                   {combinedLists.map((list) => ( 
                     <button key={list.name} 
                     onClick={() => { 
-                      let listId = list.listId; 
+                      let existing = userLists.find(l => l.name === list.name);
+
+                      let listId = existing?.listId; 
 
                       if (!listId) { 
                         listId = createList(list.name); 
@@ -98,7 +100,7 @@ const combinedLists = [
                         addAnimeToList(listId, selectedAnime!);
                         setShowListSelector(false);
                       }}
-                      className="w-40 text-center text-left px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
+                      className="w-80 text-center text-left px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
                     >
                       {list.name}
                     </button>
