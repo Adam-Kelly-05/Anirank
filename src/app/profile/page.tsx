@@ -221,7 +221,7 @@ export default function ProfilePage() {
                 setSelectedList(null);
               }
             }}
-            className="px-3 py-1 bg-red-600 rounded-lg text-white hover:bg-red-700"
+            className="px-3 py-1 text-xs bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
             >
               Delete List
               </button>

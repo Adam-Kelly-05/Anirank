@@ -64,12 +64,12 @@ export default function TopTenAnimeList() {
 
     {/* List selector modal */}
     {showListSelector && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl w-80">
 
             {!creatingList ? (
               <>
-                <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
+                <h2 className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">Add to List</h2>
 
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {userLists.map((list) => (
@@ -77,7 +77,7 @@ export default function TopTenAnimeList() {
                         addAnimeToList(list.listId, selectedAnime!);
                         setShowListSelector(false);
                       }}
-                      className="w-full text-left px-3 py-2 rounded bg-blue-600 text-gray-100 hover:bg-blue-800 border border-blue-500"
+                      className="w-full text-left px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
                     >
                       {list.name}
                     </button>
@@ -85,13 +85,13 @@ export default function TopTenAnimeList() {
                 </div>
 
                 <button onClick={() => setCreatingList(true)}
-                  className="mt-4 w-full px-3 py-2 rounded border border-blue-500 bg-blue-700 text-gray-100 hover:bg-blue-800"
+                  className="mt-4 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
                 >
                   Create New List
                 </button>
 
                 <button onClick={() => setShowListSelector(false)}
-                  className="mt-2 w-full px-3 py-2 rounded border border-blue-500 bg-blue-800 text-gray-100 hover:bg-blue-900"
+                  className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-900 transition"
                 >
                   Cancel
                 </button>
@@ -114,12 +114,12 @@ export default function TopTenAnimeList() {
                     setShowListSelector(false);
                     setNewListName("");
                   }}
-                  className="w-full px-3 py-2 rounded bg-blue-600 text-gray-100 hover:bg-blue-800"                >
+                  className="w-full px-3 py-2 text-xs rounded-full bg-blue-600 text-gray-100 hover:bg-blue-800 transition"                >
                   Create
                 </button>
 
                 <button onClick={() => setCreatingList(false)}
-                  className="mt-2 w-full px-3 py-2 rounded border border-blue-500 text-gray-100 hover:bg-blue-800"
+                  className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
                 >
                   Back
                 </button>
