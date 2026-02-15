@@ -1,5 +1,5 @@
 "use client";
-
+console.log("ProfilePage rendering");
 const genres = [
   "Action",
   "Fantasy",

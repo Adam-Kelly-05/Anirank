@@ -26,7 +26,7 @@ export default function ProfilePage() {
   const [averageScore, setAverageScore] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
 
-    const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists(); 
+  const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists(); 
   const defaultLists = [ "Favourites", "Watching", "Watched", "Plan to Watch" ]; 
   const allListNames = [ 
     ...defaultLists,    
