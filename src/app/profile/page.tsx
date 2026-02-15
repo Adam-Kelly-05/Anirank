@@ -221,7 +221,7 @@ export default function ProfilePage() {
                 setSelectedList(null);
               }
             }}
-            className="px-3 py-1 text-xs bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
+            className="px-3 py-1 bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
             >
               Delete List
               </button>
@@ -252,16 +252,16 @@ export default function ProfilePage() {
 
       {/* create list modal */}
         {showCreateModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl">
               
-              <h2 className="text-xl font-bold mb-4">Create New List</h2>
+              <h2 className="text-xl font-bold mb-4 text-gray-100">Create New List</h2>
               <input        
               type="text"        
               placeholder="List name"
               value={newListName}        
               onChange={(e) => setNewListName(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-gray-800 text-white mb-3"       
+              className="w-full px-3 py-2 rounded bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"       
               />      
               <button 
               onClick={() => {          
@@ -270,14 +270,14 @@ export default function ProfilePage() {
                 setShowCreateModal(false);
                 setNewListName("");        
               }}        
-              className="w-full px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"      
+              className="mt-4 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"      
               >        
               Create
               </button>      
               
               <button        
               onClick={() => setShowCreateModal(false)}        
-              className="mt-2 w-full px-3 py-2 rounded bg-gray-300 dark:bg-gray-700"      
+              className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"      
               >        
               Cancel      
               </button>
