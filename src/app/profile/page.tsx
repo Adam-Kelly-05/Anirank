@@ -207,7 +207,7 @@ export default function ProfilePage() {
         <div>
           <h2 className="text-3xl font-bold text-white mb-6">My Lists</h2>        
           <ListFilter        
-          lists={allListNames}         
+          lists={userLists.map(l => l.name)}         
           selectedList={selectedList}         
           onSelect={setSelectedList}  
           onCreateList={() => setShowCreateModal(true)}          
