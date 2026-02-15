@@ -11,6 +11,7 @@ import OidcAuthPanel from "@/components/OidcAuthPanel";
 import { EditUserForm } from "@/components/EditUserForm";
 import { useUserLists } from "../UserListsContext";
 import ListFilter from "@/components/ListFilter";
+import List from "@/components/List";
 
 export default function ProfilePage() {
   const auth = useAuth();
@@ -73,12 +74,32 @@ export default function ProfilePage() {
     );
   }
 
-  const { userLists } = useUserLists(); 
-  const defaultLists = ["Favourites", "Watching", "Watched", "Plan to Watch"]; 
-  const allListNames = [ ...defaultLists, ...userLists.map((l) => l.name), ]; 
+  {/* list filter state and anime fetching logic */}
+  const { userLists, createList, removeAnimeFromList } = useUserLists(); 
+  const defaultLists = [ "Favourites", "Watching", "Watched", "Plan to Watch" ]; 
+  const allListNames = [ 
+    ...defaultLists,    
+    ...userLists.map((l) => l.name), 
+  ]; 
+
   const [selectedList, setSelectedList] = React.useState<string | null>(null); 
   const [showCreateModal, setShowCreateModal] = React.useState(false); 
   const [newListName, setNewListName] = React.useState("");
+
+  const [animeItems, setAnimeItems] = React.useState<any[]>([]); 
+  React.useEffect(() => { 
+    if (!selectedList) return;
+    const list = userLists.find((l) => l.name === selectedList); 
+    if (!list) return; 
+    async function loadAnime() { 
+      const results = []; 
+      for (const id of list?.items || []) { 
+        const res = await fetch(`/api/anime/${id}`); 
+        const anime = await res.json(); 
+        results.push(anime); } 
+      setAnimeItems(results); 
+    } 
+    loadAnime(); }, [selectedList, userLists]);
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -175,7 +196,7 @@ export default function ProfilePage() {
           </Card>
         </div>
 
-        {/* List Filter Section */}
+      {/* List Filter Section */}
         <div>
           <h2 className="text-3xl font-bold text-white mb-6">My Lists</h2>        
           <ListFilter        
@@ -185,6 +206,62 @@ export default function ProfilePage() {
           onCreateList={() => setShowCreateModal(true)}          
           />
         </div>
+
+      {/* Display Anime in selected list */}
+      {selectedList && ( 
+        <div className="mt-6"> 
+        <h3 className="text-2xl font-bold text-white mb-4"> 
+          {selectedList} 
+        </h3> 
+        <List items={animeItems.map((anime) => ({ 
+          title: anime.title_english || anime.title_japanese, 
+          imageUrl: anime.image, 
+          animeId: anime.animeId 
+          })
+        )} 
+        onRemove={(animeId) => { 
+          const list = userLists.find((l) => l.name === selectedList); 
+          if (!list) return; removeAnimeFromList(list.listId, animeId); 
+          }} 
+          /> 
+          </div> 
+        )}
+
+      {/* create list modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+              
+              <h2 className="text-xl font-bold mb-4">Create New List</h2>
+              <input        
+              type="text"        
+              placeholder="List name"
+              value={newListName}        
+              onChange={(e) => setNewListName(e.target.value)}
+              className="w-full px-3 py-2 rounded bg-gray-800 text-white mb-3"       
+              />      
+              <button 
+              onClick={() => {          
+                const id = createList(newListName);
+                setSelectedList(newListName);
+                setShowCreateModal(false);
+                setNewListName("");        
+              }}        
+              className="w-full px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"      
+              >        
+              Create
+              </button>      
+              
+              <button        
+              onClick={() => setShowCreateModal(false)}        
+              className="mt-2 w-full px-3 py-2 rounded bg-gray-300 dark:bg-gray-700"      
+              >        
+              Cancel      
+              </button>
+              </div>
+              </div>
+            )}
+
 
         {/* Reviews Section */}
         <div>
