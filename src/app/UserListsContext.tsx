@@ -8,6 +8,7 @@ interface UserListsContextType {
   addAnimeToList: (listId: number, animeId: number  ) => void; 
     createList: (name: string, description?: string) => number;
     removeAnimeFromList: (listId: number, animeId: number) => void;
+    deleteList: (listId: number) => void;
 }
 
 const UserListsContext = createContext<UserListsContextType | undefined>(undefined);
@@ -67,12 +68,18 @@ export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       )
     );
   };
+  
+  //function to delete a list
+  const deleteList = (listId: number) => {
+    setUserLists((prev) => prev.filter((list) => list.listId !== listId));
+  };
 
   return (
     <UserListsContext.Provider value={{ userLists,
         addAnimeToList,
         createList,
-        removeAnimeFromList
+        removeAnimeFromList,
+        deleteList
  }}>
       {children}
     </UserListsContext.Provider>

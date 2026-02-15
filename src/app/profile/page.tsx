@@ -221,7 +221,9 @@ export default function ProfilePage() {
         )} 
         onRemove={(animeId) => { 
           const list = userLists.find((l) => l.name === selectedList); 
-          if (!list) return; removeAnimeFromList(list.listId, animeId); 
+          if (!list) 
+            return; 
+          removeAnimeFromList(list.listId, animeId); 
           }} 
           /> 
           </div> 
