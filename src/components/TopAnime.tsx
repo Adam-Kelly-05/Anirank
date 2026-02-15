@@ -86,7 +86,7 @@ const combinedLists = [
               <>
                 <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
 
-                <div className="space-y-2 max-h-48 overflow-y-auto custom-scroll">
+                <div className="space-y-2 max-h-48 overflow-y-auto custom-scroll flex flex-col items-center">
                   {combinedLists.map((list) => ( 
                     <button key={list.name} 
                     onClick={() => { 
@@ -98,7 +98,7 @@ const combinedLists = [
                         addAnimeToList(listId, selectedAnime!);
                         setShowListSelector(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
+                      className="w-40 text-center text-left px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
                     >
                       {list.name}
                     </button>
