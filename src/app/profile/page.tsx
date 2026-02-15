@@ -14,6 +14,8 @@ import ListFilter from "@/components/ListFilter";
 import List from "@/components/List";
 
 export default function ProfilePage() {
+  console.log("ProfilePage rendered");
+
   const auth = useAuth();
   const userSub = auth.user?.profile?.sub as string | undefined;
   const {
@@ -219,7 +221,7 @@ export default function ProfilePage() {
                 setSelectedList(null);
               }
             }}
-            className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+            className="px-3 py-1 bg-red-600 rounded-lg text-white hover:bg-red-700"
             >
               Delete List
               </button>

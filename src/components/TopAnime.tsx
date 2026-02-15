@@ -61,7 +61,7 @@ export default function TopTenAnimeList() {
         </div>
       </div>
     </section>    
-      
+
     {/* List selector modal */}
     {showListSelector && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -85,13 +85,13 @@ export default function TopTenAnimeList() {
                 </div>
 
                 <button onClick={() => setCreatingList(true)}
-                  className="mt-4 w-full px-3 py-2 rounded bg-gray-700 text-white hover:bg-gray-600"
+                  className="mt-4 w-full px-3 py-2 rounded bg-green-700 text-white hover:bg-green-800"
                 >
-                  + Create New List
+                  Create New List
                 </button>
 
                 <button onClick={() => setShowListSelector(false)}
-                  className="mt-2 w-full px-3 py-2 rounded bg-gray-300 dark:bg-gray-700"
+                  className="mt-2 w-full px-3 py-2 rounded bg-red-300 dark:bg-red-700 text-white"
                 >
                   Cancel
                 </button>
@@ -101,7 +101,7 @@ export default function TopTenAnimeList() {
                 <h2 className="text-xl font-bold mb-4">Create New List</h2>
 
                 <input type="text" placeholder="List name" value={newListName} onChange={(e) => setNewListName(e.target.value)}
-                  className="w-full px-3 py-2 rounded bg-gray-800 text-white mb-3"
+                  className="w-full px-3 py-2 rounded bg-blue-800 text-white mb-3"
                 />
 
                 <button onClick={() => {
@@ -116,7 +116,7 @@ export default function TopTenAnimeList() {
                 </button>
 
                 <button onClick={() => setCreatingList(false)}
-                  className="mt-2 w-full px-3 py-2 rounded bg-gray-300 dark:bg-gray-700"
+                  className="mt-2 w-full px-3 py-2 rounded bg-gray-300 dark:bg-gray-700 text-white"
                 >
                   Back
                 </button>
