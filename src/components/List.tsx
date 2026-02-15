@@ -15,10 +15,13 @@ interface RankedListProps {
 }
 
 export default function RankedList({ items, onAdd, onRemove }: RankedListProps) {
+  const [showAll, setShowAll] = React.useState(false);
+
+  const visibleItems = showAll ? items : items.slice(0, 10);
   return (
     <div className="max-w-2xl mx-auto">
       <ul className="space-y-3">
-        {items.map((item, index) => (
+        {visibleItems.map((item, index) => (
           <li
             key={index}
             className="flex items-center gap-4 p-3 border rounded-lg bg-background shadow-sm"
@@ -56,6 +59,13 @@ export default function RankedList({ items, onAdd, onRemove }: RankedListProps) 
           </li>
         ))}
       </ul>
+      {items.length > 10 && (
+        <button onClick={() => setShowAll(!showAll)}
+          className="mt-4 text-sm text-blue-400 hover:text-blue-300 transition"
+        >
+          {showAll ? "Show Less" : "View All"}
+        </button>
+      )}
     </div>
   );
 }
