@@ -13,6 +13,7 @@ export default function TopTenAnimeList() {
 
   const [selectedAnime, setSelectedAnime] = React.useState<number | null>(null);
   const [showListSelector, setShowListSelector] = React.useState(false);
+  const [showAllTop, setShowAllTop] = React.useState(false);
 
   const defaultLists = [ "Favourites", "Watching", "Completed", "Plan to Watch"];
 
@@ -30,7 +31,7 @@ export default function TopTenAnimeList() {
 
       const normalized = sorted.map((a) => ({ ...a, animeId: a.animeId ?? a.id,}));
 
-      setAnimes(normalized.slice(0, 10));
+      setAnimes(normalized);
     }
 
     fetchTopTen();
@@ -48,17 +49,36 @@ export default function TopTenAnimeList() {
     setShowListSelector(true);
   };
 
+  const visibleTopItems = showAllTop ? listItems : listItems.slice(0, 10);
+
   return (
     <>
     <section className="py-12">
       <div className="flex flex-wrap justify-center gap-10 overflow-x-auto">
         <div className="w-full md:w-[45%]">
+          <div className="flex items-center justify-between mb-6">
           <h2 className="text-3xl font-bold mb-6">Top 10 Anime</h2>
-          <RankedList items={listItems} onAdd={handleAdd} />
+          {listItems.length > 10 && ( 
+            <button onClick={() => setShowAllTop(!showAllTop)} 
+            className="text-sm text-blue-400 hover:text-blue-300 transition" > 
+            {showAllTop ? "Show Less" : "View All"} 
+            </button> 
+          )} 
+          </div>
+          <RankedList items={visibleTopItems} onAdd={handleAdd} />
         </div>
+
         <div className="w-full md:w-[45%]">
+          <div className="flex items-center justify-between mb-6">
           <h2 className="text-3xl font-bold mb-6">Editor's Picks</h2>
-          <List items={listItems} onAdd={handleAdd} />
+          {listItems.length > 10 && ( 
+            <button onClick={() => setShowAllTop(!showAllTop)} 
+            className="text-sm text-blue-400 hover:text-blue-300 transition" > 
+            {showAllTop ? "Show Less" : "View All"} 
+            </button> 
+          )} 
+            </div>
+          <List items={visibleTopItems} onAdd={handleAdd} />
         </div>
       </div>
     </section>   
