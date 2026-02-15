@@ -86,7 +86,7 @@ const combinedLists = [
               <>
                 <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
 
-                <div className="space-y-2 max-h-48 overflow-y-auto">
+                <div className="space-y-2 max-h-48 overflow-y-auto custom-scroll">
                   {combinedLists.map((list) => ( 
                     <button key={list.name} 
                     onClick={() => { 
