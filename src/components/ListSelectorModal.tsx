@@ -22,18 +22,7 @@ export default function ListSelectorModal({
 
   if (!show) return null;
 
-  const combinedLists = [
-    ...defaultLists.map(name => ({
-      name,
-      listId: undefined,
-      isDefault: true
-    })),
-    ...userLists.map(list => ({
-      name: list.name,
-      listId: list.listId,
-      isDefault: false
-    }))
-  ];
+  const combinedLists = userLists;
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
@@ -46,16 +35,9 @@ export default function ListSelectorModal({
             <div className="space-y-2 max-h-48 overflow-y-auto custom-scroll flex flex-col items-center">
               {combinedLists.map((list) => (
                 <button
-                  key={list.name}
+                  key={list.listId}
                   onClick={() => {
-                    let existing = userLists.find(l => l.name === list.name);
-                    let listId = existing?.listId;
-
-                    if (!listId) {
-                      listId = createList(list.name);
-                    }
-
-                    addAnimeToList(listId, selectedAnime!);
+                    addAnimeToList(list.listId, selectedAnime!);
                     onClose();
                   }}
                   className="w-80 text-center px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"

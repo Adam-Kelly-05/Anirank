@@ -15,15 +15,17 @@ const UserListsContext = createContext<UserListsContextType | undefined>(undefin
 
 export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [userLists, setUserLists] = useState<List[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
     const saved = localStorage.getItem("userLists");
     if (saved) setUserLists(JSON.parse(saved));
+    setLoaded(true);
   }, []);
 
     useEffect(() => {
     localStorage.setItem("userLists", JSON.stringify(userLists));
-  }, [userLists]);
+  }, [userLists, loaded]);
   
   //function to create a new list
     const createList = (name: string, description?: string) => {
@@ -73,6 +75,29 @@ export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const deleteList = (listId: number) => {
     setUserLists((prev) => prev.filter((list) => list.listId !== listId));
   };
+  
+  //default lists
+  const defaultLists = ["Favourites", "Watching", "Completed", "Plan to Watch"];
+  
+  React.useEffect(() => {
+    if (!loaded) return;
+
+    let changed = false;
+    
+    defaultLists.forEach((name) => {
+      const exists = userLists.some((l) => l.name === name);
+      
+      if (!exists) {
+      createList(name);
+      changed = true;
+    }
+  });
+
+    if (changed) {
+      console.log("Default lists added to user lists.");
+    }
+}, [loaded]);
+
 
   return (
     <UserListsContext.Provider value={{ userLists,
