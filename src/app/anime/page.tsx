@@ -4,7 +4,7 @@ import GenreFilter from "@/components/GenreFilter";
 import TopAnime from "@/components/TopAnime";
 import { useState } from "react";
 import { useEffect } from "react";
-import SortDropdown from "@/components/SortDropdown";
+import SortDropdown from "@/components/SortDropDown";
 
 export default function AboutPage() {
   const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
