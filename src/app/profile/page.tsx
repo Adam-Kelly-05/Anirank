@@ -28,36 +28,34 @@ export default function ProfilePage() {
   const [averageScore, setAverageScore] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
 
-  const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists(); 
-  const defaultLists = [ "Favourites", "Watching", "Watched", "Plan to Watch" ]; 
-  const allListNames = [ 
-    ...defaultLists,    
-    ...userLists.map((l) => l.name), 
-  ]; 
+  const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists();
+  const defaultLists = ["Favourites", "Watching", "Watched", "Plan to Watch"];
+  const allListNames = [...defaultLists, ...userLists.map((l) => l.name)];
   const combinedLists = [
-  ...defaultLists.map(name => ({ name, isDefault: true })),
-  ...userLists.map(list => ({ name: list.name, listId: list.listId, isDefault: false }))
-];
+    ...defaultLists.map((name) => ({ name, isDefault: true })),
+    ...userLists.map((list) => ({ name: list.name, listId: list.listId, isDefault: false })),
+  ];
 
-  const [selectedList, setSelectedList] = React.useState<string | null>(null); 
-  const [showCreateModal, setShowCreateModal] = React.useState(false); 
+  const [selectedList, setSelectedList] = React.useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [newListName, setNewListName] = React.useState("");
-  const selectedListObject = userLists.find(l => l.name === selectedList);
+  const selectedListObject = userLists.find((l) => l.name === selectedList);
 
-  const [animeItems, setAnimeItems] = React.useState<any[]>([]); 
-  React.useEffect(() => { 
+  const [animeItems, setAnimeItems] = React.useState<any[]>([]);
+  React.useEffect(() => {
     if (!selectedList) return;
     if (!selectedListObject) return;
     const list = selectedListObject;
-    async function loadAnime() { 
-      const results = []; 
-      for (const id of list?.items || []) { 
-        const res = await fetch(`/api/anime/${id}`); 
-        const anime = await res.json(); 
-        results.push(anime); } 
-      setAnimeItems(results); 
-    } 
-    loadAnime(); 
+    async function loadAnime() {
+      const results = [];
+      for (const id of list?.items || []) {
+        const res = await fetch(`/api/anime/${id}`);
+        const anime = await res.json();
+        results.push(anime);
+      }
+      setAnimeItems(results);
+    }
+    loadAnime();
   }, [selectedList, userLists, selectedListObject]);
 
   if (auth.isLoading) {
@@ -203,91 +201,87 @@ export default function ProfilePage() {
           </Card>
         </div>
 
-      {/* List Filter Section */}
+        {/* List Filter Section */}
         <div>
-          <h2 className="text-3xl font-bold text-white mb-6">My Lists</h2>        
-          <ListFilter        
-          lists={userLists.map(l => l.name)}         
-          selectedList={selectedList}         
-          onSelect={setSelectedList}  
-          onCreateList={() => setShowCreateModal(true)}          
+          <h2 className="text-3xl font-bold text-white mb-6">My Lists</h2>
+          <ListFilter
+            lists={userLists.map((l) => l.name)}
+            selectedList={selectedList}
+            onSelect={setSelectedList}
+            onCreateList={() => setShowCreateModal(true)}
           />
         </div>
 
-      {/* Display Anime in selected list */}
-      {selectedList && ( 
-        <div className="mt-6"> 
-        <h3 className="text-2xl font-bold text-white mb-4"> 
-          {selectedList} 
-        </h3> 
-        <List items={animeItems.map((anime) => ({ 
-          title: anime.title_english || anime.title_japanese, 
-          imageUrl: anime.image, 
-          animeId: anime.animeId 
-          })
-        )} 
-        onRemove={(animeId) => { 
-          if (!selectedListObject) return; 
-          if (confirm("Remove this anime from the list?")) { 
-            removeAnimeFromList(selectedListObject.listId, animeId); 
-          } 
-        }}
-        />
-        {/* Delete list button */}         
-          {selectedList && (
-            <button
-            onClick={() => {      
-              const list = userLists.find(l => l.name === selectedList);      
-              if (!list) return;
-              
-              if (confirm(`Delete list "${selectedList}"?`)) {
-                deleteList(list.listId);
-                setSelectedList(null);
-              }
-            }}
-            className="px-3 py-1 bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
-            >
-              Delete List
+        {/* Display Anime in selected list */}
+        {selectedList && (
+          <div className="mt-6">
+            <h3 className="text-2xl font-bold text-white mb-4">{selectedList}</h3>
+            <List
+              items={animeItems.map((anime) => ({
+                title: anime.title_english || anime.title_japanese,
+                imageUrl: anime.image,
+                animeId: anime.animeId,
+              }))}
+              onRemove={(animeId) => {
+                if (!selectedListObject) return;
+                if (confirm("Remove this anime from the list?")) {
+                  removeAnimeFromList(selectedListObject.listId, animeId);
+                }
+              }}
+            />
+            {/* Delete list button */}
+            {selectedList && (
+              <button
+                onClick={() => {
+                  const list = userLists.find((l) => l.name === selectedList);
+                  if (!list) return;
+
+                  if (confirm(`Delete list "${selectedList}"?`)) {
+                    deleteList(list.listId);
+                    setSelectedList(null);
+                  }
+                }}
+                className="px-3 py-1 bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
+              >
+                Delete List
               </button>
             )}
-        </div>
-      )}
+          </div>
+        )}
 
-      {/* create list modal */}
+        {/* create list modal */}
         {showCreateModal && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
             <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl z-50">
-              
               <h2 className="text-xl font-bold mb-4 text-gray-100">Create New List</h2>
-              <input        
-              type="text"        
-              placeholder="List name"
-              value={newListName}        
-              onChange={(e) => setNewListName(e.target.value)}
-              className="w-full px-3 py-2 rounded-full bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"       
-              />      
-              <button 
-              onClick={() => {          
-                const id = createList(newListName);
-                setSelectedList(newListName);
-                setShowCreateModal(false);
-                setNewListName("");        
-              }}        
-              className="mt-4 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"      
-              >        
-              Create
-              </button>      
-              
-              <button        
-              onClick={() => setShowCreateModal(false)}        
-              className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"      
-              >        
-              Cancel      
+              <input
+                type="text"
+                placeholder="List name"
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                className="w-full px-3 py-2 rounded-full bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"
+              />
+              <button
+                onClick={() => {
+                  const id = createList(newListName);
+                  setSelectedList(newListName);
+                  setShowCreateModal(false);
+                  setNewListName("");
+                }}
+                className="mt-4 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
+              >
+                Create
               </button>
-              </div>
-              </div>
-            )}
 
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Reviews Section */}
         <div>

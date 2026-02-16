@@ -24,15 +24,15 @@ export default function RankedList({ items, onAdd }: RankedListProps) {
           >
             <span className="text-xl font-bold w-6 text-center">{index + 1}</span>
             <Link href={`/anime/${item.animeId}`} className="flex items-center gap-4 flex-1">
-            <Image
-              src={item.imageUrl}
-              alt={item.title}
-              width={50}
-              height={50}
-              className="rounded object-cover"
-            />
+              <Image
+                src={item.imageUrl}
+                alt={item.title}
+                width={50}
+                height={50}
+                className="rounded object-cover"
+              />
 
-            <span className="font-medium flex-1">{item.title}</span>
+              <span className="font-medium flex-1">{item.title}</span>
             </Link>
 
             {/* Add button */}

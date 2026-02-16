@@ -31,13 +31,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Genre Filter Section */}
+      {/* Genre Filter Section. */}
       <div className="sticky top-0 z-[60] bg-background border-primary/20">
         <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
       </div>
-      
 
-      {/* Sort Dropdown Section. */}
+      {/* Sort Dropdown Section */}
       <div className="sticky top-0 z-[60] bg-background border-primary/20">
         <SortDropdown selectedSort={sort} onSelectSort={setSort} />
       </div>
@@ -48,13 +47,11 @@ export default function AboutPage() {
           <AnimeGrid genre={selectedGenre} limit={52} sort={sort} />
         </div>
       </section>
-      
+
       {/* Anime List Section */}
       <section className="py-12">
         <TopAnime />
       </section>
-      
     </div>
-
   );
 }

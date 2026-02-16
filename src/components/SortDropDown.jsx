@@ -25,4 +25,3 @@ export default function SortDropdown({ selectedSort, onSelectSort }) {
     </div>
   );
 }
-

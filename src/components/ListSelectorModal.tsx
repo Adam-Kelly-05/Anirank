@@ -14,7 +14,7 @@ export default function ListSelectorModal({
   show,
   onClose,
   selectedAnime,
-  defaultLists
+  defaultLists,
 }: ListSelectorModalProps) {
   const { userLists, addAnimeToList, createList } = useUserLists()!;
   const [creatingList, setCreatingList] = React.useState(false);
@@ -27,7 +27,6 @@ export default function ListSelectorModal({
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl">
-
         {!creatingList ? (
           <>
             <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
@@ -94,7 +93,6 @@ export default function ListSelectorModal({
             </button>
           </>
         )}
-
       </div>
     </div>
   );
