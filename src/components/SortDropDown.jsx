@@ -1,5 +1,7 @@
 "use client";
 
+import { Funnel } from "lucide-react";
+
 export default function SortDropdown({ selectedSort, onSelectSort }) {
   const sortOptions = ["Newest", "Most Popular", "Title A-Z"];
 
@@ -7,6 +9,7 @@ export default function SortDropdown({ selectedSort, onSelectSort }) {
     <div className="flex justify-center">
       <details className="relative">
         <summary className="cursor-pointer px-4 py-2 text-xs text-gray-100 border border-blue-500 rounded-full hover:bg-blue-800 transition">
+          <Funnel size={14} className="text-blue-400" />
           Sort: {selectedSort || "Select"}
         </summary>
 
