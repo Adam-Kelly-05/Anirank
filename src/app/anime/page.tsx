@@ -37,7 +37,7 @@ export default function AboutPage() {
       </div>
       
 
-      {/* Sort Dropdown Section */}
+      {/* Sort Dropdown Section. */}
       <div className="sticky top-0 z-[60] bg-background border-primary/20">
         <SortDropdown selectedSort={sort} onSelectSort={setSort} />
       </div>
