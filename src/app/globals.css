@@ -288,3 +288,54 @@
 summary::-webkit-details-marker {
   display: none;
 }
+
+/* Fade-out gradient container */
+.fade-scroll {
+  position: relative;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.fade-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Left fade */
+.fade-scroll::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  pointer-events: none;
+  background: linear-gradient(to right, var(--background) 0%, transparent 100%);
+  z-index: 10;
+}
+
+/* Right fade */
+.fade-scroll::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  pointer-events: none;
+  background: linear-gradient(to left, var(--background) 0%, transparent 100%);
+  z-index: 10;
+}
+
+/* Show scrollbar on hover */
+.fade-scroll:hover::-webkit-scrollbar {
+  height: 6px;
+}
+
+.fade-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 255, 0.6);
+  border-radius: 10px;
+}
+
+.fade-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+}
