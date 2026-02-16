@@ -1,5 +1,5 @@
 "use client";
-console.log("ProfilePage rendering");
+
 const genres = [
   "Action",
   "Fantasy",
@@ -19,24 +19,21 @@ const genres = [
 
 export default function GenreFilter({ selectedGenre, onSelect }) {
   return (
-    <div className="w-full py-4 bg-[#0a0e1a] border-b border-blue-500">
-      <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-3 px-4">
-        {genres.map((genre) => (
-          <button
-            key={genre}
-            onClick={() => onSelect(genre)}
-            className={`px-3 py-2 rounded-full font-semibold whitespace-nowrap transition
-              ${
-                selectedGenre === genre
-                  ? " px-3 py-1 text-xs text-gray-100 rounded-full border border-blue-500 bg-blue-600"
-                  : "rounded-full border  px-3 py-1 text-xs text-gray-100 hover:bg-blue-800 hover:text-white"
-              }
-            `}
-          >
-            {genre}
-          </button>
-        ))}
-      </div>
+    <div className="flex items-center gap-3">
+      {genres.map((genre) => (
+        <button
+          key={genre}
+          onClick={() => onSelect(genre)}
+          className={`px-3 py-1 rounded-full font-semibold text-xs whitespace-nowrap border transition
+            ${
+              selectedGenre === genre
+                ? "text-gray-100 border-blue-500 bg-blue-600"
+                : "text-gray-100 border-blue-500/40 hover:bg-blue-800 hover:text-white"
+            }`}
+        >
+          {genre}
+        </button>
+      ))}
     </div>
   );
 }
