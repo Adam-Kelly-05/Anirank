@@ -9,7 +9,7 @@ export default function SortDropdown({ selectedSort, onSelectSort }) {
     <div className="flex justify-start items-center gap-4">
       <details className="relative">
         <summary className="cursor-pointer px-4 py-2 text-xs font-semibold text-gray-100 border border-blue-500 rounded-full bg-[#0a0e1a] hover:bg-blue-800 transition flex items-center gap-2">
-          <Funnel size={14} className="text-blue-400" /> Sort: {selectedSort || "Select"}
+          <Funnel size={14} className="text-blue-400" /> {selectedSort || "Sort"}
         </summary>
 
         <div className="absolute mt-2 bg-[#0a0e1a] border border-blue-500 rounded-lg shadow-xl overflow-hidden z-10 w-40">
