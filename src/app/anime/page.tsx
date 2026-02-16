@@ -33,7 +33,7 @@ export default function AboutPage() {
 
       {/* Genre Filter Section. */}
       <div className="sticky top-0 z-[60] bg-background border-primary/20">
-      <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center px-4 gap-3">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 gap-3">
         <SortDropdown selectedSort={sort} onSelectSort={setSort} />
         <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />        
       </div>
