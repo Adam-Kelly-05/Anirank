@@ -289,15 +289,39 @@ summary::-webkit-details-marker {
   display: none;
 }
 
-/* Fade-out gradient container */
 .fade-scroll {
   position: relative;
   overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox: hide by default */
 }
 
+/* Firefox: show thin scrollbar on hover */
+.fade-scroll:hover {
+  scrollbar-width: thin;
+}
+
+/* WebKit: hide by default via height, not display */
 .fade-scroll::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  height: 0; /* hidden but still exists */
+}
+
+/* Show scrollbar on hover */
+.fade-scroll:hover::-webkit-scrollbar {
+  height: 6px;
+}
+
+.fade-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.fade-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.fade-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 255, 0.6);
 }
 
 /* Left fade */
@@ -309,7 +333,7 @@ summary::-webkit-details-marker {
   height: 100%;
   width: 40px;
   pointer-events: none;
-  background: linear-gradient(to right, var(--background) 0%, transparent 100%);
+  background: linear-gradient(to right, var(--background) 0%, transparent 70%);
   z-index: 10;
 }
 
@@ -322,20 +346,7 @@ summary::-webkit-details-marker {
   height: 100%;
   width: 40px;
   pointer-events: none;
-  background: linear-gradient(to left, var(--background) 0%, transparent 100%);
+  background: linear-gradient(to left, var(--background) 0%, transparent 70%);
   z-index: 10;
 }
 
-/* Show scrollbar on hover */
-.fade-scroll:hover::-webkit-scrollbar {
-  height: 6px;
-}
-
-.fade-scroll:hover::-webkit-scrollbar-thumb {
-  background: rgba(100, 100, 255, 0.6);
-  border-radius: 10px;
-}
-
-.fade-scroll::-webkit-scrollbar-thumb {
-  background: transparent;
-}
