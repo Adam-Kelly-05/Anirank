@@ -91,12 +91,12 @@ export default function TopTenAnimeList() {
       <section className="py-12">
         <div className="flex flex-wrap justify-center gap-10 overflow-x-auto">
           <div className="w-full md:w-[45%]">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold mb-6">Top 100 Anime</h2>
+            <div className="flex flex-col items-center mb-6">
+              <h2 className="text-3xl font-bold text-center">Top 100 Anime</h2>
               {listItems.length > 10 && (
                 <button
                   onClick={() => setShowAllTop(!showAllTop)}
-                  className="text-sm text-blue-400 hover:text-blue-300 transition"
+                  className="mt-2 text-sm text-blue-400 hover:text-blue-300 transition"
                 >
                   {showAllTop ? "Show Less" : "View All"}
                 </button>
@@ -106,12 +106,12 @@ export default function TopTenAnimeList() {
           </div>
 
           <div className="w-full md:w-[45%]">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold mb-6">Editor's Picks</h2>
+            <div className="flex flex-col items-center mb-6">
+              <h2 className="text-3xl font-bold text-center">Editor's Picks</h2>
               {editorItems.length > 10 && (
                 <button
                   onClick={() => setShowAllEditors(!showAllEditors)}
-                  className="text-sm text-blue-400 hover:text-blue-300 transition"
+                  className="mt-2 text-sm text-blue-400 hover:text-blue-300 transition"
                 >
                   {showAllEditors ? "Show Less" : "View All"}
                 </button>
