@@ -32,10 +32,10 @@ export default function AboutPage() {
       </section>
 
       {/* Genre Filter Section. */}
-      <div className="sticky top-0 z-[60] bg-background border-b border-primary/20 px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-4">
+      <div className="sticky top-0 z-[70] bg-[#0a0e1a] border-b border-primary/20 px-4 py-3">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-4 bg-[#0a0e1a]">
           <SortDropdown selectedSort={sort} onSelectSort={setSort} />
-          <div className="fade-scroll overflow-x-auto whitespace-nowrap">
+          <div className="fade-scroll overflow-x-auto whitespace-nowrap bg-[#0a0e1a]">
             <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
           </div>
         </div>
