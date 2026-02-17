@@ -36,7 +36,7 @@ export default function AboutPage() {
   
         <SortDropdown selectedSort={sort} onSelectSort={setSort} />
 
-        <div className="fade-scroll whitespace-nowrap">
+        <div className="fade-scroll overflow-x-auto whitespace-nowrap max-w-[70%]">
           <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
         </div>
       </div>
