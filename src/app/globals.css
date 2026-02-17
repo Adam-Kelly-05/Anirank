@@ -289,46 +289,41 @@ summary::-webkit-details-marker {
   display: none;
 }
 
-/* Fade-out gradient container */
-.fade-scroll {
+div.fade-scroll {
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
-/* Firefox: show thin scrollbar on hover */
-.fade-scroll:hover {
+div.fade-scroll:hover {
   scrollbar-width: thin;
 }
 
-/* WebKit: hide by shrinking, not display:none */
-.fade-scroll::-webkit-scrollbar {
-  height: 0; 
+div.fade-scroll::-webkit-scrollbar {
+  height: 0;
+  width: 0; /* required for Chrome/Edge */
 }
 
-/* Show scrollbar on hover */
-.fade-scroll:hover::-webkit-scrollbar {
-  height: 6px; }
+div.fade-scroll:hover::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
 
-/* Track */
-.fade-scroll::-webkit-scrollbar-track {
+div.fade-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* Thumb (matches your blue pill style) */
-.fade-scroll::-webkit-scrollbar-thumb {
+div.fade-scroll::-webkit-scrollbar-thumb {
   background: transparent;
-  border-radius: 9999px; 
+  border-radius: 9999px;
 }
 
-/* Thumb on hover (blue glow like your chips) */
-.fade-scroll:hover::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.6); 
+div.fade-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.6);
 }
 
-/* Left fade */
-.fade-scroll::before {
+div.fade-scroll::before {
   content: "";
   position: absolute;
   left: 0;
@@ -340,8 +335,7 @@ summary::-webkit-details-marker {
   z-index: 10;
 }
 
-/* Right fade */
-.fade-scroll::after {
+div.fade-scroll::after {
   content: "";
   position: absolute;
   right: 0;

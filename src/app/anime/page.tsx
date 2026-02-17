@@ -32,14 +32,13 @@ export default function AboutPage() {
       </section>
 
       {/* Genre Filter Section. */}
-      <div className="sticky top-0 z-[60] bg-background/90 border-b border-primary/20 px-4 py-3 flex items-center justify-between">
-  
+      <div className="sticky top-0 z-[60] bg-background/90 border-b border-primary/20 px-4 py-3 flex items-center gap-4">
         <SortDropdown selectedSort={sort} onSelectSort={setSort} />
-
-        <div className="fade-scroll overflow-x-auto whitespace-nowrap max-w-[70%]">
+        <div className="fade-scroll overflow-x-auto whitespace-nowrap flex-1 text-right">
           <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
         </div>
       </div>
+
 
       {/* Anime Carousel Section */}
       <section className="py-12">
