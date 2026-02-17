@@ -32,7 +32,7 @@ export default function AboutPage() {
       </section>
 
       {/* Genre Filter Section. */}
-      <div className="sticky top-0 z-[60] bg-background border-b border-primary/20 px-4 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-[60] bg-background/90 border-b border-primary/20 px-4 py-3 flex items-center justify-between">
   
         <SortDropdown selectedSort={sort} onSelectSort={setSort} />
 
@@ -40,20 +40,6 @@ export default function AboutPage() {
           <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />
         </div>
       </div>
-
-
-{/* Sort Dropdown Section 
-      <div className="sticky top-0 z-[60] bg-background border-primary/20">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 gap-3">
-        <SortDropdown selectedSort={sort} onSelectSort={setSort} />
-        <GenreFilter selectedGenre={selectedGenre} onSelect={setSelectedGenre} />        
-      </div>
-      </div>
-
-      
-      <div className="sticky top-0 z-[60] bg-background border-primary/20">
-        <SortDropdown selectedSort={sort} onSelectSort={setSort} />
-      </div>*/}
 
       {/* Anime Carousel Section */}
       <section className="py-12">
