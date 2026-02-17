@@ -24,7 +24,7 @@ export default function ProfilePage() {
     error: userError,
     refetch: refetchUser,
   } = useGetUser(userSub);
-  const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
+  const [reviewsAmount, setReviewsAmount] = React.useState(0); 
   const [averageScore, setAverageScore] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
 
