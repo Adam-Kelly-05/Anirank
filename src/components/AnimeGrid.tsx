@@ -3,6 +3,17 @@
 import AnimeCard from "./AnimeCard";
 import { useAnimeList } from "./UseAnimeList";
 
+function parseReleaseTimestamp(releaseDate?: string, aired?: string): number {
+  const direct = Date.parse(releaseDate ?? "");
+  if (!Number.isNaN(direct)) return direct;
+
+  const airedStart = (aired ?? "").split(" to ")[0].trim();
+  const airedParsed = Date.parse(airedStart);
+  if (!Number.isNaN(airedParsed)) return airedParsed;
+
+  return Number.NEGATIVE_INFINITY;
+}
+
 export default function AnimeGrid({
   genre,
   limit,
@@ -17,8 +28,8 @@ export default function AnimeGrid({
 
   if (sort === "Newest") {
     items.sort((a, b) => {
-      const dateA = new Date(a.releaseDate ?? 0).getTime();
-      const dateB = new Date(b.releaseDate ?? 0).getTime();
+      const dateA = parseReleaseTimestamp(a.releaseDate, a.aired);
+      const dateB = parseReleaseTimestamp(b.releaseDate, b.aired);
       return dateB - dateA;
     });
   }
