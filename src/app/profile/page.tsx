@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useGetUser } from "@/components/UseUserGet";
@@ -13,6 +14,31 @@ import { EditUserForm } from "@/components/EditUserForm";
 import { useCreateList } from "@/components/UseListPost";
 import { useGetListsByUserId } from "@/components/UseListByUserIdGet";
 import { List } from "@/types/List";
+import { useAnimeById } from "@/components/UseAnime";
+
+function ListAnimeItem({ animeId }: { animeId: number }) {
+  const anime = useAnimeById(animeId);
+
+  if (!anime) {
+    return <p className="text-sm text-gray-400">Loading anime #{animeId}...</p>;
+  }
+
+  return (
+    <Link
+      href={`/anime/${animeId}`}
+      className="flex items-center gap-3 rounded-lg border border-primary/20 p-2 hover:bg-primary/10 transition"
+    >
+      <Image
+        src={anime.image}
+        alt={anime.title_english || anime.title_japanese || "Anime cover"}
+        width={48}
+        height={64}
+        className="h-16 w-12 object-cover rounded"
+      />
+      <p className="text-sm text-gray-200">{anime.title_english || anime.title_japanese}</p>
+    </Link>
+  );
+}
 
 export default function ProfilePage() {
   console.log("ProfilePage rendered");
@@ -36,6 +62,7 @@ export default function ProfilePage() {
   const [lists, setLists] = React.useState<List[]>([]);
   const [listsLoading, setListsLoading] = React.useState(false);
   const [listsRefreshKey, setListsRefreshKey] = React.useState(0);
+  const [expandedListId, setExpandedListId] = React.useState<string | null>(null);
 
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [newListName, setNewListName] = React.useState("");
@@ -226,7 +253,7 @@ export default function ProfilePage() {
         )}
 
         {!listsLoading && lists.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-1 gap-4 mb-8">
             {lists.map((list) => (
               <Card key={list.listId} className="bg-card border-primary/20">
                 <CardContent className="p-4">
@@ -244,6 +271,26 @@ export default function ProfilePage() {
                         })
                       : "Unknown date"}
                   </p>
+                  <Button
+                    onClick={() =>
+                      setExpandedListId((prev) => (prev === list.listId ? null : list.listId))
+                    }
+                    variant="outline"
+                    className="mt-3 border-primary/40 text-gray-200"
+                  >
+                    {expandedListId === list.listId ? "Hide Items" : "View Items"}
+                  </Button>
+
+                  {expandedListId === list.listId && (
+                    <div className="mt-4 space-y-2">
+                      {list.items.length === 0 && (
+                        <p className="text-sm text-gray-400">No anime in this list yet.</p>
+                      )}
+                      {list.items.map((item) => (
+                        <ListAnimeItem key={`${list.listId}-${item.animeId}`} animeId={item.animeId} />
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
