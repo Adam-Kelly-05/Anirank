@@ -2,8 +2,7 @@
 
 import { useAuth } from "react-oidc-context";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ?? "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
+const API_BASE = "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
 
 type UpdateUserPayload = {
   Bio?: string;
@@ -11,10 +10,6 @@ type UpdateUserPayload = {
   Username?: string;
 };
 
-/**
- * Update a user record. If a userId is provided, uses the public PUT endpoint.
- * Otherwise, falls back to the authenticated /user/me PATCH using the id_token.
- */
 export function useUpdateUser() {
   const auth = useAuth();
 

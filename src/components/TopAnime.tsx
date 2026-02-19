@@ -18,7 +18,7 @@ export default function TopTenAnimeList() {
   React.useEffect(() => {
     async function fetchTopTen() {
       const url = new URL("https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime");
-      url.searchParams.set("limit", "100");
+      url.searchParams.set("limit", "25");
 
       const response = await fetch(url.toString());
       const result = await response.json();
@@ -52,7 +52,7 @@ export default function TopTenAnimeList() {
   React.useEffect(() => {
     async function fetchEditorsPicks() {
       const url = new URL("https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime");
-      url.searchParams.set("limit", "100");
+      url.searchParams.set("limit", "25");
 
       const response = await fetch(url.toString());
       const result = await response.json();
@@ -87,7 +87,7 @@ export default function TopTenAnimeList() {
         <div className="flex flex-wrap justify-center gap-10 overflow-x-auto">
           <div className="w-full md:w-[45%]">
             <div className="flex flex-col items-center mb-6">
-              <h2 className="text-3xl font-bold text-center">Top 100 Anime</h2>
+              <h2 className="text-3xl font-bold text-center">25 Recomended Anime</h2>
               {listItems.length > 10 && (
                 <button
                   onClick={() => setShowAllTop(!showAllTop)}

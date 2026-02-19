@@ -14,7 +14,6 @@ export default function OidcAuthPanel() {
       localStorage.clear();
       sessionStorage.clear();
     } catch {
-      // Ignore storage access issues (e.g. disabled in browser).
     }
 
     const cookies = document.cookie.split(";");
@@ -34,7 +33,6 @@ export default function OidcAuthPanel() {
     try {
       await auth.removeUser();
     } catch {
-      // Ignore removal errors and still proceed with client cleanup.
     }
     clearClientStorage();
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(

@@ -1,5 +1,3 @@
-// src/app/layout.tsx is anything that's common across all pages, like a nav bar and footer
-
 "use client";
 
 import React, { useState } from "react";
