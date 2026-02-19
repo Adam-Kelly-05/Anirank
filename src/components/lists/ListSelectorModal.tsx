@@ -13,6 +13,11 @@ interface ListSelectorModalProps {
   selectedAnime: number | null;
 }
 
+function listHasAnime(list: List, animeId: number | null): boolean {
+  if (animeId == null || !Array.isArray(list.items)) return false;
+  return list.items.some((item) => Number(item.animeId) === Number(animeId));
+}
+
 export default function ListSelectorModal({
   show,
   onClose,
@@ -68,22 +73,30 @@ export default function ListSelectorModal({
             {error && <p className="text-sm text-red-300 mb-2">{error}</p>}
 
             <div className="space-y-2 max-h-48 overflow-y-auto custom-scroll flex flex-col items-center">
-              {lists.map((list) => (
-                <button
-                  key={list.listId}
-                  onClick={async () => {
-                    if (!selectedAnime) return;
-                    await addAnimeToList({
-                      listId: list.listId,
-                      animeId: selectedAnime,
-                    });
-                    onClose();
-                  }}
-                  className="w-80 text-center px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
-                >
-                  {list.listName}
-                </button>
-              ))}
+              {lists.map((list) => {
+                const alreadyAdded = listHasAnime(list, selectedAnime);
+                return (
+                  <button
+                    key={list.listId}
+                    disabled={alreadyAdded}
+                    onClick={async () => {
+                      if (!selectedAnime || alreadyAdded) return;
+                      await addAnimeToList({
+                        listId: list.listId,
+                        animeId: selectedAnime,
+                      });
+                      onClose();
+                    }}
+                    className={`w-80 text-center px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 transition ${
+                      alreadyAdded
+                        ? "bg-blue-900/40 cursor-not-allowed opacity-60"
+                        : "bg-blue-600 hover:bg-blue-800"
+                    }`}
+                  >
+                    {alreadyAdded ? `${list.listName} (Already Added)` : list.listName}
+                  </button>
+                );
+              })}
             </div>
 
             <button
@@ -117,24 +130,16 @@ export default function ListSelectorModal({
                 const trimmedName = newListName.trim();
                 if (!trimmedName || !selectedAnime) return;
 
-                const created = await createList({ listName: trimmedName });
-                const createdListId = created?.listId as string | undefined;
-
-                if (createdListId) {
-                  await addAnimeToList({
-                    listId: createdListId,
-                    animeId: selectedAnime,
-                  });
-                }
+                await createList({ listName: trimmedName });
 
                 const userSub = auth.user?.profile?.sub;
                 if (userSub) {
                   const refreshed = await getLists(userSub);
-                  setLists(Array.isArray(refreshed) ? (refreshed as List[]) : []);
+                  const refreshedLists = Array.isArray(refreshed) ? (refreshed as List[]) : [];
+                  setLists(refreshedLists);
                 }
 
                 setCreatingList(false);
-                onClose();
                 setNewListName("");
               }}
               className="w-full px-3 py-2 text-xs rounded-full bg-blue-600 text-gray-100 hover:bg-blue-800 transition"

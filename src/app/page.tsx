@@ -108,12 +108,12 @@ export default function Home() {
                   style={{ backgroundColor: "#60a5fa" }}
                 ></div>
                 <h3 className="text-2xl font-bold text-white">{genre}</h3>
-              <div
-                className="flex-1 ml-4 h-px"
-                style={{
-                  background: "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
-                }}
-              ></div>
+                <div
+                  className="flex-1 ml-4 h-px"
+                  style={{
+                    background: "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
+                  }}
+                ></div>
               </div>
 
               <GenreCarousel genre={genre} />
