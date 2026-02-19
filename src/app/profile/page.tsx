@@ -12,6 +12,7 @@ import { EditUserForm } from "@/components/EditUserForm";
 import { useUserLists } from "../UserListsContext";
 import ListFilter from "@/components/ListFilter";
 import List from "@/components/List";
+import { useCreateList } from "@/components/UseListPost";
 
 export default function ProfilePage() {
   console.log("ProfilePage rendered");
@@ -29,6 +30,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = React.useState(false);
 
   const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists();
+  const { createList: createListApi } = useCreateList();
   const defaultLists = ["Favourites", "Watching", "Watched", "Plan to Watch"];
   const allListNames = [...defaultLists, ...userLists.map((l) => l.name)];
   const combinedLists = [
@@ -39,6 +41,7 @@ export default function ProfilePage() {
   const [selectedList, setSelectedList] = React.useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [newListName, setNewListName] = React.useState("");
+  const [createdListName, setCreatedListName] = React.useState<string | null>(null);
   const selectedListObject = userLists.find((l) => l.name === selectedList);
 
   const [animeItems, setAnimeItems] = React.useState<any[]>([]);
@@ -201,84 +204,70 @@ export default function ProfilePage() {
           </Card>
         </div>
 
-        {/* List Filter Section */}
-        <div>
-          <h2 className="text-3xl font-bold text-white mb-6">My Lists</h2>
-          <ListFilter
-            lists={userLists.map((l) => l.name)}
-            selectedList={selectedList}
-            onSelect={setSelectedList}
-            onCreateList={() => setShowCreateModal(true)}
-          />
+        <div className="mb-6 flex items-center justify-between gap-3">
+          <h2 className="text-3xl font-bold text-white">My Lists</h2>
+          <Button
+            onClick={() => setShowCreateModal(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            Create List
+          </Button>
         </div>
 
-        {/* Display Anime in selected list */}
-        {selectedList && (
-          <div className="mt-6">
-            <h3 className="text-2xl font-bold text-white mb-4">{selectedList}</h3>
-            <List
-              items={animeItems.map((anime) => ({
-                title: anime.title_english || anime.title_japanese,
-                imageUrl: anime.image,
-                animeId: anime.animeId,
-              }))}
-              onRemove={(animeId) => {
-                if (!selectedListObject) return;
-                if (confirm("Remove this anime from the list?")) {
-                  removeAnimeFromList(selectedListObject.listId, animeId);
-                }
-              }}
-            />
-            {/* Delete list button */}
-            {selectedList && (
-              <button
-                onClick={() => {
-                  const list = userLists.find((l) => l.name === selectedList);
-                  if (!list) return;
-
-                  if (confirm(`Delete list "${selectedList}"?`)) {
-                    deleteList(list.listId);
-                    setSelectedList(null);
-                  }
-                }}
-                className="px-3 py-1 bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
-              >
-                Delete List
-              </button>
-            )}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="w-full max-w-sm p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl">
+              <h3 className="text-lg font-semibold text-center mb-4">Create New List</h3>
+              <input
+                type="text"
+                placeholder="Enter List Name"
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                className="w-full px-3 py-2 rounded-full bg-[#0a0e1a] border border-blue-500 text-gray-100"
+              />
+              <div className="mt-4 flex gap-2">
+                <Button
+                  onClick={async () => {
+                    const trimmedName = newListName.trim();
+                    if (!trimmedName) return;
+                    const created = await createListApi({
+                      listName: trimmedName,
+                    });
+                    if (created) {
+                      setCreatedListName(trimmedName);
+                      setNewListName("");
+                      setShowCreateModal(false);
+                    }
+                  }}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Create
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowCreateModal(false);
+                    setNewListName("");
+                  }}
+                  variant="outline"
+                  className="flex-1 border-blue-500 text-gray-100"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* create list modal */}
-        {showCreateModal && (
+        {createdListName && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-            <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl z-50">
-              <h2 className="text-xl font-bold mb-4 text-gray-100">Create New List</h2>
-              <input
-                type="text"
-                placeholder="List name"
-                value={newListName}
-                onChange={(e) => setNewListName(e.target.value)}
-                className="w-full px-3 py-2 rounded-full bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"
-              />
-              <button
-                onClick={() => {
-                  const id = createList(newListName);
-                  setSelectedList(newListName);
-                  setShowCreateModal(false);
-                  setNewListName("");
-                }}
-                className="mt-4 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
+            <div className="w-full max-w-sm p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl">
+              <p className="text-lg font-semibold text-center">{createdListName} List Created</p>
+              <Button
+                onClick={() => setCreatedListName(null)}
+                className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white"
               >
-                Create
-              </button>
-
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
-              >
-                Cancel
-              </button>
+                Close
+              </Button>
             </div>
           </div>
         )}
