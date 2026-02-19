@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import AnimeGrid from "@/components/anime/AnimeGrid";
 import ContentCarousel from "@/components/anime/AnimeCarousel";
 import AnimeCard from "@/components/anime/AnimeCard";
 import { useAnimeList } from "@/components/anime/UseAnimeList";
@@ -24,6 +23,16 @@ const genres = [
   "Horror",
   "Sports",
 ];
+
+function GenreCarousel({ genre }: { genre: string }) {
+  const { animes } = useAnimeList({ genre, limit: 8 });
+
+  if (!animes || animes.length === 0) {
+    return <p className="text-sm text-blue-100/80 px-2 py-4">Loading {genre} anime...</p>;
+  }
+
+  return <ContentCarousel data={animes} render={(item) => <AnimeCard {...(item as Anime)} />} />;
+}
 
 export default function Home() {
   const auth = useAuth();
@@ -99,15 +108,15 @@ export default function Home() {
                   style={{ backgroundColor: "#60a5fa" }}
                 ></div>
                 <h3 className="text-2xl font-bold text-white">{genre}</h3>
-                <div
-                  className="flex-1 ml-4 h-px"
-                  style={{
-                    background: "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
-                  }}
-                ></div>
+              <div
+                className="flex-1 ml-4 h-px"
+                style={{
+                  background: "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
+                }}
+              ></div>
               </div>
 
-              <AnimeGrid genre={genre} limit={8} />
+              <GenreCarousel genre={genre} />
             </div>
           </section>
         ))}
