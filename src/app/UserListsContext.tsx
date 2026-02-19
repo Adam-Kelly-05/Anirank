@@ -1,12 +1,12 @@
 "use client";
 
 import React, { createContext, useEffect, useState, useContext } from "react";
-import { List } from "@/types/List";
+import { UserList } from "@/types/List";
 
 interface UserListsContextType {
-  userLists: List[];
+  userLists: UserList[];
   addAnimeToList: (listId: number, animeId: number) => void;
-  createList: (name: string, description?: string) => number;
+  createList: (name: string) => number;
   removeAnimeFromList: (listId: number, animeId: number) => void;
   deleteList: (listId: number) => void;
 }
@@ -14,7 +14,7 @@ interface UserListsContextType {
 const UserListsContext = createContext<UserListsContextType | undefined>(undefined);
 
 export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [userLists, setUserLists] = useState<List[]>([]);
+  const [userLists, setUserLists] = useState<UserList[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -28,12 +28,11 @@ export const UserListsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, [userLists, loaded]);
 
   //function to create a new list
-  const createList = (name: string, description?: string) => {
-    const newList: List = {
+  const createList = (name: string) => {
+    const newList: UserList = {
       listId: Date.now(),
       userId: "local-user",
       name,
-      description,
       items: [],
       dateCreated: new Date().toLocaleDateString(),
     };

@@ -6,60 +6,63 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
+import { useSearchParams } from "next/navigation";
 import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
 import { EditUserForm } from "@/components/EditUserForm";
-import { useUserLists } from "../UserListsContext";
-import ListFilter from "@/components/ListFilter";
-import List from "@/components/List";
 import { useCreateList } from "@/components/UseListPost";
+import { useGetListsByUserId } from "@/components/UseListByUserIdGet";
+import { List } from "@/types/List";
 
 export default function ProfilePage() {
   console.log("ProfilePage rendered");
 
   const auth = useAuth();
+  const searchParams = useSearchParams();
   const userSub = auth.user?.profile?.sub as string | undefined;
+  const viewedUserId = searchParams.get("userId") ?? searchParams.get("id") ?? userSub;
   const {
     user: fetchedUser,
     loading: userLoading,
     error: userError,
     refetch: refetchUser,
-  } = useGetUser(userSub);
+  } = useGetUser(viewedUserId);
   const [reviewsAmount, setReviewsAmount] = React.useState(0);
   const [averageScore, setAverageScore] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
 
-  const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists();
   const { createList: createListApi } = useCreateList();
-  const defaultLists = ["Favourites", "Watching", "Watched", "Plan to Watch"];
-  const allListNames = [...defaultLists, ...userLists.map((l) => l.name)];
-  const combinedLists = [
-    ...defaultLists.map((name) => ({ name, isDefault: true })),
-    ...userLists.map((list) => ({ name: list.name, listId: list.listId, isDefault: false })),
-  ];
+  const { getLists } = useGetListsByUserId();
+  const [lists, setLists] = React.useState<List[]>([]);
+  const [listsLoading, setListsLoading] = React.useState(false);
+  const [listsRefreshKey, setListsRefreshKey] = React.useState(0);
 
-  const [selectedList, setSelectedList] = React.useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [newListName, setNewListName] = React.useState("");
   const [createdListName, setCreatedListName] = React.useState<string | null>(null);
-  const selectedListObject = userLists.find((l) => l.name === selectedList);
 
-  const [animeItems, setAnimeItems] = React.useState<any[]>([]);
   React.useEffect(() => {
-    if (!selectedList) return;
-    if (!selectedListObject) return;
-    const list = selectedListObject;
-    async function loadAnime() {
-      const results = [];
-      for (const id of list?.items || []) {
-        const res = await fetch(`/api/anime/${id}`);
-        const anime = await res.json();
-        results.push(anime);
+    let cancelled = false;
+
+    async function loadLists() {
+      if (!viewedUserId) {
+        setLists([]);
+        return;
       }
-      setAnimeItems(results);
+
+      setListsLoading(true);
+      const fetchedLists = await getLists(viewedUserId);
+      if (cancelled) return;
+
+      setLists(Array.isArray(fetchedLists) ? (fetchedLists as List[]) : []);
+      setListsLoading(false);
     }
-    loadAnime();
-  }, [selectedList, userLists, selectedListObject]);
+
+    loadLists();
+    return () => {
+      cancelled = true;
+    };
+  }, [getLists, viewedUserId, listsRefreshKey]);
 
   if (auth.isLoading) {
     return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
@@ -206,13 +209,46 @@ export default function ProfilePage() {
 
         <div className="mb-6 flex items-center justify-between gap-3">
           <h2 className="text-3xl font-bold text-white">My Lists</h2>
-          <Button
-            onClick={() => setShowCreateModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            Create List
-          </Button>
+          {viewedUserId === userSub && (
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Create List
+            </Button>
+          )}
         </div>
+
+        {listsLoading && <p className="mb-6 text-gray-300">Loading lists...</p>}
+
+        {!listsLoading && lists.length === 0 && (
+          <p className="mb-6 text-gray-300">No lists found for this user.</p>
+        )}
+
+        {!listsLoading && lists.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {lists.map((list) => (
+              <Card key={list.listId} className="bg-card border-primary/20">
+                <CardContent className="p-4">
+                  <p className="text-xl font-semibold text-white">{list.listName}</p>
+                  <p className="text-sm text-gray-400 mt-2">
+                    {Array.isArray(list.items) ? list.items.length : 0} anime
+                  </p>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Created:{" "}
+                    {list.createdAt
+                      ? new Date(list.createdAt).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : "Unknown date"}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {showCreateModal && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
@@ -237,6 +273,7 @@ export default function ProfilePage() {
                       setCreatedListName(trimmedName);
                       setNewListName("");
                       setShowCreateModal(false);
+                      setListsRefreshKey((prev) => prev + 1);
                     }
                   }}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
