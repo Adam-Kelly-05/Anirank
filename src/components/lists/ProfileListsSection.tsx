@@ -7,8 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { List } from "@/types/List";
 import { useAnimeById } from "@/components/anime/UseAnime";
+import { useRemoveAnimeFromList } from "@/components/lists/UseListAnimeDelete";
 
-function ListAnimeItem({ animeId }: { animeId: number }) {
+function ListAnimeItem({
+  animeId,
+  showRemove,
+  onRemove,
+  removing,
+}: {
+  animeId: number;
+  showRemove: boolean;
+  onRemove: () => Promise<void>;
+  removing: boolean;
+}) {
   const anime = useAnimeById(animeId);
 
   if (!anime) {
@@ -16,19 +27,31 @@ function ListAnimeItem({ animeId }: { animeId: number }) {
   }
 
   return (
-    <Link
-      href={`/anime/${animeId}`}
-      className="flex items-center gap-3 rounded-lg border border-primary/20 p-2 hover:bg-primary/10 transition"
-    >
-      <Image
-        src={anime.image}
-        alt={anime.title_english || anime.title_japanese || "Anime cover"}
-        width={48}
-        height={64}
-        className="h-16 w-12 object-cover rounded"
-      />
-      <p className="text-sm text-gray-200">{anime.title_english || anime.title_japanese}</p>
-    </Link>
+    <div className="flex items-center gap-2">
+      <Link
+        href={`/anime/${animeId}`}
+        className="flex flex-1 items-center gap-3 rounded-lg border border-primary/20 p-2 hover:bg-primary/10 transition"
+      >
+        <Image
+          src={anime.image}
+          alt={anime.title_english || anime.title_japanese || "Anime cover"}
+          width={48}
+          height={64}
+          className="h-16 w-12 object-cover rounded"
+        />
+        <p className="text-sm text-gray-200">{anime.title_english || anime.title_japanese}</p>
+      </Link>
+      {showRemove && (
+        <Button
+          variant="destructive"
+          onClick={onRemove}
+          disabled={removing}
+          className="shrink-0"
+        >
+          {removing ? "Removing..." : "Remove"}
+        </Button>
+      )}
+    </div>
   );
 }
 
@@ -37,13 +60,19 @@ export default function ProfileListsSection({
   lists,
   listsLoading,
   onCreateList,
+  onListsChanged,
 }: {
   isOwnProfile: boolean;
   lists: List[];
   listsLoading: boolean;
   onCreateList: (listName: string) => Promise<boolean>;
+  onListsChanged: () => void;
 }) {
+  const { removeAnimeFromList } = useRemoveAnimeFromList();
   const [expandedListId, setExpandedListId] = React.useState<string | null>(null);
+  const [editingAllLists, setEditingAllLists] = React.useState(false);
+  const [removingAnimeKey, setRemovingAnimeKey] = React.useState<string | null>(null);
+  const [editError, setEditError] = React.useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [newListName, setNewListName] = React.useState("");
   const [createdListName, setCreatedListName] = React.useState<string | null>(null);
@@ -53,12 +82,26 @@ export default function ProfileListsSection({
       <div className="mb-6 flex items-center justify-between gap-3">
         <h2 className="text-3xl font-bold text-white">My Lists</h2>
         {isOwnProfile && (
-          <Button
-            onClick={() => setShowCreateModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            Create List
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Create List
+            </Button>
+            {lists.length > 0 && (
+              <Button
+                onClick={() => {
+                  setEditError(null);
+                  setEditingAllLists((prev) => !prev);
+                }}
+                variant="outline"
+                className="border-primary/40 text-gray-200"
+              >
+                {editingAllLists ? "Close Edit" : "Edit Lists"}
+              </Button>
+            )}
+          </div>
         )}
       </div>
 
@@ -87,18 +130,23 @@ export default function ProfileListsSection({
                       })
                     : "Unknown date"}
                 </p>
-                <Button
-                  onClick={() =>
-                    setExpandedListId((prev) => (prev === list.listId ? null : list.listId))
-                  }
-                  variant="outline"
-                  className="mt-3 border-primary/40 text-gray-200"
-                >
-                  {expandedListId === list.listId ? "Hide Items" : "View Items"}
-                </Button>
+                {!editingAllLists && (
+                  <Button
+                    onClick={() =>
+                      setExpandedListId((prev) => (prev === list.listId ? null : list.listId))
+                    }
+                    variant="outline"
+                    className="mt-3 border-primary/40 text-gray-200"
+                  >
+                    {expandedListId === list.listId ? "Hide Items" : "View Items"}
+                  </Button>
+                )}
 
-                {expandedListId === list.listId && (
+                {(editingAllLists || expandedListId === list.listId) && (
                   <div className="mt-4 space-y-2">
+                    {editingAllLists && editError && (
+                      <p className="text-xs text-red-400">{editError}</p>
+                    )}
                     {list.items.length === 0 && (
                       <p className="text-sm text-gray-400">No anime in this list yet.</p>
                     )}
@@ -106,6 +154,25 @@ export default function ProfileListsSection({
                       <ListAnimeItem
                         key={`${list.listId}-${item.animeId}`}
                         animeId={item.animeId}
+                        showRemove={editingAllLists}
+                        removing={removingAnimeKey === `${list.listId}-${item.animeId}`}
+                        onRemove={async () => {
+                          setEditError(null);
+                          const key = `${list.listId}-${item.animeId}`;
+                          setRemovingAnimeKey(key);
+                          const removed = await removeAnimeFromList({
+                            listId: list.listId,
+                            animeId: item.animeId,
+                          });
+                          setRemovingAnimeKey(null);
+
+                          if (!removed) {
+                            setEditError("Failed to remove anime. Please try again.");
+                            return;
+                          }
+
+                          onListsChanged();
+                        }}
                       />
                     ))}
                   </div>

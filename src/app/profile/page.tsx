@@ -222,6 +222,7 @@ function ProfilePageContent() {
           isOwnProfile={isOwnProfile}
           lists={lists}
           listsLoading={listsLoading}
+          onListsChanged={() => setListsRefreshKey((prev) => prev + 1)}
           onCreateList={async (listName) => {
             const created = await createListApi({ listName });
             if (created) {
