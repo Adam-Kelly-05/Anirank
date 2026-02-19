@@ -3,14 +3,16 @@
 import { User } from "@/types/User";
 import * as React from "react";
 
-type UseUserGetResult = {
+// Base API URL; prefers env override for flexibility across envs.
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE ?? "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
+
+export function useGetUser(userId?: string | number): {
   user?: User;
   loading: boolean;
   error?: string;
   refetch: () => Promise<void>;
-};
-
-export function useGetUser(userId?: string | number): UseUserGetResult {
+} {
   const [user, setUser] = React.useState<User>();
   const [loading, setLoading] = React.useState<boolean>(!!userId);
   const [error, setError] = React.useState<string>();
@@ -27,9 +29,7 @@ export function useGetUser(userId?: string | number): UseUserGetResult {
     setError(undefined);
 
     try {
-      const response = await fetch(
-        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/${userId}`,
-      );
+      const response = await fetch(`${API_BASE}/user/${userId}`);
       if (!response.ok) {
         setUser(undefined);
         setError("Unable to load user details.");

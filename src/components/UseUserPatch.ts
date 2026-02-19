@@ -2,50 +2,63 @@
 
 import { useAuth } from "react-oidc-context";
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE ?? "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
+
+type UpdateUserPayload = {
+  Bio?: string;
+  ProfilePicture?: string | null;
+  Username?: string;
+};
+
+/**
+ * Update a user record. If a userId is provided, uses the public PUT endpoint.
+ * Otherwise, falls back to the authenticated /user/me PATCH using the id_token.
+ */
 export function useUpdateUser() {
   const auth = useAuth();
 
-  const updateUser = async (patch: {
-    Bio?: string;
-    ProfilePicture?: string;
-    Username?: string;
-  }): Promise<unknown | null> => {
+  const updateUser = async ({
+    userId,
+    payload,
+  }: {
+    userId?: string;
+    payload: UpdateUserPayload;
+  }): Promise<boolean> => {
     try {
-      const idToken = auth.user?.id_token;
+      const endpoint = userId ? `${API_BASE}/user/${userId}` : `${API_BASE}/user/me`;
 
-      if (!idToken) {
-        console.error("useUpdateUser: Not authenticated (no id_token)");
-        return null;
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      if (!userId) {
+        const idToken = auth.user?.id_token;
+        if (!idToken) {
+          console.error("useUpdateUser: Missing id_token for authenticated update");
+          return false;
+        }
+        headers.Authorization = `Bearer ${idToken}`;
       }
 
-      const res = await fetch(
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/user/me",
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`,
-          },
-          body: JSON.stringify(patch),
-        },
-      );
+      const method = userId ? "PUT" : "PATCH";
 
-      const json = res.status === 204 ? null : await res.json();
+      const res = await fetch(endpoint, {
+        method,
+        headers,
+        body: JSON.stringify(payload),
+      });
 
       if (!res.ok) {
-        console.error("useUpdateUser: Update failed", console.log(json));
-        return null;
+        const text = await res.text();
+        console.error("useUpdateUser: Update failed", text);
+        return false;
       }
 
-      if (json && typeof json === "object") {
-        const typed = json as { user?: unknown; data?: unknown };
-        return typed.user ?? typed.data ?? typed;
-      }
-
-      return json;
+      return true;
     } catch (e: unknown) {
       console.error("useUpdateUser: Unexpected error", e);
-      return null;
+      return false;
     }
   };
 

@@ -4,20 +4,12 @@ import * as React from "react";
 import { Anime } from "@/types/Anime";
 
 // Fetch anime list with optional genre/limit filters
-export function useAnimeList({
-  genre,
-  limit,
-}: {
-  genre?: string;
-  limit?: number;
-}) {
+export function useAnimeList({ genre, limit }: { genre?: string; limit?: number }) {
   const [animes, setAnime] = React.useState<Anime[]>([]);
 
   React.useEffect(() => {
     async function fetchAnime() {
-      const url = new URL(
-        "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime"
-      );
+      const url = new URL("https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime");
       if (genre) {
         url.searchParams.set("genre", genre);
       }

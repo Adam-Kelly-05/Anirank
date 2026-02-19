@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import AnimeReviewsSection from "@/components/AnimeReviewsSection";
 import Image from "next/image";
 import AddReviewForm from "@/components/AddReviewForm";
+import ContentCarousel from "@/components/AnimeCarousel";
+import EpisodeCard from "@/components/EpisodeCard";
+import mostPopularAnime from "../../../../public/16MostPopularAnime.json";
+import EpisodeCarousel from "@/components/EpisodeCarousel";
 
 export const dynamicParams = false;
 export const dynamic = "error";
@@ -10,19 +14,14 @@ export const fetchCache = "force-no-store";
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(
-      "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime",
-      { cache: "no-store" },
-    );
+    const res = await fetch("https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime", {
+      cache: "no-store",
+    });
     const payload = await res.json();
-    const list = Array.isArray(payload)
-      ? payload
-      : (payload?.Items ?? payload?.data ?? []);
+    const list = Array.isArray(payload) ? payload : (payload?.Items ?? payload?.data ?? []);
 
     const apiIds = list
-      .map((item: { id?: number; animeId?: number }) =>
-        (item.id ?? item.animeId)?.toString(),
-      )
+      .map((item: { id?: number; animeId?: number }) => (item.id ?? item.animeId)?.toString())
       .filter(Boolean) as string[];
 
     const ids = Array.from(new Set(apiIds));
@@ -32,11 +31,7 @@ export async function generateStaticParams() {
   }
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const res = await fetch(
@@ -47,9 +42,7 @@ export default async function Page({
   if (res.ok) {
     const payload = await res.json();
     const rawAnime = (
-      Array.isArray(payload)
-        ? payload[0]
-        : (payload?.Item ?? payload?.data ?? payload)
+      Array.isArray(payload) ? payload[0] : (payload?.Item ?? payload?.data ?? payload)
     ) as Anime | null;
     if (rawAnime) {
       const anime = rawAnime;
@@ -59,9 +52,7 @@ export default async function Page({
             <div className="w-full max-w-xs md:max-w-sm rounded-xl overflow-hidden shadow-2xl bg-black/40">
               <Image
                 src={anime.image}
-                alt={
-                  anime.title_english || anime.title_japanese || "Anime image"
-                }
+                alt={anime.title_english || anime.title_japanese || "Anime image"}
                 width={320}
                 height={480}
                 className="w-full h-auto object-cover"
@@ -73,9 +64,7 @@ export default async function Page({
               <div>
                 <h1 className="text-4xl font-bold">{anime.title_english}</h1>
                 {anime.title_japanese && (
-                  <h2 className="text-xl text-gray-400">
-                    {anime.title_japanese}
-                  </h2>
+                  <h2 className="text-xl text-gray-400">{anime.title_japanese}</h2>
                 )}
               </div>
 
@@ -109,9 +98,7 @@ export default async function Page({
 
               {anime.genres?.length ? (
                 <div className="text-sm text-gray-200 flex flex-wrap gap-2">
-                  <span className="font-semibold text-gray-100 mr-1">
-                    Genres:
-                  </span>
+                  <span className="font-semibold text-gray-100 mr-1">Genres:</span>
                   {anime.genres.map((genre) => (
                     <span
                       key={genre}
@@ -140,13 +127,16 @@ export default async function Page({
           </div>
           <br />
           <section id="add-review" className="scroll-mt-24">
-            <AddReviewForm
-              anime={anime}
-              animeId={(anime.animeId ?? id).toString()}
-            />
+            <AddReviewForm anime={anime} animeId={(anime.animeId ?? id).toString()} />
           </section>
 
           <AnimeReviewsSection animeId={anime.animeId} />
+
+          <section className="mt-10">
+            <h2 className="text-2xl font-bold mb-4">Episodes</h2>
+            {/* Using anime data as placeholder episodes */}
+            <EpisodeCarousel items={mostPopularAnime} />
+          </section>
         </div>
       );
     }

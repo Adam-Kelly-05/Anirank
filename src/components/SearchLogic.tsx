@@ -7,11 +7,7 @@ import { Anime } from "@/types/Anime";
 export function SearchLogic({
   children,
 }: {
-  children: (state: {
-    query: string;
-    animes: Anime[];
-    isLoading: boolean;
-  }) => React.ReactNode;
+  children: (state: { query: string; animes: Anime[]; isLoading: boolean }) => React.ReactNode;
 }) {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
@@ -34,9 +30,7 @@ export function SearchLogic({
           `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/anime/${term}`,
         );
         const result = await response.json();
-        const data = Array.isArray(result)
-          ? result
-          : (result?.Items ?? result?.data ?? []);
+        const data = Array.isArray(result) ? result : (result?.Items ?? result?.data ?? []);
         setAnimes(data);
       } catch {
         setAnimes([]);

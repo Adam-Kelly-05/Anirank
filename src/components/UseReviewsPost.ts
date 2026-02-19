@@ -20,17 +20,14 @@ export function useCreateReview() {
       return null;
     }
 
-    const res = await fetch(
-      "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/reviews",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-        body: JSON.stringify(review),
+    const res = await fetch("https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/reviews", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
       },
-    );
+      body: JSON.stringify(review),
+    });
 
     const json = await res.json().catch(() => ({}));
 

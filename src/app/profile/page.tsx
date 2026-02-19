@@ -8,11 +8,15 @@ import { useGetUser } from "@/components/UseUserGet";
 import { useAuth } from "react-oidc-context";
 import ReviewsList from "@/components/ReviewsList";
 import OidcAuthPanel from "@/components/OidcAuthPanel";
-import { useRouter } from "next/navigation";
+import { EditUserForm } from "@/components/EditUserForm";
+import { useUserLists } from "../UserListsContext";
+import ListFilter from "@/components/ListFilter";
+import List from "@/components/List";
 
 export default function ProfilePage() {
+  console.log("ProfilePage rendered");
+
   const auth = useAuth();
-  const router = useRouter();
   const userSub = auth.user?.profile?.sub as string | undefined;
   const {
     user: fetchedUser,
@@ -20,8 +24,39 @@ export default function ProfilePage() {
     error: userError,
     refetch: refetchUser,
   } = useGetUser(userSub);
-  const [reviewsAmount, setReviewsAmount] = React.useState(0); // Default value of 0
+  const [reviewsAmount, setReviewsAmount] = React.useState(0);
   const [averageScore, setAverageScore] = React.useState(0);
+  const [editing, setEditing] = React.useState(false);
+
+  const { userLists, createList, removeAnimeFromList, deleteList } = useUserLists();
+  const defaultLists = ["Favourites", "Watching", "Watched", "Plan to Watch"];
+  const allListNames = [...defaultLists, ...userLists.map((l) => l.name)];
+  const combinedLists = [
+    ...defaultLists.map((name) => ({ name, isDefault: true })),
+    ...userLists.map((list) => ({ name: list.name, listId: list.listId, isDefault: false })),
+  ];
+
+  const [selectedList, setSelectedList] = React.useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = React.useState(false);
+  const [newListName, setNewListName] = React.useState("");
+  const selectedListObject = userLists.find((l) => l.name === selectedList);
+
+  const [animeItems, setAnimeItems] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    if (!selectedList) return;
+    if (!selectedListObject) return;
+    const list = selectedListObject;
+    async function loadAnime() {
+      const results = [];
+      for (const id of list?.items || []) {
+        const res = await fetch(`/api/anime/${id}`);
+        const anime = await res.json();
+        results.push(anime);
+      }
+      setAnimeItems(results);
+    }
+    loadAnime();
+  }, [selectedList, userLists, selectedListObject]);
 
   if (auth.isLoading) {
     return <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>;
@@ -35,23 +70,8 @@ export default function ProfilePage() {
             <CardContent className="p-8">
               <div className="flex flex-col items-center gap-6">
                 <h1 className="text-3xl font-bold text-white">Sign in</h1>
-                <OidcAuthPanel showSignIn />
+                <OidcAuthPanel />
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-    );
-  }
-
-  if (!userSub) {
-    return (
-      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <Card className="mb-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-primary/30">
-            <CardContent className="p-8 text-center text-white">
-              <p className="mb-4">We couldn&apos;t determine your account id.</p>
-              <OidcAuthPanel showSignIn />
             </CardContent>
           </Card>
         </div>
@@ -115,59 +135,153 @@ export default function ProfilePage() {
 
               {/* User Info */}
               <div className="flex-1 text-center">
-                <h1 className="text-4xl font-bold text-white mb-2">
-                  {fetchedUser?.Username}
-                </h1>
+                <h1 className="text-4xl font-bold text-white mb-2">{fetchedUser?.Username}</h1>
                 <p className="text-gray-400 text-lg mb-4">{fetchedUser?.Bio}</p>
                 <div className="flex flex-wrap justify-center gap-4 text-sm">
                   <div className="px-4 py-2 bg-card rounded-lg border border-primary/20">
                     <p className="text-gray-400">
                       User Since:{" "}
                       <span className="ml-2 text-white font-semibold">
-                        {new Date(fetchedUser?.DateJoin ?? "").toLocaleDateString(
-                          "en-GB",
-                          { day: "numeric", month: "long", year: "numeric" },
-                        )}
+                        {new Date(fetchedUser?.DateJoin ?? "").toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
                       </span>
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-col items-center gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => router.push("/profile/edit")}
-                    className="border-primary/60 text-white hover:border-primary hover:text-white"
-                  >
-                    Edit Profile
-                  </Button>
-                  <OidcAuthPanel />
+                <div className="mt-6">
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <div className="shrink-0">
+                      <OidcAuthPanel />
+                    </div>
+                  </div>
                 </div>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setEditing((v) => !v)}
+                  className="mt-4 border-primary/40 text-gray-200"
+                >
+                  {editing ? "Close Edit" : "Edit Profile"}
+                </Button>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {editing && (
+          <EditUserForm
+            user={fetchedUser}
+            onSaved={async () => {
+              await refetchUser();
+              setEditing(false);
+            }}
+            onCancel={() => setEditing(false)}
+          />
+        )}
+
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card className="bg-card border-primary/20">
             <CardContent className="p-6 text-center">
-              <div className="text-4xl font-bold text-blue-400 mb-2">
-                {reviewsAmount}
-              </div>
+              <div className="text-4xl font-bold text-blue-400 mb-2">{reviewsAmount}</div>
               <div className="text-gray-400">Total Reviews</div>
             </CardContent>
           </Card>
           <Card className="bg-card border-primary/20">
             <CardContent className="p-6 text-center">
               <div className="text-4xl font-bold text-purple-400 mb-2">
-                {averageScore}
+                {Number(averageScore ?? 0).toFixed(2)}
               </div>
               <div className="text-gray-400">Average Score</div>
             </CardContent>
           </Card>
         </div>
+
+        {/* List Filter Section */}
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-6">My Lists</h2>
+          <ListFilter
+            lists={userLists.map((l) => l.name)}
+            selectedList={selectedList}
+            onSelect={setSelectedList}
+            onCreateList={() => setShowCreateModal(true)}
+          />
+        </div>
+
+        {/* Display Anime in selected list */}
+        {selectedList && (
+          <div className="mt-6">
+            <h3 className="text-2xl font-bold text-white mb-4">{selectedList}</h3>
+            <List
+              items={animeItems.map((anime) => ({
+                title: anime.title_english || anime.title_japanese,
+                imageUrl: anime.image,
+                animeId: anime.animeId,
+              }))}
+              onRemove={(animeId) => {
+                if (!selectedListObject) return;
+                if (confirm("Remove this anime from the list?")) {
+                  removeAnimeFromList(selectedListObject.listId, animeId);
+                }
+              }}
+            />
+            {/* Delete list button */}
+            {selectedList && (
+              <button
+                onClick={() => {
+                  const list = userLists.find((l) => l.name === selectedList);
+                  if (!list) return;
+
+                  if (confirm(`Delete list "${selectedList}"?`)) {
+                    deleteList(list.listId);
+                    setSelectedList(null);
+                  }
+                }}
+                className="px-3 py-1 bg-[#0a0e1a] rounded-full border border-red-500 text-gray-100 hover:bg-red-700 transition"
+              >
+                Delete List
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* create list modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="w-full max-w-md p-6 bg-[#0a0e1a] border border-blue-500 rounded-2xl text-gray-100 shadow-xl z-50">
+              <h2 className="text-xl font-bold mb-4 text-gray-100">Create New List</h2>
+              <input
+                type="text"
+                placeholder="List name"
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                className="w-full px-3 py-2 rounded-full bg-[#0a0e1a] border border-blue-500 text-gray-100 mb-3"
+              />
+              <button
+                onClick={() => {
+                  const id = createList(newListName);
+                  setSelectedList(newListName);
+                  setShowCreateModal(false);
+                  setNewListName("");
+                }}
+                className="mt-4 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
+              >
+                Create
+              </button>
+
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="mt-2 w-full px-3 py-2 text-xs rounded-full border border-blue-500 text-gray-100 hover:bg-blue-800 transition"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Reviews Section */}
         <div>

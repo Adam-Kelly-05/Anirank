@@ -4,13 +4,7 @@ import * as React from "react";
 import { List } from "@/types/List";
 
 // Fetch lists by userId
-export function useList({
-  id,
-  idType,
-}: {
-  id?: string | number;
-  idType?: string | number;
-}) {
+export function useList({ id, idType }: { id?: string | number; idType?: string | number }) {
   const [list, setLists] = React.useState<List[]>([]);
 
   React.useEffect(() => {
@@ -30,9 +24,7 @@ export function useList({
         }
         const result = await response.json();
 
-        const data = Array.isArray(result)
-          ? result
-          : (result?.Items ?? result?.data ?? []);
+        const data = Array.isArray(result) ? result : (result?.Items ?? result?.data ?? []);
 
         setLists(data);
       } catch {

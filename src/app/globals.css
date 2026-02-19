@@ -118,12 +118,12 @@
     outline: 2px solid transparent;
     outline-offset: 2px;
   }
-  
+
   *:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
-  
+
   body {
     background: var(--background);
     color: var(--foreground);
@@ -160,13 +160,18 @@
   border-radius: 0.75rem;
   overflow: hidden;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .anime-card:hover {
   transform: translateY(-2px);
   border-color: rgba(59, 130, 246, 0.6);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(59, 130, 246, 0.3);
+  box-shadow:
+    0 10px 25px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
 }
 
 /* Alternative anime card with more blue tint */
@@ -176,13 +181,17 @@
   border-radius: 0.75rem;
   overflow: hidden;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(59, 130, 246, 0.2),
+    0 2px 4px -1px rgba(59, 130, 246, 0.1);
 }
 
 .anime-card-blue:hover {
   transform: translateY(-3px);
   border-color: rgba(96, 165, 250, 0.7);
-  box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.3), 0 10px 10px -5px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 20px 25px -5px rgba(59, 130, 246, 0.3),
+    0 10px 10px -5px rgba(59, 130, 246, 0.1);
 }
 
 /* Carousel Card Styling with Blue Background */
@@ -192,14 +201,18 @@
   border-radius: 0.75rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   position: relative;
 }
 
 .carousel-card:hover {
   transform: scale(1.05);
   border-color: rgba(59, 130, 246, 0.6);
-  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25), 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 25px 50px -12px rgba(59, 130, 246, 0.25),
+    0 10px 25px -5px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
@@ -210,19 +223,23 @@
   border-radius: 0.75rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(59, 130, 246, 0.2),
+    0 2px 4px -1px rgba(59, 130, 246, 0.1);
   position: relative;
 }
 
 .carousel-card-blue:hover {
   transform: scale(1.08);
   border-color: rgba(96, 165, 250, 0.8);
-  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.4), 0 20px 25px -5px rgba(59, 130, 246, 0.2);
+  box-shadow:
+    0 25px 50px -12px rgba(59, 130, 246, 0.4),
+    0 20px 25px -5px rgba(59, 130, 246, 0.2);
   z-index: 10;
 }
 
 /* Carousel card image styling */
-.carousel-card img, 
+.carousel-card img,
 .carousel-card-blue img {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -248,4 +265,84 @@
 .carousel-card:hover .carousel-card-overlay,
 .carousel-card-blue:hover .carousel-card-overlay {
   transform: translateY(0);
+}
+
+/* Scrollbar styling for better aesthetics */
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #0a0e1a;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #1e3a8a;
+  border-radius: 9999px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+div.fade-scroll {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+div.fade-scroll:hover {
+  scrollbar-width: thin;
+}
+
+div.fade-scroll::-webkit-scrollbar {
+  height: 0;
+  width: 0; /* required for Chrome/Edge */
+}
+
+div.fade-scroll:hover::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+div.fade-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+div.fade-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+div.fade-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.6);
+}
+
+div.fade-scroll::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  pointer-events: none;
+  background: linear-gradient(to right, var(--background) 0%, transparent 100%);
+  z-index: 10;
+}
+
+div.fade-scroll::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  pointer-events: none;
+  background: linear-gradient(to left, var(--background) 0%, transparent 100%);
+  z-index: 10;
 }

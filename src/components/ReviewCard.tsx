@@ -19,11 +19,7 @@ export function ReviewCard({ review }: { review: Review }) {
                 {anime?.image ? (
                   <Image
                     src={anime.image}
-                    alt={
-                      anime?.title_english ||
-                      anime?.title_japanese ||
-                      review.animeName
-                    }
+                    alt={anime?.title_english || anime?.title_japanese || review.animeName}
                     width={96}
                     height={128}
                     className="w-full h-auto object-cover"
@@ -41,15 +37,19 @@ export function ReviewCard({ review }: { review: Review }) {
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">
-                  <Link
-                    href={`/anime/${review.animeId}`}
-                    className="hover:underline"
-                  >
+                  <Link href={`/anime/${review.animeId}`} className="hover:underline">
                     {review.animeName}
                   </Link>
                 </h3>
                 <p className="text-gray-500 text-sm">
-                  Reviewed on {review.ratedDate}
+                  Reviewed on{" "}
+                  {new Date(review.ratedDate).toLocaleString("en-IE", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
               </div>
               <div className="flex items-center gap-1 px-3 py-1 bg-primary/20 text-primary rounded-full font-bold">

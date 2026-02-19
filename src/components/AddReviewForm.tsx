@@ -8,13 +8,7 @@ import { useAuth } from "react-oidc-context";
 import { Anime } from "@/types/Anime";
 import { useCreateReview } from "@/components/UseReviewsPost";
 
-export default function AddReviewForm({
-  anime,
-  animeId,
-}: {
-  anime: Anime;
-  animeId: string;
-}) {
+export default function AddReviewForm({ anime, animeId }: { anime: Anime; animeId: string }) {
   const router = useRouter();
   const auth = useAuth();
   const { createReview } = useCreateReview();
@@ -62,12 +56,13 @@ export default function AddReviewForm({
       }
 
       setSaveSuccess(true);
+      setForm({ rating: 0, reviewHeader: "", reviewText: "" });
+      setHoveredStar(0);
       setTimeout(() => {
         router.push(`/anime/${animeId}`);
       }, 1500);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Failed to submit review.";
+      const message = err instanceof Error ? err.message : "Failed to submit review.";
       setSaveError(message);
     } finally {
       setSaving(false);
@@ -107,9 +102,7 @@ export default function AddReviewForm({
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Rating Stars Field */}
               <div>
-                <label className="block text-white font-semibold mb-3">
-                  Rating
-                </label>
+                <label className="block text-white font-semibold mb-3">Rating</label>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((star) => (
                     <button
@@ -122,9 +115,7 @@ export default function AddReviewForm({
                     >
                       <span
                         className={
-                          star <= (hoveredStar || form.rating)
-                            ? "text-yellow-400"
-                            : "text-gray-600"
+                          star <= (hoveredStar || form.rating) ? "text-yellow-400" : "text-gray-600"
                         }
                       >
                         ★
@@ -133,24 +124,18 @@ export default function AddReviewForm({
                   ))}
                 </div>
                 {form.rating > 0 && (
-                  <p className="text-sm text-gray-400 mt-2">
-                    {form.rating} out of 10 stars
-                  </p>
+                  <p className="text-sm text-gray-400 mt-2">{form.rating} out of 10 stars</p>
                 )}
               </div>
 
               {/* Review Header Field */}
               <div>
-                <label className="block text-white font-semibold mb-2">
-                  Review headline
-                </label>
+                <label className="block text-white font-semibold mb-2">Review headline</label>
                 <input
                   type="text"
                   name="reviewHeader"
                   value={form.reviewHeader}
-                  onChange={(e) =>
-                    setForm({ ...form, reviewHeader: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, reviewHeader: e.target.value })}
                   maxLength={120}
                   className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
                   placeholder="e.g. Watch this before you die"
@@ -163,23 +148,17 @@ export default function AddReviewForm({
 
               {/* Review Text Field */}
               <div>
-                <label className="block text-white font-semibold mb-2">
-                  Review
-                </label>
+                <label className="block text-white font-semibold mb-2">Review</label>
                 <textarea
                   name="reviewText"
                   value={form.reviewText}
-                  onChange={(e) =>
-                    setForm({ ...form, reviewText: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, reviewText: e.target.value })}
                   rows={6}
                   className="w-full px-4 py-3 bg-background border border-primary/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20 resize-none"
                   placeholder="Share your thoughts about this anime..."
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  {form.reviewText.length} characters
-                </p>
+                <p className="text-xs text-gray-500 mt-1">{form.reviewText.length} characters</p>
               </div>
 
               {/* Error/Success Messages */}

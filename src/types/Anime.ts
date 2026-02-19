@@ -11,4 +11,7 @@ export interface Anime {
   title_japanese: string;
   trailer: string;
   type: string;
+  popularity: number;
+  rating: number;
+  releaseDate: string;
 }

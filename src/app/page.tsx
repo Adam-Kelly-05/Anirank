@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import AnimeGrid from "@/components/AnimeGrid";
 import ContentCarousel from "@/components/AnimeCarousel";
 import AnimeCard from "@/components/AnimeCard";
 import { useAnimeList } from "@/components/UseAnimeList";
+import { useAuth } from "react-oidc-context";
 import type { Anime } from "@/types/Anime";
 import mostPopularAnime from "../../public/16MostPopularAnime.json";
+import Recommendations from "@/components/Recommendations";
 
 const genres = [
   "Action",
@@ -15,17 +16,17 @@ const genres = [
   "Comedy",
   "Romance",
   "Drama",
-  // "Adventure",
-  // "Supernatural",
-  // "Sci-Fi",
-  // "Suspense",
-  // "Mystery",
-  // "Horror",
+  "Adventure",
+  "Supernatural",
+  "Sci-Fi",
+  "Suspense",
+  "Mystery",
+  "Horror",
   "Sports",
 ];
 
 export default function Home() {
-  const { animes } = useAnimeList({ limit: 15 });
+  const auth = useAuth();
 
   return (
     <>
@@ -34,8 +35,7 @@ export default function Home() {
         <section
           className="blue-gradient py-16 border-b-4 border-blue-400"
           style={{
-            background:
-              "linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #1d4ed8 100%)",
+            background: "linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #1d4ed8 100%)",
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -60,19 +60,14 @@ export default function Home() {
         </section>
         <div className="bg-background">
           {/* Trending Anime Section */}
-          <section
-            className="py-12 bg-blue-950"
-            style={{ backgroundColor: "#172554" }}
-          >
+          <section className="py-12 bg-blue-950" style={{ backgroundColor: "#172554" }}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center mb-8">
                 <div
                   className="h-8 w-1 bg-blue-500 rounded-full mr-4"
                   style={{ backgroundColor: "#3b82f6" }}
                 ></div>
-                <h2 className="text-3xl font-bold text-white">
-                  Trending Anime
-                </h2>
+                <h2 className="text-3xl font-bold text-white">Popular Anime</h2>
               </div>
               <ContentCarousel
                 data={mostPopularAnime}
@@ -82,36 +77,40 @@ export default function Home() {
           </section>
         </div>
 
-        {animes.length > 0 &&
-          genres.map((genre, index) => (
-            <section
-              key={genre}
-              className="py-8 border-t-2"
-              style={{
-                backgroundColor: index % 2 === 0 ? "#0a0e1a" : "#172554",
-                borderColor: "#3b82f6",
-              }}
-            >
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center mb-6">
-                  <div
-                    className="h-6 w-1 bg-blue-400 rounded-full mr-3"
-                    style={{ backgroundColor: "#60a5fa" }}
-                  ></div>
-                  <h3 className="text-2xl font-bold text-white">{genre}</h3>
-                  <div
-                    className="flex-1 ml-4 h-px"
-                    style={{
-                      background:
-                        "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
-                    }}
-                  ></div>
-                </div>
+        {auth.isAuthenticated ? (
+          <div>
+            <Recommendations />
+          </div>
+        ) : null}
 
-                <AnimeGrid genre={genre} limit={8} />
+        {genres.map((genre, index) => (
+          <section
+            key={genre}
+            className="py-8 border-t-2"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#0a0e1a" : "#172554",
+              borderColor: "#3b82f6",
+            }}
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center mb-6">
+                <div
+                  className="h-6 w-1 bg-blue-400 rounded-full mr-3"
+                  style={{ backgroundColor: "#60a5fa" }}
+                ></div>
+                <h3 className="text-2xl font-bold text-white">{genre}</h3>
+                <div
+                  className="flex-1 ml-4 h-px"
+                  style={{
+                    background: "linear-gradient(to right, rgba(59, 130, 246, 0.6), transparent)",
+                  }}
+                ></div>
               </div>
-            </section>
-          ))}
+
+              <AnimeGrid genre={genre} limit={8} />
+            </div>
+          </section>
+        ))}
       </div>
     </>
   );
