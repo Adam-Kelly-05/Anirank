@@ -10,11 +10,3 @@ export interface ListItem {
   animeId: number;
   addedAt: string;
 }
-
-export interface UserList {
-  listId: number;
-  userId: string;
-  name: string;
-  items: number[];
-  dateCreated: string;
-}

@@ -1,28 +1,56 @@
 "use client";
 
 import React from "react";
-import { useUserLists } from "@/app/UserListsContext";
+import { useAuth } from "react-oidc-context";
+import { useGetListsByUserId } from "@/components/UseListByUserIdGet";
+import { useAddAnimeToList } from "@/components/UseListAnimePost";
+import { useCreateList } from "@/components/UseListPost";
+import { List } from "@/types/List";
 
 interface ListSelectorModalProps {
   show: boolean;
   onClose: () => void;
   selectedAnime: number | null;
-  defaultLists: string[];
 }
 
-export default function ListSelectorModal({
-  show,
-  onClose,
-  selectedAnime,
-  defaultLists,
-}: ListSelectorModalProps) {
-  const { userLists, addAnimeToList, createList } = useUserLists()!;
+export default function ListSelectorModal({ show, onClose, selectedAnime }: ListSelectorModalProps) {
+  const auth = useAuth();
+  const { getLists } = useGetListsByUserId();
+  const { addAnimeToList } = useAddAnimeToList();
+  const { createList } = useCreateList();
+  const [lists, setLists] = React.useState<List[]>([]);
+  const [loadingLists, setLoadingLists] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const [creatingList, setCreatingList] = React.useState(false);
   const [newListName, setNewListName] = React.useState("");
 
-  if (!show) return null;
+  React.useEffect(() => {
+    if (!show) return;
 
-  const combinedLists = userLists;
+    const userSub = auth.user?.profile?.sub;
+    if (!userSub) {
+      setError("Sign in to add anime to lists.");
+      setLists([]);
+      return;
+    }
+
+    let cancelled = false;
+    async function loadLists() {
+      setLoadingLists(true);
+      setError(null);
+      const result = await getLists(userSub);
+      if (cancelled) return;
+      setLists(Array.isArray(result) ? (result as List[]) : []);
+      setLoadingLists(false);
+    }
+
+    loadLists();
+    return () => {
+      cancelled = true;
+    };
+  }, [show, auth.user?.profile?.sub, getLists]);
+
+  if (!show) return null;
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
@@ -31,17 +59,24 @@ export default function ListSelectorModal({
           <>
             <h2 className="text-xl font-bold mb-4 text-gray-100">Add to List</h2>
 
+            {loadingLists && <p className="text-sm text-gray-300 mb-2">Loading lists...</p>}
+            {error && <p className="text-sm text-red-300 mb-2">{error}</p>}
+
             <div className="space-y-2 max-h-48 overflow-y-auto custom-scroll flex flex-col items-center">
-              {combinedLists.map((list) => (
+              {lists.map((list) => (
                 <button
                   key={list.listId}
-                  onClick={() => {
-                    addAnimeToList(list.listId, selectedAnime!);
+                  onClick={async () => {
+                    if (!selectedAnime) return;
+                    await addAnimeToList({
+                      listId: list.listId,
+                      animeId: selectedAnime,
+                    });
                     onClose();
                   }}
                   className="w-80 text-center px-3 py-2 text-xs rounded-full border border-blue-500 bg-blue-600 text-gray-100 hover:bg-blue-800 transition"
                 >
-                  {list.name}
+                  {list.listName}
                 </button>
               ))}
             </div>
@@ -73,9 +108,26 @@ export default function ListSelectorModal({
             />
 
             <button
-              onClick={() => {
-                const newId = createList(newListName);
-                addAnimeToList(newId, selectedAnime!);
+              onClick={async () => {
+                const trimmedName = newListName.trim();
+                if (!trimmedName || !selectedAnime) return;
+
+                const created = await createList({ listName: trimmedName });
+                const createdListId = created?.listId as string | undefined;
+
+                if (createdListId) {
+                  await addAnimeToList({
+                    listId: createdListId,
+                    animeId: selectedAnime,
+                  });
+                }
+
+                const userSub = auth.user?.profile?.sub;
+                if (userSub) {
+                  const refreshed = await getLists(userSub);
+                  setLists(Array.isArray(refreshed) ? (refreshed as List[]) : []);
+                }
+
                 setCreatingList(false);
                 onClose();
                 setNewListName("");

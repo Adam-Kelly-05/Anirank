@@ -41,8 +41,6 @@ function ListAnimeItem({ animeId }: { animeId: number }) {
 }
 
 export default function ProfilePage() {
-  console.log("ProfilePage rendered");
-
   const auth = useAuth();
   const searchParams = useSearchParams();
   const userSub = auth.user?.profile?.sub as string | undefined;

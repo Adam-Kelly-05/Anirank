@@ -4,20 +4,16 @@ import React from "react";
 import RankedList from "@/components/RankedList";
 import { Anime } from "@/types/Anime";
 import List from "./List";
-import { useUserLists } from "@/app/UserListsContext";
 import ListSelectorModal from "@/components/ListSelectorModal";
 
 export default function TopTenAnimeList() {
   const [animes, setAnimes] = React.useState<Anime[]>([]);
-  const { userLists } = useUserLists()!;
 
   const [selectedAnime, setSelectedAnime] = React.useState<number | null>(null);
   const [showListSelector, setShowListSelector] = React.useState(false);
   const [showAllTop, setShowAllTop] = React.useState(false);
   const [showAllEditors, setShowAllEditors] = React.useState(false);
   const [editorsPicks, setEditorsPicks] = React.useState<Anime[]>([]);
-
-  const defaultLists = ["Favourites", "Watching", "Completed", "Plan to Watch"];
 
   React.useEffect(() => {
     async function fetchTopTen() {
@@ -46,7 +42,6 @@ export default function TopTenAnimeList() {
   }));
 
   const handleAdd = (item: { title: string; imageUrl: string; animeId: number }) => {
-    console.log("Adding anime:", item);
     setSelectedAnime(item.animeId);
     setShowListSelector(true);
   };
@@ -126,7 +121,6 @@ export default function TopTenAnimeList() {
         show={showListSelector}
         onClose={() => setShowListSelector(false)}
         selectedAnime={selectedAnime}
-        defaultLists={defaultLists}
       />
     </>
   );

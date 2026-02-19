@@ -8,7 +8,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SearchBar from "@/components/SearchBar";
 import Providers from "./providers";
-import { UserListsProvider } from "./UserListsContext";
 
 export default function RootLayout({
   children,
@@ -20,12 +19,11 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="bg-background text-foreground min-h-screen">
         <Providers>
-          <UserListsProvider>
-            {/* Navigation Bar */}
-            <nav
-              className="bg-blue-600 text-white shadow-lg border-b-2 border-blue-500"
-              style={{ backgroundColor: "#3b82f6" }}
-            >
+          {/* Navigation Bar */}
+          <nav
+            className="bg-blue-600 text-white shadow-lg border-b-2 border-blue-500"
+            style={{ backgroundColor: "#3b82f6" }}
+          >
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                   {/* Logo */}
@@ -178,19 +176,19 @@ export default function RootLayout({
                   </div>
                 </div>
               )}
-            </nav>
+          </nav>
 
-            {/* Main Content */}
-            <main className="flex-1">{children}</main>
+          {/* Main Content */}
+          <main className="flex-1">{children}</main>
 
-            {/* Footer */}
-            <footer
-              className="border-t-4"
-              style={{
-                background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1d4ed8 100%)",
-                borderColor: "#60a5fa",
-              }}
-            >
+          {/* Footer */}
+          <footer
+            className="border-t-4"
+            style={{
+              background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1d4ed8 100%)",
+              borderColor: "#60a5fa",
+            }}
+          >
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {/* Brand Section */}
@@ -250,8 +248,7 @@ export default function RootLayout({
                   <p>&copy; 2025 Anirank. Built with ❤️ for anime enthusiasts.</p>
                 </div>
               </div>
-            </footer>
-          </UserListsProvider>
+          </footer>
         </Providers>
       </body>
     </html>

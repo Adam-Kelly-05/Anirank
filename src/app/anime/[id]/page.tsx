@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import AnimeReviewsSection from "@/components/AnimeReviewsSection";
 import Image from "next/image";
 import AddReviewForm from "@/components/AddReviewForm";
-import ContentCarousel from "@/components/AnimeCarousel";
-import EpisodeCard from "@/components/EpisodeCard";
 import mostPopularAnime from "../../../../public/16MostPopularAnime.json";
 import EpisodeCarousel from "@/components/EpisodeCarousel";
 import AddAnimeToListButton from "@/components/AddAnimeToListButton";

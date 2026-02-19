@@ -2,11 +2,12 @@
 
 import React from "react";
 import { useAuth } from "react-oidc-context";
+import { List } from "@/types/List";
 
 export function useGetListsByUserId() {
   const auth = useAuth();
 
-  const getLists = React.useCallback(async (userId: string) => {
+  const getLists = React.useCallback(async (userId: string): Promise<List[] | null> => {
     const idToken = auth.user?.id_token;
 
     if (!idToken) {
@@ -31,18 +32,23 @@ export function useGetListsByUserId() {
       return null;
     }
 
-    let payload: any = json;
+    let payload: unknown = json;
     if (typeof json?.body === "string") {
       try {
-        payload = JSON.parse(json.body);
+        payload = JSON.parse(json.body) as unknown;
       } catch {
-        payload = {};
+        payload = null;
       }
     } else if (typeof json?.body === "object" && json?.body !== null) {
       payload = json.body;
     }
 
-    return payload?.lists ?? [];
+    if (payload && typeof payload === "object" && "lists" in payload) {
+      const lists = (payload as { lists?: unknown }).lists;
+      return Array.isArray(lists) ? (lists as List[]) : [];
+    }
+
+    return [];
   }, [auth.user?.id_token]);
 
   return { getLists };
