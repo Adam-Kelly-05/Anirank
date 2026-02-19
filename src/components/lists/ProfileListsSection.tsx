@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { List } from "@/types/List";
 import { useAnimeById } from "@/components/anime/UseAnime";
 import { useRemoveAnimeFromList } from "@/components/lists/UseListAnimeDelete";
+import { useDeleteList } from "@/components/lists/UseListDelete";
 
 function ListAnimeItem({
   animeId,
@@ -46,7 +47,7 @@ function ListAnimeItem({
           variant="destructive"
           onClick={onRemove}
           disabled={removing}
-          className="shrink-0"
+          className="shrink-0 bg-red-600 hover:bg-red-700 text-white"
         >
           {removing ? "Removing..." : "Remove"}
         </Button>
@@ -69,10 +70,14 @@ export default function ProfileListsSection({
   onListsChanged: () => void;
 }) {
   const { removeAnimeFromList } = useRemoveAnimeFromList();
+  const { deleteList } = useDeleteList();
   const [expandedListId, setExpandedListId] = React.useState<string | null>(null);
   const [editingAllLists, setEditingAllLists] = React.useState(false);
   const [removingAnimeKey, setRemovingAnimeKey] = React.useState<string | null>(null);
   const [editError, setEditError] = React.useState<string | null>(null);
+  const [pendingDeleteList, setPendingDeleteList] = React.useState<List | null>(null);
+  const [deletingListId, setDeletingListId] = React.useState<string | null>(null);
+  const [deleteListError, setDeleteListError] = React.useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [newListName, setNewListName] = React.useState("");
   const [createdListName, setCreatedListName] = React.useState<string | null>(null);
@@ -116,7 +121,21 @@ export default function ProfileListsSection({
           {lists.map((list) => (
             <Card key={list.listId} className="bg-card border-primary/20">
               <CardContent className="p-4">
-                <p className="text-xl font-semibold text-white">{list.listName}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xl font-semibold text-white">{list.listName}</p>
+                  {editingAllLists && (
+                    <Button
+                      variant="destructive"
+                      onClick={() => {
+                        setDeleteListError(null);
+                        setPendingDeleteList(list);
+                      }}
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      Delete List
+                    </Button>
+                  )}
+                </div>
                 <p className="text-sm text-gray-400 mt-2">
                   {Array.isArray(list.items) ? list.items.length : 0} anime
                 </p>
@@ -236,6 +255,53 @@ export default function ProfileListsSection({
             >
               Close
             </Button>
+          </div>
+        </div>
+      )}
+
+      {pendingDeleteList && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="w-full max-w-sm p-6 bg-[#0a0e1a] border border-red-500 rounded-2xl text-gray-100 shadow-xl">
+            <h3 className="text-lg font-semibold text-center mb-2">Delete List</h3>
+            <p className="text-sm text-gray-200 text-center">
+              Are you sure you want to delete {pendingDeleteList.listName}?
+            </p>
+            {deleteListError && (
+              <p className="mt-3 text-sm text-red-400 text-center">{deleteListError}</p>
+            )}
+            <div className="mt-4 flex gap-2">
+              <Button
+                variant="destructive"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                disabled={deletingListId === pendingDeleteList.listId}
+                onClick={async () => {
+                  setDeleteListError(null);
+                  setDeletingListId(pendingDeleteList.listId);
+                  const deleted = await deleteList(pendingDeleteList.listId);
+                  setDeletingListId(null);
+
+                  if (!deleted) {
+                    setDeleteListError("Failed to delete list. Please try again.");
+                    return;
+                  }
+
+                  setPendingDeleteList(null);
+                  onListsChanged();
+                }}
+              >
+                {deletingListId === pendingDeleteList.listId ? "Deleting..." : "Delete"}
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 border-primary/40 text-gray-200"
+                onClick={() => {
+                  setPendingDeleteList(null);
+                  setDeleteListError(null);
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
         </div>
       )}
