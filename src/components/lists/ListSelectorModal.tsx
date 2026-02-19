@@ -2,9 +2,9 @@
 
 import React from "react";
 import { useAuth } from "react-oidc-context";
-import { useGetListsByUserId } from "@/components/UseListByUserIdGet";
-import { useAddAnimeToList } from "@/components/UseListAnimePost";
-import { useCreateList } from "@/components/UseListPost";
+import { useGetListsByUserId } from "@/components/lists/UseListByUserIdGet";
+import { useAddAnimeToList } from "@/components/lists/UseListAnimePost";
+import { useCreateList } from "@/components/lists/UseListPost";
 import { List } from "@/types/List";
 
 interface ListSelectorModalProps {
@@ -13,7 +13,11 @@ interface ListSelectorModalProps {
   selectedAnime: number | null;
 }
 
-export default function ListSelectorModal({ show, onClose, selectedAnime }: ListSelectorModalProps) {
+export default function ListSelectorModal({
+  show,
+  onClose,
+  selectedAnime,
+}: ListSelectorModalProps) {
   const auth = useAuth();
   const { getLists } = useGetListsByUserId();
   const { addAnimeToList } = useAddAnimeToList();
@@ -33,12 +37,13 @@ export default function ListSelectorModal({ show, onClose, selectedAnime }: List
       setLists([]);
       return;
     }
+    const safeUserSub: string = userSub;
 
     let cancelled = false;
     async function loadLists() {
       setLoadingLists(true);
       setError(null);
-      const result = await getLists(userSub);
+      const result = await getLists(safeUserSub);
       if (cancelled) return;
       setLists(Array.isArray(result) ? (result as List[]) : []);
       setLoadingLists(false);

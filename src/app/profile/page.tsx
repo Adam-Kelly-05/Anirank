@@ -4,18 +4,28 @@ import React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useGetUser } from "@/components/UseUserGet";
+import { useGetUser } from "@/components/user/UseUserGet";
 import { useAuth } from "react-oidc-context";
 import { useSearchParams } from "next/navigation";
-import ReviewsList from "@/components/ReviewsList";
-import OidcAuthPanel from "@/components/OidcAuthPanel";
-import { EditUserForm } from "@/components/EditUserForm";
-import { useCreateList } from "@/components/UseListPost";
-import { useGetListsByUserId } from "@/components/UseListByUserIdGet";
+import ReviewsList from "@/components/reviews/ReviewsList";
+import OidcAuthPanel from "@/components/user/OidcAuthPanel";
+import { EditUserForm } from "@/components/user/EditUserForm";
+import { useCreateList } from "@/components/lists/UseListPost";
+import { useGetListsByUserId } from "@/components/lists/UseListByUserIdGet";
 import { List } from "@/types/List";
-import ProfileListsSection from "@/components/ProfileListsSection";
+import ProfileListsSection from "@/components/lists/ProfileListsSection";
 
 export default function ProfilePage() {
+  return (
+    <React.Suspense
+      fallback={<main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">Loading...</main>}
+    >
+      <ProfilePageContent />
+    </React.Suspense>
+  );
+}
+
+function ProfilePageContent() {
   const auth = useAuth();
   const searchParams = useSearchParams();
   const userSub = auth.user?.profile?.sub as string | undefined;

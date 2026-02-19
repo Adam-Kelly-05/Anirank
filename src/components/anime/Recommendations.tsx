@@ -1,7 +1,7 @@
 "use client";
 
 import AnimeCard from "./AnimeCard";
-import { useUserRecommendations } from "./UseUserRecommendations";
+import { useUserRecommendations } from "@/components/user/UseUserRecommendations";
 import type { RecommendationSection } from "@/types/RecommendationSection";
 
 export default function Recommendations() {

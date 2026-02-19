@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import AnimeGrid from "@/components/AnimeGrid";
-import ContentCarousel from "@/components/AnimeCarousel";
-import AnimeCard from "@/components/AnimeCard";
-import { useAnimeList } from "@/components/UseAnimeList";
+import AnimeGrid from "@/components/anime/AnimeGrid";
+import ContentCarousel from "@/components/anime/AnimeCarousel";
+import AnimeCard from "@/components/anime/AnimeCard";
+import { useAnimeList } from "@/components/anime/UseAnimeList";
 import { useAuth } from "react-oidc-context";
 import type { Anime } from "@/types/Anime";
 import mostPopularAnime from "../../public/16MostPopularAnime.json";
-import Recommendations from "@/components/Recommendations";
+import Recommendations from "@/components/anime/Recommendations";
 
 const genres = [
   "Action",

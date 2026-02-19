@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Review } from "@/types/Review";
-import { useAnimeById } from "./UseAnime";
+import { useAnimeById } from "@/components/anime/UseAnime";
 import Link from "next/link";
 import Image from "next/image";
 

@@ -3,8 +3,8 @@
 import React from "react";
 import { useAuth } from "react-oidc-context";
 import { Button } from "@/components/ui/button";
-import { useGetListsByUserId } from "@/components/UseListByUserIdGet";
-import { useAddAnimeToList } from "@/components/UseListAnimePost";
+import { useGetListsByUserId } from "@/components/lists/UseListByUserIdGet";
+import { useAddAnimeToList } from "@/components/lists/UseListAnimePost";
 import { List } from "@/types/List";
 
 export default function AddAnimeToListButton({ animeId }: { animeId: number }) {

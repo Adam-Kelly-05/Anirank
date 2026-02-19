@@ -1,10 +1,10 @@
 "use client";
 
 import React, { Suspense } from "react";
-import SearchBar from "@/components/SearchBar";
-import AnimeCard from "@/components/AnimeCard";
+import SearchBar from "@/components/search/SearchBar";
+import AnimeCard from "@/components/anime/AnimeCard";
 import { Anime } from "@/types/Anime";
-import { SearchLogic } from "@/components/SearchLogic";
+import { SearchLogic } from "@/components/search/SearchLogic";
 
 function EmptyState({ query }: { query: string }) {
   return (

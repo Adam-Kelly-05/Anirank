@@ -1,10 +1,10 @@
 "use client";
-import AnimeGrid from "@/components/AnimeGrid";
-import GenreFilter from "@/components/GenreFilter";
-import TopAnime from "@/components/TopAnime";
+import AnimeGrid from "@/components/anime/AnimeGrid";
+import GenreFilter from "@/components/anime/GenreFilter";
+import TopAnime from "@/components/anime/TopAnime";
 import { useState } from "react";
 import { useEffect } from "react";
-import SortDropdown from "@/components/SortDropDown";
+import SortDropdown from "@/components/anime/SortDropDown";
 
 export default function AboutPage() {
   const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);

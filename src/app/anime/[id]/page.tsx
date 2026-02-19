@@ -1,11 +1,11 @@
 import { Anime } from "@/types/Anime";
 import { notFound } from "next/navigation";
-import AnimeReviewsSection from "@/components/AnimeReviewsSection";
+import AnimeReviewsSection from "@/components/reviews/AnimeReviewsSection";
 import Image from "next/image";
-import AddReviewForm from "@/components/AddReviewForm";
+import AddReviewForm from "@/components/reviews/AddReviewForm";
 import mostPopularAnime from "../../../../public/16MostPopularAnime.json";
-import EpisodeCarousel from "@/components/EpisodeCarousel";
-import AddAnimeToListButton from "@/components/AddAnimeToListButton";
+import EpisodeCarousel from "@/components/anime/EpisodeCarousel";
+import AddAnimeToListButton from "@/components/lists/AddAnimeToListButton";
 
 export const dynamicParams = false;
 export const dynamic = "error";

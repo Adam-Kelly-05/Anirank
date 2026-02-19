@@ -13,8 +13,7 @@ export default function OidcAuthPanel() {
     try {
       localStorage.clear();
       sessionStorage.clear();
-    } catch {
-    }
+    } catch {}
 
     const cookies = document.cookie.split(";");
     for (const cookie of cookies) {
@@ -32,8 +31,7 @@ export default function OidcAuthPanel() {
     const cognitoDomain = "https://eu-west-1ce1rf5nox.auth.eu-west-1.amazoncognito.com";
     try {
       await auth.removeUser();
-    } catch {
-    }
+    } catch {}
     clearClientStorage();
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
       logoutUri,

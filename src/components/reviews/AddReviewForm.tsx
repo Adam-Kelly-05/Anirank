@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "react-oidc-context";
 import { Anime } from "@/types/Anime";
-import { useCreateReview } from "@/components/UseReviewsPost";
+import { useCreateReview } from "@/components/reviews/UseReviewsPost";
 
 export default function AddReviewForm({ anime, animeId }: { anime: Anime; animeId: string }) {
   const router = useRouter();

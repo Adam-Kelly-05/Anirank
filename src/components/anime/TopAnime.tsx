@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import RankedList from "@/components/RankedList";
+import RankedList from "@/components/anime/RankedList";
 import { Anime } from "@/types/Anime";
-import List from "./List";
-import ListSelectorModal from "@/components/ListSelectorModal";
+import List from "@/components/lists/List";
+import ListSelectorModal from "@/components/lists/ListSelectorModal";
 
 export default function TopTenAnimeList() {
   const [animes, setAnimes] = React.useState<Anime[]>([]);

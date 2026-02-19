@@ -5,10 +5,7 @@ import { useAuth } from "react-oidc-context";
 export function useAddAnimeToList() {
   const auth = useAuth();
 
-  const addAnimeToList = async (data: {
-    listId: string;
-    animeId: number;
-  }) => {
+  const addAnimeToList = async (data: { listId: string; animeId: number }) => {
     const idToken = auth.user?.id_token;
     const userSub = auth.user?.profile?.sub;
 
@@ -29,7 +26,7 @@ export function useAddAnimeToList() {
           userId: userSub,
           animeId: data.animeId,
         }),
-      }
+      },
     );
 
     const json = await res.json().catch(() => ({}));

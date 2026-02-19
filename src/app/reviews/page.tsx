@@ -1,5 +1,5 @@
 import React from "react";
-import ReviewsList from "@/components/ReviewsList";
+import ReviewsList from "@/components/reviews/ReviewsList";
 
 export default function AboutPage() {
   return (

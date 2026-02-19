@@ -47,11 +47,14 @@ export default function EpisodeCard(item: EpisodeCardItem) {
             <h3 className="font-bold text-lg text-foreground leading-tight line-clamp-2 hover:text-primary transition-colors">
               Episode: {item.episodes ? item.episodes : "N/A"}
             </h3>
-            <p className="text-sm text-card-foreground/80 line-clamp-3">
-              {item.synopsis?.length > 180
-                ? `${item.synopsis.slice(0, 177)}...`
-                : (item.synopsis ?? "")}
-            </p>
+            {(() => {
+              const synopsis = item.synopsis ?? "";
+              return (
+                <p className="text-sm text-card-foreground/80 line-clamp-3">
+                  {synopsis.length > 180 ? `${synopsis.slice(0, 177)}...` : synopsis}
+                </p>
+              );
+            })()}
           </div>
         </CardContent>
       </Card>

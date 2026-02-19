@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { List } from "@/types/List";
-import { useAnimeById } from "@/components/UseAnime";
+import { useAnimeById } from "@/components/anime/UseAnime";
 
 function ListAnimeItem({ animeId }: { animeId: number }) {
   const anime = useAnimeById(animeId);
@@ -103,7 +103,10 @@ export default function ProfileListsSection({
                       <p className="text-sm text-gray-400">No anime in this list yet.</p>
                     )}
                     {list.items.map((item) => (
-                      <ListAnimeItem key={`${list.listId}-${item.animeId}`} animeId={item.animeId} />
+                      <ListAnimeItem
+                        key={`${list.listId}-${item.animeId}`}
+                        animeId={item.animeId}
+                      />
                     ))}
                   </div>
                 )}
