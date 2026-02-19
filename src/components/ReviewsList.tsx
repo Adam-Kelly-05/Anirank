@@ -9,11 +9,13 @@ export default function ReviewsList({
   idType,
   onReviewsAmount,
   onAverageScore,
+  hideProfileForUserId,
 }: {
   id?: string | number;
   idType?: string | number;
   onReviewsAmount?: (count: number) => void;
   onAverageScore?: (count: number) => void;
+  hideProfileForUserId?: string | number;
 }) {
   const { reviews, reviewCount, averageRating } = useReviewsGet({ id, idType });
 
@@ -28,7 +30,11 @@ export default function ReviewsList({
   return (
     <div className="space-y-4 p-4">
       {reviews.map((review) => (
-        <ReviewCard key={review.reviewId} review={review} />
+        <ReviewCard
+          key={review.reviewId}
+          review={review}
+          hideProfileForUserId={hideProfileForUserId}
+        />
       ))}
     </div>
   );

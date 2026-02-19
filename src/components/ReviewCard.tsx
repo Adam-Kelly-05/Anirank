@@ -6,8 +6,16 @@ import { useAnimeById } from "./UseAnime";
 import Link from "next/link";
 import Image from "next/image";
 
-export function ReviewCard({ review }: { review: Review }) {
+export function ReviewCard({
+  review,
+  hideProfileForUserId,
+}: {
+  review: Review;
+  hideProfileForUserId?: string | number;
+}) {
   const anime = useAnimeById(review.animeId);
+  const shouldShowProfileButton =
+    hideProfileForUserId == null || String(review.userId) !== String(hideProfileForUserId);
 
   return (
     <Card className="bg-card border-primary/20 hover:border-primary/40 transition-all">
@@ -31,6 +39,16 @@ export function ReviewCard({ review }: { review: Review }) {
                 )}
               </div>
             </Link>
+            {shouldShowProfileButton && (
+              <div className="mt-3">
+                <Link
+                  href={`/profile?userId=${encodeURIComponent(review.userId)}`}
+                  className="inline-flex items-center rounded border border-blue-500 px-3 py-1 text-sm text-blue-300 hover:bg-blue-900/40 transition"
+                >
+                  View Profile
+                </Link>
+              </div>
+            )}
           </div>
 
           <div className="flex-1">

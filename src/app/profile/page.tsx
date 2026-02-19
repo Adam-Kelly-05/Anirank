@@ -45,6 +45,7 @@ export default function ProfilePage() {
   const searchParams = useSearchParams();
   const userSub = auth.user?.profile?.sub as string | undefined;
   const viewedUserId = searchParams.get("userId") ?? searchParams.get("id") ?? userSub;
+  const isOwnProfile = !!auth.isAuthenticated && !!userSub && viewedUserId === userSub;
   const {
     user: fetchedUser,
     loading: userLoading,
@@ -185,25 +186,29 @@ export default function ProfilePage() {
 
                 <div className="mt-6">
                   <div className="flex flex-wrap items-center justify-center gap-3">
-                    <div className="shrink-0">
-                      <OidcAuthPanel />
-                    </div>
+                    {isOwnProfile && (
+                      <div className="shrink-0">
+                        <OidcAuthPanel />
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <Button
-                  variant="outline"
-                  onClick={() => setEditing((v) => !v)}
-                  className="mt-4 border-primary/40 text-gray-200"
-                >
-                  {editing ? "Close Edit" : "Edit Profile"}
-                </Button>
+                {isOwnProfile && (
+                  <Button
+                    variant="outline"
+                    onClick={() => setEditing((v) => !v)}
+                    className="mt-4 border-primary/40 text-gray-200"
+                  >
+                    {editing ? "Close Edit" : "Edit Profile"}
+                  </Button>
+                )}
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {editing && (
+        {isOwnProfile && editing && (
           <EditUserForm
             user={fetchedUser}
             onSaved={async () => {
@@ -234,7 +239,7 @@ export default function ProfilePage() {
 
         <div className="mb-6 flex items-center justify-between gap-3">
           <h2 className="text-3xl font-bold text-white">My Lists</h2>
-          {viewedUserId === userSub && (
+          {isOwnProfile && (
             <Button
               onClick={() => setShowCreateModal(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white"
@@ -363,6 +368,7 @@ export default function ProfilePage() {
             idType="user"
             onReviewsAmount={setReviewsAmount}
             onAverageScore={setAverageScore}
+            hideProfileForUserId={viewedUserId}
           />
         </div>
       </div>

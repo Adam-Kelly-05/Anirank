@@ -3,9 +3,7 @@
 import { User } from "@/types/User";
 import * as React from "react";
 
-// Base API URL; prefers env override for flexibility across envs.
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ?? "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
+const API_BASE = "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
 
 export function useGetUser(userId?: string | number): {
   user?: User;
