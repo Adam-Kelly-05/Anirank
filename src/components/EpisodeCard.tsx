@@ -4,9 +4,17 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { Anime } from "@/types/Anime";
 
-export default function EpisodeCard(item: Anime) {
+export interface EpisodeCardItem {
+  animeId: number;
+  image: string;
+  title_english?: string;
+  title_japanese?: string;
+  episodes?: number;
+  synopsis?: string;
+}
+
+export default function EpisodeCard(item: EpisodeCardItem) {
   const router = useRouter();
 
   return (
