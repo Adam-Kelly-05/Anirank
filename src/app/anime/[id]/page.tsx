@@ -7,6 +7,7 @@ import ContentCarousel from "@/components/AnimeCarousel";
 import EpisodeCard from "@/components/EpisodeCard";
 import mostPopularAnime from "../../../../public/16MostPopularAnime.json";
 import EpisodeCarousel from "@/components/EpisodeCarousel";
+import AddAnimeToListButton from "@/components/AddAnimeToListButton";
 
 export const dynamicParams = false;
 export const dynamic = "error";
@@ -58,6 +59,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                 className="w-full h-auto object-cover"
                 sizes="(max-width: 768px) 100vw, 320px"
               />
+              <div className="p-4">
+                <AddAnimeToListButton animeId={anime.animeId} />
+              </div>
             </div>
 
             <div className="flex-1 space-y-6">
