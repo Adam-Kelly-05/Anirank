@@ -6,33 +6,30 @@ export function useDeleteList() {
   const auth = useAuth();
 
   const deleteList = async (listId: string) => {
-    const idToken = auth.user?.id_token;
-    const userSub = auth.user?.profile?.sub;
-    if (!idToken || !userSub) return false;
+    const token = auth.user?.access_token ?? auth.user?.id_token;
+    if (!token) return false;
 
-    const res = await fetch(`/api/list/${encodeURIComponent(listId)}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify({ userId: userSub }),
-    });
+    try {
+      const res = await fetch(
+        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${encodeURIComponent(listId)}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-    if (!res.ok) {
-      const contentType = res.headers.get("content-type") ?? "";
-      const rawPayload = contentType.includes("application/json")
-        ? await res.json().catch(() => ({}))
-        : await res.text().catch(() => "");
-      const payload =
-        typeof rawPayload === "string"
-          ? rawPayload.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 300)
-          : rawPayload;
-      console.error("deleteList failed:", res.status, payload);
+      if (!res.ok) {
+        console.error("deleteList failed:", res.status);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("deleteList request error:", error);
       return false;
     }
-
-    return true;
   };
 
   return { deleteList };

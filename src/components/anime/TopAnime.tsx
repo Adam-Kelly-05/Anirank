@@ -4,7 +4,7 @@ import React from "react";
 import RankedList from "@/components/anime/RankedList";
 import { Anime } from "@/types/Anime";
 import List from "@/components/lists/List";
-import ListSelectorModal from "@/components/lists/ListSelectorModal";
+import AddAnimeToListPopUp from "@/components/lists/AddAnimeToListPopUp";
 
 export default function TopTenAnimeList() {
   const [animes, setAnimes] = React.useState<Anime[]>([]);
@@ -117,7 +117,7 @@ export default function TopTenAnimeList() {
         </div>
       </section>
 
-      <ListSelectorModal
+      <AddAnimeToListPopUp
         show={showListSelector}
         onClose={() => setShowListSelector(false)}
         selectedAnime={selectedAnime}

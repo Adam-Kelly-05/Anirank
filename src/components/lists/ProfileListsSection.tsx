@@ -74,7 +74,7 @@ export default function ProfileListsSection({
   const [expandedListId, setExpandedListId] = React.useState<string | null>(null);
   const [editingAllLists, setEditingAllLists] = React.useState(false);
   const [removingAnimeKey, setRemovingAnimeKey] = React.useState<string | null>(null);
-  const [editError, setEditError] = React.useState<string | null>(null);
+  const [editErrorByList, setEditErrorByList] = React.useState<Record<string, string>>({});
   const [pendingDeleteList, setPendingDeleteList] = React.useState<List | null>(null);
   const [deletingListId, setDeletingListId] = React.useState<string | null>(null);
   const [deleteListError, setDeleteListError] = React.useState<string | null>(null);
@@ -118,93 +118,94 @@ export default function ProfileListsSection({
 
       {!listsLoading && lists.length > 0 && (
         <div className="grid grid-cols-1 gap-4 mb-8">
-          {lists.map((list) => (
-            <Card key={list.listId} className="bg-card border-primary/20">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-xl font-semibold text-white">{list.listName}</p>
-                  {editingAllLists && (
+          {lists.map((list) => {
+            const items = Array.isArray(list.items) ? list.items : [];
+            return (
+              <Card key={list.listId} className="bg-card border-primary/20">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xl font-semibold text-white">{list.listName}</p>
+                    {editingAllLists && (
+                      <Button
+                        variant="destructive"
+                        onClick={() => {
+                          setDeleteListError(null);
+                          setPendingDeleteList(list);
+                        }}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                      >
+                        Delete List
+                      </Button>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-400 mt-2">{items.length} anime</p>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Created:{" "}
+                    {list.createdAt
+                      ? new Date(list.createdAt).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : "Unknown date"}
+                  </p>
+                  {!editingAllLists && (
                     <Button
-                      variant="destructive"
-                      onClick={() => {
-                        setDeleteListError(null);
-                        setPendingDeleteList(list);
-                      }}
-                      className="bg-red-600 hover:bg-red-700 text-white"
+                      onClick={() =>
+                        setExpandedListId((prev) => (prev === list.listId ? null : list.listId))
+                      }
+                      variant="outline"
+                      className="mt-3 border-primary/40 text-gray-200"
                     >
-                      Delete List
+                      {expandedListId === list.listId ? "Hide Items" : "View Items"}
                     </Button>
                   )}
-                </div>
-                <p className="text-sm text-gray-400 mt-2">
-                  {Array.isArray(list.items) ? list.items.length : 0} anime
-                </p>
-                <p className="text-sm text-gray-400 mt-1">
-                  Created:{" "}
-                  {list.createdAt
-                    ? new Date(list.createdAt).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })
-                    : "Unknown date"}
-                </p>
-                {!editingAllLists && (
-                  <Button
-                    onClick={() =>
-                      setExpandedListId((prev) => (prev === list.listId ? null : list.listId))
-                    }
-                    variant="outline"
-                    className="mt-3 border-primary/40 text-gray-200"
-                  >
-                    {expandedListId === list.listId ? "Hide Items" : "View Items"}
-                  </Button>
-                )}
 
-                {(editingAllLists || expandedListId === list.listId) && (
-                  <div className="mt-4 space-y-2">
-                    {editingAllLists && editErrorByList[list.listId] && (
-                      <p className="text-xs text-red-400">{editErrorByList[list.listId]}</p>
-                    )}
-                    {list.items.length === 0 && (
-                      <p className="text-sm text-gray-400">No anime in this list yet.</p>
-                    )}
-                    {list.items.map((item) => (
-                      <ListAnimeItem
-                        key={`${list.listId}-${item.animeId}`}
-                        animeId={item.animeId}
-                        showRemove={editingAllLists}
-                        removing={removingAnimeKey === `${list.listId}-${item.animeId}`}
-                        onRemove={async () => {
-                          const key = `${list.listId}-${item.animeId}`;
-                          setEditErrorByList((prev) => ({ ...prev, [list.listId]: "" }));
-                          setRemovingAnimeKey(key);
-                          try {
-                            const removed = await removeAnimeFromList({
-                              listId: list.listId,
-                              animeId: item.animeId,
-                            });
+                  {(editingAllLists || expandedListId === list.listId) && (
+                    <div className="mt-4 space-y-2">
+                      {editingAllLists && editErrorByList[list.listId] && (
+                        <p className="text-xs text-red-400">{editErrorByList[list.listId]}</p>
+                      )}
+                      {items.length === 0 && (
+                        <p className="text-sm text-gray-400">No anime in this list yet.</p>
+                      )}
+                      {items.map((item) => (
+                        <ListAnimeItem
+                          key={`${list.listId}-${item.animeId}`}
+                          animeId={item.animeId}
+                          showRemove={editingAllLists}
+                          removing={removingAnimeKey === `${list.listId}-${item.animeId}`}
+                          onRemove={async () => {
+                            const key = `${list.listId}-${item.animeId}`;
+                            setEditErrorByList((prev) => ({ ...prev, [list.listId]: "" }));
+                            setRemovingAnimeKey(key);
+                            try {
+                              const removed = await removeAnimeFromList({
+                                listId: list.listId,
+                                animeId: item.animeId,
+                              });
 
-                            if (!removed) {
-                              setEditErrorByList((prev) => ({
-                                ...prev,
-                                [list.listId]: "Failed to remove anime. Please try again.",
-                              }));
-                              return;
+                              if (!removed) {
+                                setEditErrorByList((prev) => ({
+                                  ...prev,
+                                  [list.listId]: "Failed to remove anime. Please try again.",
+                                }));
+                                return;
+                              }
+
+                              onListsChanged();
+                            } finally {
+                              setRemovingAnimeKey(null);
                             }
-
-                            onListsChanged();
-                          } finally {
-                            setRemovingAnimeKey(null);
-                          }
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
 
@@ -283,16 +284,18 @@ export default function ProfileListsSection({
                 onClick={async () => {
                   setDeleteListError(null);
                   setDeletingListId(pendingDeleteList.listId);
-                  const deleted = await deleteList(pendingDeleteList.listId);
-                  setDeletingListId(null);
+                  try {
+                    const deleted = await deleteList(pendingDeleteList.listId);
+                    if (!deleted) {
+                      setDeleteListError("Failed to delete list. Please try again.");
+                      return;
+                    }
 
-                  if (!deleted) {
-                    setDeleteListError("Failed to delete list. Please try again.");
-                    return;
+                    setPendingDeleteList(null);
+                    onListsChanged();
+                  } finally {
+                    setDeletingListId(null);
                   }
-
-                  setPendingDeleteList(null);
-                  onListsChanged();
                 }}
               >
                 {deletingListId === pendingDeleteList.listId ? "Deleting..." : "Delete"}

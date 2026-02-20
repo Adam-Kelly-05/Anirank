@@ -2,23 +2,23 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import ListSelectorModal from "@/components/lists/ListSelectorModal";
+import AddAnimeToListPopUp from "@/components/lists/AddAnimeToListPopUp";
 
 export default function AddAnimeToListButton({ animeId }: { animeId: number }) {
-  const [showModal, setShowModal] = React.useState(false);
+  const [showPopUp, setShowPopUp] = React.useState(false);
 
   return (
     <>
       <Button
-        onClick={() => setShowModal(true)}
+        onClick={() => setShowPopUp(true)}
         className="w-full bg-blue-600 hover:bg-blue-700 text-white"
       >
         Add to List
       </Button>
 
-      <ListSelectorModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
+      <AddAnimeToListPopUp
+        show={showPopUp}
+        onClose={() => setShowPopUp(false)}
         selectedAnime={animeId}
       />
     </>

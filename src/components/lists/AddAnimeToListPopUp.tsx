@@ -7,7 +7,7 @@ import { useAddAnimeToList } from "@/components/lists/UseListAnimePost";
 import { useCreateList } from "@/components/lists/UseListPost";
 import { List } from "@/types/List";
 
-interface ListSelectorModalProps {
+interface AddAnimeToListPopUpProps {
   show: boolean;
   onClose: () => void;
   selectedAnime: number | null;
@@ -18,11 +18,11 @@ function listHasAnime(list: List, animeId: number | null): boolean {
   return list.items.some((item) => Number(item.animeId) === Number(animeId));
 }
 
-export default function ListSelectorModal({
+export default function AddAnimeToListPopUp({
   show,
   onClose,
   selectedAnime,
-}: ListSelectorModalProps) {
+}: AddAnimeToListPopUpProps) {
   const auth = useAuth();
   const { getLists } = useGetListsByUserId();
   const { addAnimeToList } = useAddAnimeToList();
