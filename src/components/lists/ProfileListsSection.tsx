@@ -97,7 +97,7 @@ export default function ProfileListsSection({
             {lists.length > 0 && (
               <Button
                 onClick={() => {
-                  setEditError(null);
+                  setEditErrorByList({});
                   setEditingAllLists((prev) => !prev);
                 }}
                 variant="outline"
@@ -163,8 +163,8 @@ export default function ProfileListsSection({
 
                 {(editingAllLists || expandedListId === list.listId) && (
                   <div className="mt-4 space-y-2">
-                    {editingAllLists && editError && (
-                      <p className="text-xs text-red-400">{editError}</p>
+                    {editingAllLists && editErrorByList[list.listId] && (
+                      <p className="text-xs text-red-400">{editErrorByList[list.listId]}</p>
                     )}
                     {list.items.length === 0 && (
                       <p className="text-sm text-gray-400">No anime in this list yet.</p>
@@ -176,21 +176,27 @@ export default function ProfileListsSection({
                         showRemove={editingAllLists}
                         removing={removingAnimeKey === `${list.listId}-${item.animeId}`}
                         onRemove={async () => {
-                          setEditError(null);
                           const key = `${list.listId}-${item.animeId}`;
+                          setEditErrorByList((prev) => ({ ...prev, [list.listId]: "" }));
                           setRemovingAnimeKey(key);
-                          const removed = await removeAnimeFromList({
-                            listId: list.listId,
-                            animeId: item.animeId,
-                          });
-                          setRemovingAnimeKey(null);
+                          try {
+                            const removed = await removeAnimeFromList({
+                              listId: list.listId,
+                              animeId: item.animeId,
+                            });
 
-                          if (!removed) {
-                            setEditError("Failed to remove anime. Please try again.");
-                            return;
+                            if (!removed) {
+                              setEditErrorByList((prev) => ({
+                                ...prev,
+                                [list.listId]: "Failed to remove anime. Please try again.",
+                              }));
+                              return;
+                            }
+
+                            onListsChanged();
+                          } finally {
+                            setRemovingAnimeKey(null);
                           }
-
-                          onListsChanged();
                         }}
                       />
                     ))}

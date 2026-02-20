@@ -2,32 +2,36 @@
 
 import { useAuth } from "react-oidc-context";
 
-const LIST_API_BASE = "https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod";
-
 export function useRemoveAnimeFromList() {
   const auth = useAuth();
 
   const removeAnimeFromList = async (params: { listId: string; animeId: number }) => {
-    const idToken = auth.user?.id_token;
-    if (!idToken) return false;
+    const token = auth.user?.access_token ?? auth.user?.id_token;
+    if (!token) return false;
 
     const listIdEncoded = encodeURIComponent(params.listId);
     const animeIdEncoded = encodeURIComponent(String(params.animeId));
 
-    const res = await fetch(`${LIST_API_BASE}/list/${listIdEncoded}/anime/${animeIdEncoded}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    });
+    try {
+      const res = await fetch(
+        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${listIdEncoded}/anime/${animeIdEncoded}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-    if (!res.ok) {
+      if (res.ok) return true;
+
       const json = await res.json().catch(() => ({}));
       console.error("removeAnimeFromList failed:", res.status, json);
       return false;
+    } catch (error) {
+      console.error("removeAnimeFromList request error:", error);
+      return false;
     }
-
-    return true;
   };
 
   return { removeAnimeFromList };

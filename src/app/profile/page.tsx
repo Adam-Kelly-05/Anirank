@@ -60,7 +60,7 @@ function ProfilePageContent() {
       const fetchedLists = await getLists(viewedUserId);
       if (cancelled) return;
 
-      setLists(Array.isArray(fetchedLists) ? (fetchedLists as List[]) : []);
+      setLists(fetchedLists);
       setListsLoading(false);
     }
 
