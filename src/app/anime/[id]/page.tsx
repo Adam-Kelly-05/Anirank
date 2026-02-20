@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import AnimeReviewsSection from "@/components/reviews/AnimeReviewsSection";
 import Image from "next/image";
 import AddReviewForm from "@/components/reviews/AddReviewForm";
-import mostPopularAnime from "../../../../public/16MostPopularAnime.json";
 import EpisodeCarousel from "@/components/anime/EpisodeCarousel";
 import AddAnimeToListButton from "@/components/lists/AddAnimeToListButton";
+import anime1535 from "../../../../public/1535.json";
+import anime5114 from "../../../../public/5114.json";
 
 export const dynamicParams = false;
 export const dynamic = "error";
@@ -134,11 +135,19 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
           <AnimeReviewsSection animeId={anime.animeId} />
 
-          <section className="mt-10">
-            <h2 className="text-2xl font-bold mb-4">Episodes</h2>
-            {/* Using anime data as placeholder episodes */}
-            <EpisodeCarousel items={mostPopularAnime} />
-          </section>
+          {/* This is hardcoded as json files for now */}
+          {anime.animeId === 1535 && (
+            <section className="mt-10">
+              <h2 className="text-2xl font-bold mb-4">Episodes</h2>
+              <EpisodeCarousel items={anime1535} />
+            </section>
+          )}
+          {anime.animeId === 5114 && (
+            <section className="mt-10">
+              <h2 className="text-2xl font-bold mb-4">Episodes</h2>
+              <EpisodeCarousel items={anime5114} />
+            </section>
+          )}
         </div>
       );
     }

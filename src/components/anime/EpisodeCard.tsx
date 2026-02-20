@@ -4,15 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-export interface EpisodeCardItem {
-  animeId: number;
-  image: string;
-  title_english?: string;
-  title_japanese?: string;
-  episodes?: number;
-  synopsis?: string;
-}
+import { EpisodeCardItem } from "@/types/EpisodeCardItem";
 
 export default function EpisodeCard(item: EpisodeCardItem) {
   const router = useRouter();
@@ -45,7 +37,7 @@ export default function EpisodeCard(item: EpisodeCardItem) {
               {item.title_english}
             </p>
             <h3 className="font-bold text-lg text-foreground leading-tight line-clamp-2 hover:text-primary transition-colors">
-              Episode: {item.episodes ? item.episodes : "N/A"}
+              Episode: {item.episode ?? item.episodes ?? "N/A"}
             </h3>
             {(() => {
               const synopsis = item.synopsis ?? "";
