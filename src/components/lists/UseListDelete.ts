@@ -2,19 +2,19 @@
 
 import { useAuth } from "react-oidc-context";
 
-export function useRemoveAnimeFromList() {
+export function useDeleteList() {
   const auth = useAuth();
 
-  const removeAnimeFromList = async (params: { listId: string; animeId: number }) => {
+  const deleteList = async (params: { listId: string }) => {
     const token = auth.user?.access_token ?? auth.user?.id_token;
+
     if (!token) return false;
+    if (!params.listId) return false;
 
     const listIdEncoded = encodeURIComponent(params.listId);
-    const animeIdEncoded = encodeURIComponent(String(params.animeId));
-
     try {
       const res = await fetch(
-        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${listIdEncoded}/anime/${animeIdEncoded}`,
+        `https://p7gfovbtqg.execute-api.eu-west-1.amazonaws.com/prod/list/${listIdEncoded}`,
         {
           method: "DELETE",
           headers: {
@@ -26,13 +26,13 @@ export function useRemoveAnimeFromList() {
       if (res.ok) return true;
 
       const json = await res.json().catch(() => ({}));
-      console.error("removeAnimeFromList failed:", res.status, json);
+      console.error("deleteList failed:", res.status, json);
       return false;
     } catch (error) {
-      console.error("removeAnimeFromList request error:", error);
+      console.error("deleteList request error:", error);
       return false;
     }
   };
 
-  return { removeAnimeFromList };
+  return { deleteList };
 }
