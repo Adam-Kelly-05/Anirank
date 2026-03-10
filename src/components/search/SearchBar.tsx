@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
+import { gaEvent } from "@/lib/gtag";
 
 export default function SearchBar({ className }: { className?: string }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +14,14 @@ export default function SearchBar({ className }: { className?: string }) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
+      //Track the search event with Google Analytics
+      gaEvent({
+        action: "search",
+        category: "engagement",
+        label: searchTerm.trim(),
+      });
+
+      //Navigate to search results page with the query parameter
       router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
     }
   };
@@ -22,6 +31,7 @@ export default function SearchBar({ className }: { className?: string }) {
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground text-blue-200" />
       <input
         type="text"
+        aria-label="Search for anime titles"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder={"Search anime..."}

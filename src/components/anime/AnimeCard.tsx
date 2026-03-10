@@ -6,14 +6,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Anime } from "@/types/Anime";
+import { gaEvent } from "@/lib/gtag";
 
 export default function AnimeCard(item: Anime) {
   const router = useRouter();
+  const handleAnimeClick = () => {
+    //Track the click event with Google Analytics
+    gaEvent({
+      action: "anime_click",
+      category: "navigation",
+      label: item.title_english || item.title_japanese,
+    });
+
+    //Navigate to anime page
+    router.push(`/anime/${item.animeId}`);
+  };
 
   return (
     <div className="relative w-[280px] h-full overflow-visible transition-transform duration-200 will-change-transform hover:scale-105 hover:z-20 isolate">
       <Card
-        onClick={() => router.push(`/anime/${item.animeId}`)}
+        aria-label={`View details for ${item.title_english}`}
+        onClick={() => handleAnimeClick()}
         className={cn(
           "relative h-full flex flex-col overflow-hidden cursor-pointer",
           "bg-card border-primary/20 shadow-lg hover:shadow-2xl hover:border-primary/40",

@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./globals.css";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SearchBar from "@/components/search/SearchBar";
 import Providers from "./providers";
+import { usePathname } from "next/navigation";
+import { pageview } from "@/lib/gtag";
+import Script from "next/dist/client/script";
 
 export default function RootLayout({
   children,
@@ -13,9 +16,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Track page views on route change
+  useEffect(() => {
+    if (!pathname) return;
+    pageview(pathname);
+  }, [pathname]);
   return (
     <html lang="en" className="dark">
       <body className="bg-background text-foreground min-h-screen">
+        {/* GA4 scripts */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+
         <Providers>
           {/* Navigation Bar */}
           <nav

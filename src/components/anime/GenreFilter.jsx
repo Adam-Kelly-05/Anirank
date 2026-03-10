@@ -1,5 +1,7 @@
 "use client";
 
+import { gaEvent } from "@/lib/gtag";
+
 const genres = [
   "Action",
   "Fantasy",
@@ -23,7 +25,17 @@ export default function GenreFilter({ selectedGenre, onSelect }) {
       {genres.map((genre) => (
         <button
           key={genre}
-          onClick={() => onSelect(genre)}
+          aria-label={`Filter by ${genre} genre`}
+          onClick={() => {
+            //Track genre click event with Google Analytics
+            gaEvent({
+              action: "genre_click",
+              category: "navigation",
+              label: genre,
+            });
+            //Call the onSelect callback to update the selected genre
+            onSelect(genre);
+          }}
           className={`px-3 py-1 rounded-full font-semibold text-xs whitespace-nowrap border transition
             ${
               selectedGenre === genre
