@@ -1,0 +1,125 @@
+[
+  {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 80,
+    "name_english": "Light Yagami",
+    "name_japanese": "夜神 月",
+    "image": "https://cdn.myanimelist.net//images//characters//6//63870.jpg",
+    "birthdate": "February 28, 1989",
+    "zodiac_sign": "Pisces",
+    "occupation": "High school student, university student, detective",
+    "age": "17-24",
+    "likes": "Justice",
+    "dislikes": "Evil",
+    "bio": "Light, born on February 28, 1986, is a third-year high school student at Daikoku Private Academy who also attends supplemental classes at Gamou Prep Academy. He later becomes a freshman at To-Oh University, where he meets L. Light was a junior high tennis champion and is known for his intelligence, athleticism, and strong sense of justice. As 'Kira', he uses the Death Note to create a new world under his rule.",
+    "voice_actors": [
+      {
+        "actorId": 65,
+        "name": "Mamoru Miyano",
+        "actor_image": "https://myanimelist.net//images//voiceactors//1//66414.jpg",
+        "language": "Japanese"
+      },
+      {
+        "actorId": 370,
+        "name": "Brad Swaile",
+        "actor_image": "https://myanimelist.net//images//voiceactors//2//3655.jpg",
+        "language": "English"
+      },
+      {
+        "actorId": 1655,
+        "name": "Kim Hasper",
+        "actor_image": "https://myanimelist.net//images//voiceactors//1//2329.jpg",
+        "language": "German"
+      },
+      {
+        "actorId": 6499,
+        "name": "Kim Yeong Seon",
+        "actor_image": "https://myanimelist.net//images//voiceactors//3//3397.jpg",
+        "language": "Korean"
+      },
+      {
+        "actorId": 6868,
+        "name": "Flavio Aquilone",
+        "actor_image": "https://myanimelist.net//images//voiceactors//2//22297.jpg",
+        "language": "Italian"
+      },
+      {
+        "actorId": 9627,
+        "name": "Sergio Zamora",
+        "actor_image": "https://myanimelist.net//images//voiceactors//2//7238.jpg",
+        "language": "Spanish"
+      },
+      {
+        "actorId": 13583,
+        "name": "Alexis Tomassian",
+        "actor_image": "https://myanimelist.net//images//voiceactors//3//86063.jpg",
+        "language": "French"
+      }
+    ]
+  },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 71,
+    "name_english": "L Lawliet",
+    "name_japanese": "エル ローライト",
+    "image": "https://myanimelist.net//images//characters//10//249647.jpg"
+    },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 75,
+    "name_english": "Ryuk ",
+    "name_japanese": "リューク",
+    "image": "https://cdn.myanimelist.net//images//characters//10//59125.jpg"
+    },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 835,
+    "name_english": "Misa Amane",
+    "name_japanese": "弥 海砂",
+    "image": "https://cdn.myanimelist.net//images//characters//5//30971.jpg"
+    },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 464,
+    "name_english": "Nate River",
+    "name_japanese": "ネイト・リバー",
+    "image": "https://cdn.myanimelist.net//images//characters//13//77339.jpg"
+    },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 463,
+    "name_english": "Mihael Keehl",
+    "name_japanese": "ミハエル・ケール",
+    "image": "https://myanimelist.net/images/characters/2/31498.jpg"
+    },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 1906,
+    "name_english": "Touta Matsuda",
+    "name_japanese": "松田 桃太",
+    "image": "https://myanimelist.net//images//characters//10//68302.jpg"
+    },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 1904,
+    "name_english": "Teru Mikami",
+    "name_japanese": "魅上 照",
+    "image": "https://myanimelist.net//images//characters//6//75263.jpg"
+    },
+    {
+    "animeId": 1535,
+    "animeTitle_english": "Death Note",
+    "characterId": 1905,
+    "name_english": "Rem",
+    "name_japanese": "レム",
+    "image": "https://cdn.myanimelist.net//images//characters//13//610829.jpg"
+    }
+]
