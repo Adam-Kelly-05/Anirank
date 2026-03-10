@@ -1,6 +1,7 @@
 import Image from "next/image";
 import actors from "../../../../public/actors.json";
 import { notFound } from "next/navigation";
+import RoleCarousel from "@/components/anime/RoleCarousel";
 
 export const dynamicParams = false;
 
@@ -44,6 +45,14 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </div>
         </div>
       </div>
+
+    {/* Other Roles */}
+      {roles.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-2xl font-bold mb-4">Other Roles</h2>
+          <RoleCarousel items={roles} />
+        </section>
+      )}
     </div>
   );
 }
