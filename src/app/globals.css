@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Replaced unsupported @theme at-rule with a standard class to avoid compile errors */
 .theme-inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -118,6 +117,12 @@
     outline: 2px solid transparent;
     outline-offset: 2px;
   }
+  /* Use border-box sizing to avoid unexpected overflow from padding/margins */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
   *:focus-visible {
     outline: 2px solid var(--ring);
@@ -129,6 +134,25 @@
     color: var(--foreground);
     overflow-x: hidden;
     overscroll-behavior-x: none;
+    /* Prevent mobile horizontal panning and ensure layout fits viewport */
+    touch-action: pan-y;
+    max-width: 100vw;
+  }
+
+  /* Ensure root/html can't be scrolled horizontally */
+  html,
+  #__next {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Prevent images/media from exceeding viewport width */
+  img,
+  video,
+  iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
   }
 }
 
