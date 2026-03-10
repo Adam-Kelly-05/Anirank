@@ -2,7 +2,7 @@ import Image from "next/image";
 import characters from "../../../../public/characters.json";
 import CharacterCarousel from "@/components/anime/CharacterCarousel";
 import { notFound } from "next/navigation";
-
+import ActorCarousel from "@/components/anime/ActorCarousel";
 
 export const dynamicParams = false;
 
@@ -95,7 +95,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </div>
       </div>
 
-
+      {voiceActors.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-2xl font-bold mb-4">Voice Actors</h2>
+          <ActorCarousel items={voiceActors} />
+        </section>
+      )}
 
       {relatedCharacters.length > 0 && (
         <section className="mt-10">
