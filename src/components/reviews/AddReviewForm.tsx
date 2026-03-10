@@ -103,7 +103,7 @@ export default function AddReviewForm({ anime, animeId }: { anime: Anime; animeI
               {/* Rating Stars Field */}
               <div>
                 <label className="block text-white font-semibold mb-3">Rating</label>
-                      <div className="flex gap-1 sm:gap-2 flex-wrap items-center">
+                <div className="flex gap-1 sm:gap-2 flex-wrap items-center">
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((star) => (
                     <button
                       key={star}

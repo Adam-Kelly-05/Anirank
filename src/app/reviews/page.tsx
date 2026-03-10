@@ -1,5 +1,6 @@
 import React from "react";
 import ReviewsList from "@/components/reviews/ReviewsList";
+import MostReviewedAnimeSection from "@/components/reviews/MostReviewedAnimeSection";
 
 export default function AboutPage() {
   return (
@@ -17,6 +18,12 @@ export default function AboutPage() {
             Read community reviews and share your thoughts
           </p>
         </div>
+      </section>
+
+      {/* Most Reviewed Anime Section */}
+      <section className="mt-10">
+        <h2 className="text-2xl font-bold mb-4">Most Reviewed Anime</h2>
+        <MostReviewedAnimeSection />
       </section>
 
       {/* Reviews Section */}

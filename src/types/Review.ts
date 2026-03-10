@@ -7,4 +7,5 @@ export interface Review {
   reviewHeader: string;
   userId: string;
   ratedDate: string;
+  image: string;
 }
