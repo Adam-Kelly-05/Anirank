@@ -36,12 +36,13 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <div className="flex-1 space-y-6">
           <h1 className="text-4xl font-bold">{actor.name}</h1>
 
-          {actor.birthday && (
-            <span className="rounded-full bg-blue-200 px-3 py-1 text-blue-900 text-xs font-semibold">
-              Birthday: {actor.birthday}
-            </span>
-          )}
-          <div className="flex flex-wrap gap-4">
+          <div className="space-y-4">
+            {actor.birthday && (
+              <span className="inline-block rounded-full bg-blue-200 px-3 py-1 text-blue-900 text-xs font-semibold">
+                Birthday: {actor.birthday}
+              </span>
+            )}
+
             <p className="text-gray-100 leading-relaxed">{actor.info}</p>
           </div>
         </div>
