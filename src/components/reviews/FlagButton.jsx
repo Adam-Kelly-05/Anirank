@@ -11,18 +11,15 @@ function FlagButton({ reviewId, animeId, userId }) {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "https://ql8om3wyba.execute-api.eu-west-1.amazonaws.com/report",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            reviewId,
-            animeId,
-            userId
-          })
-        }
-      );
+      const res = await fetch("https://ql8om3wyba.execute-api.eu-west-1.amazonaws.com/report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reviewId,
+          animeId,
+          userId,
+        }),
+      });
 
       const data = await res.json();
 
@@ -54,7 +51,7 @@ function FlagButton({ reviewId, animeId, userId }) {
         border: "none",
         cursor: reported ? "default" : "pointer",
         color: reported ? "red" : "white",
-        opacity: loading ? 0.6 : 1
+        opacity: loading ? 0.6 : 1,
       }}
     >
       <Flag size={20} />

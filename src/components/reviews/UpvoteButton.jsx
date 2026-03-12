@@ -11,7 +11,7 @@ function UpvoteButton({ animeId, reviewId, userId, initial }) {
     const res = await fetch("https://f8liivtkjh.execute-api.eu-west-1.amazonaws.com/upvote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ animeId, reviewId, userId })
+      body: JSON.stringify({ animeId, reviewId, userId }),
     });
 
     const data = await res.json();
@@ -39,7 +39,7 @@ function UpvoteButton({ animeId, reviewId, userId, initial }) {
         background: "none",
         border: "none",
         cursor: "pointer",
-        color: vote === "up" ? "blue" : "white"
+        color: vote === "up" ? "blue" : "white",
       }}
     >
       <ThumbsUp

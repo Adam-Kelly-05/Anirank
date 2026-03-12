@@ -11,7 +11,7 @@ function DownvoteButton({ animeId, reviewId, userId, initial }) {
     const res = await fetch("https://cja8opa5k1.execute-api.eu-west-1.amazonaws.com/downvote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ animeId, reviewId, userId })
+      body: JSON.stringify({ animeId, reviewId, userId }),
     });
 
     const data = await res.json();
@@ -39,7 +39,7 @@ function DownvoteButton({ animeId, reviewId, userId, initial }) {
         background: "none",
         border: "none",
         cursor: "pointer",
-        color: vote === "down" ? "red" : "white"
+        color: vote === "down" ? "red" : "white",
       }}
     >
       <ThumbsDown

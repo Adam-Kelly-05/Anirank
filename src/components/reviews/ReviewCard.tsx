@@ -19,7 +19,7 @@ export function ReviewCard({
 }) {
   const anime = useAnimeById(review.animeId);
 
-   const [revealed, setRevealed] = useState(!review.spoiler);
+  const [revealed, setRevealed] = useState(!review.spoiler);
   const shouldShowProfileButton =
     hideProfileForUserId == null || String(review.userId) !== String(hideProfileForUserId);
 
@@ -98,41 +98,39 @@ export function ReviewCard({
             )}
 
             {/* Only show body if revealed */}
-            {revealed && (
-              <p className="text-gray-300">{review.reviewBody}</p>
-            )}
+            {revealed && <p className="text-gray-300">{review.reviewBody}</p>}
 
-                  <div
-        style={{
-          marginTop: "1rem",
-          paddingTop: "0.75rem",
-          borderTop: "1px solid #0a3a7a",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "1rem"
-        }}
-      >
-        <UpvoteButton
-          animeId={review.animeId}
-          reviewId={review.reviewId}
-          userId={review.userId}
-          initial={review.upvotes || 0}
-        />
+            <div
+              style={{
+                marginTop: "3rem",
+                paddingTop: "0.75rem",
+                borderTop: "1px solid #0a3a7a",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "1rem",
+              }}
+            >
+              
+              <UpvoteButton
+                animeId={review.animeId}
+                reviewId={review.reviewId}
+                userId={review.userId}
+                initial={review.upvotes || 0}
+              />
 
-        <DownvoteButton
-          animeId={review.animeId}
-          reviewId={review.reviewId}
-          userId={review.userId}
-          initial={review.downvotes}
-        />
-        <FlagButton  
-        reviewId={review.reviewId}  
-        animeId={review.animeId}
-        userId={review.userId}
-        />      
-
-        </div>
+              <DownvoteButton
+                animeId={review.animeId}
+                reviewId={review.reviewId}
+                userId={review.userId}
+                initial={review.downvotes || 0}
+              />
+              <FlagButton
+                reviewId={review.reviewId}
+                animeId={review.animeId}
+                userId={review.userId}
+              />
+            </div>
           </div>
         </div>
       </CardContent>
