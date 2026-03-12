@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </div>
       </div>
 
-    {/* Other Roles */}
+      {/* Other Roles */}
       {roles.length > 0 && (
         <section className="mt-10">
           <h2 className="text-2xl font-bold mb-4">Other Roles</h2>
@@ -56,7 +56,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </section>
       )}
 
-     {/* Other Anime that the actor has appeared in */}
+      {/* Other Anime that the actor has appeared in */}
       {roles.length > 0 && (
         <section className="mt-10">
           <h2 className="text-2xl font-bold mb-4">Other Anime Appearances</h2>

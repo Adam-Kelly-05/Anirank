@@ -10,7 +10,6 @@ import anime5114 from "../../../../public/5114.json";
 import CharacterCarousel from "@/components/anime/CharacterCarousel";
 import characters from "../../../../public/characters.json";
 
-
 export const dynamicParams = false;
 export const dynamic = "error";
 export const fetchCache = "force-no-store";
@@ -50,7 +49,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     if (rawAnime) {
       const anime = rawAnime;
 
-    const animeCharacters = characters.filter((c) => c.animeId === anime.animeId);
+      const animeCharacters = characters.filter((c) => c.animeId === anime.animeId);
 
       return (
         <div className="max-w-6xl mx-auto p-4">
@@ -155,7 +154,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </section>
           )}
 
-        {/* Characters Section */}
+          {/* Characters Section */}
           {animeCharacters.length > 0 && (
             <section className="mt-10">
               <h2 className="text-2xl font-bold mb-4">Characters</h2>

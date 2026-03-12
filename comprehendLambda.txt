@@ -1,0 +1,121 @@
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+
+import {
+  ComprehendClient,
+  ClassifyDocumentCommand
+} from "@aws-sdk/client-comprehend";
+
+const db = DynamoDBDocumentClient.from(
+  new DynamoDBClient({
+    region: process.env.AWS_REGION,
+  })
+);
+
+const comprehend = new ComprehendClient({
+  region: process.env.AWS_REGION,
+});
+
+const SPOILER_ENDPOINT_ARN =
+  "arn:aws:comprehend:eu-west-1:443702336817:document-classifier-endpoint/animeReviewSpoilerEndpoint";
+
+async function classifySpoiler(text) {
+  const command = new ClassifyDocumentCommand({
+    Text: text,
+    EndpointArn: SPOILER_ENDPOINT_ARN,
+  });
+
+  const result = await comprehend.send(command);
+
+  const spoilerClass = result.Classes.find(
+    (c) => c.Name.toLowerCase() === "spoiler"
+  );
+  const nonSpoilerClass = result.Classes.find(
+    (c) => c.Name.toLowerCase() === "notspoiler"
+  );
+
+  const isSpoiler = spoilerClass.Score > nonSpoilerClass.Score;
+
+  return {
+    isSpoiler,
+    confidence: spoilerClass.Score,
+  };
+}
+
+function getClaims(event) {
+  return event.requestContext?.authorizer?.jwt?.claims ?? null;
+}
+
+export const handler = async (event) => {
+  try {
+    const userId = getClaims(event)?.sub;
+
+    if (!userId) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ message: "Unauthorized" }),
+      };
+    }
+
+    const body = event.body ? JSON.parse(event.body) : {};
+
+    const animeId = Number(body.animeId);
+    const rating = Number(body.rating);
+
+    if (!animeId || Number.isNaN(animeId)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "animeId is required (number)" }),
+      };
+    }
+
+    if (Number.isNaN(rating) || rating < 0 || rating > 10) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "rating must be 0-10" }),
+      };
+    }
+
+    const nowIso = new Date().toISOString();
+    const reviewId = Date.now();
+
+    const item = {
+      animeId,
+      reviewId,
+      userId,
+      animeName: body.animeName ?? "",
+      ratedDate: body.ratedDate ?? nowIso,
+      rating,
+      reviewHeader: body.reviewHeader ?? "",
+      reviewBody: body.reviewBody ?? "",
+      createdAt: nowIso,
+      updatedAt: nowIso,
+    };
+
+
+    const { isSpoiler, confidence } = await classifySpoiler(item.reviewBody);
+    item.spoiler = isSpoiler;
+    item.spoilerConfidence = confidence;
+
+    await db.send(
+      new PutCommand({
+        TableName: "Review",
+        Item: item,
+        ConditionExpression:
+          "attribute_not_exists(animeId) AND attribute_not_exists(reviewId)",
+      })
+    );
+
+    return {
+      statusCode: 201,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ review: item }),
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Server error" }),
+    };
+  }
+};

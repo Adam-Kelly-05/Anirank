@@ -8,4 +8,8 @@ export interface Review {
   userId: string;
   ratedDate: string;
   image: string;
+  spoiler: boolean;
+  confidence: number;
+  upvotes: number;
+  downvotes: number;
 }
