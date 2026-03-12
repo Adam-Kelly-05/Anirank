@@ -87,7 +87,7 @@ export default function TopTenAnimeList() {
         <div className="flex flex-wrap justify-center gap-10 overflow-x-auto">
           <div className="w-full md:w-[45%]">
             <div className="flex flex-col items-center mb-6">
-              <h2 className="text-3xl font-bold text-center">25 Recomended Anime</h2>
+              <h2 className="text-3xl font-bold text-center">25 Recommended Anime</h2>
               {listItems.length > 10 && (
                 <button
                   onClick={() => setShowAllTop(!showAllTop)}
